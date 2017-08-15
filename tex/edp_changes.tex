@@ -13,47 +13,45 @@
 \section{Introduction}
 
 
-This proposal explains how I will use the reference price data to model a consumer response to an every day price change. I outline two approaches: a more traditional econometric model; and a dynamic program.
+This proposal explains how I will use the reference price data to model consumer responses to every day price changes. I outline two approaches: a more traditional econometric model; and a dynamic program.
 
-I plan to use an econometric model similar to the econometric model in Winer's 1986 paper \cite{winer}. In this paper, Winer models the probability consumers buy from a brand as a function of previous quantity sold, consumer price expectations, competitors price and advertising spending. Winer used data directly from the point of sale, so my model is modified to take advantage of the syndicated data.
+I propose an econometric model similar to the model in Winer's 1986 paper \cite{winer}. In this paper, Winer models the probability consumers buy from a brand as a function of previous quantity sold, consumer price expectations, competitors price and advertising spending. Winer used data directly from the point of sale, so my model is modified to take advantage of the syndicated data.
 
-The second model is a dynamic program that draws on economic theory. It tries to capture the intuition behind a consumers going to the grocery store and making a decision about whether they want to buy more based on their expectations about future prices.
+The second model is a dynamic program that draws on economic theory. It tries to capture the intuition behind a consumers going to the grocery store and making choosing an optimal amount to purchase based on their expectations about future prices. In the model, the consumer updates their expected prices, and choses the optimal amount to consume in each period.
 
 
 \section{Relevant Literature}
 
-There is past research into the forces behind trade promotions and what makes them profitable. The most relevant areas are brand loyalty and reference prices. Reference prices are the idea that a consumer might buy more of a good because it was promoted. Brand loyalty represents the statistical odds a consumer will buy the same brand. 
+The most relevant areas of research to everyday price changes are research into brand loyalty, reference prices and their relationship with promotions. Reference prices are an expected price. Consumers get a higher utility from purchasing the good below their expected price. Brand loyalty is often represented the statistical odds that consumer will buy the same brand multiple times based on their attitudes. 
 
-Many economists have tried to create econometric models to predict consumers reactions to price changes. The most notable model, which I will be modifying, is Winer's econometric model which models the probability consumers buy from a brand as a function of previous quantity sold, consumers price expectations, competitors' price and advertising spending.  \cite{winer}.
+Many economists have tried to create econometric models to predict consumers reactions to price changes during promotions due to reference prices and brand loyalty. The most notable model, which I will be modifying, is Winer's econometric model which models the probability consumers buy from a brand as a function of previous quantity sold, consumers price expectations, competitors' price and advertising spending.  \cite{winer}.
 
-Another model worth mentioning is Krishnamurthi and Raj's econometric model. They improve on Winer's model in their 1991 paper using an econometric technique called structural equations \cite{krishnamurthi}. This techniques uses separate econometric equations to model brand loyalty and volume. It produces results that are considered more statistically sound. Also it reflects the intuition that consumers decide on both brand and quantity. It is important to model both.
+Another model worth mentioning is Krishnamurthi and Raj's econometric model which tries to predict the volume of the good purchased. They improve on Winer's model in their 1991 paper using an econometric technique called structural equations \cite{krishnamurthi}. This techniques uses separate econometric equations to model brand loyalty and volume. It produces results that are considered more statistically sound. Also it reflects the intuition that consumers decide on both brand and quantity.
 
-More theoretical papers and papers involving dynamic programming are also relevant. Putler created a framework for including reference prices into a theoretical economic model of consumer choice \cite{putler}. In his model, consumers buy more during a promotion. This effect results because their utility is a factor of their reference price. In other words, the difference between the current price and the previous price is factored into utility calculations.
+More theoretical papers and papers involving dynamic programming are also relevant to my second approach. Putler created a framework for including reference prices into a theoretical economic model of consumer choice \cite{putler}. In his model, consumers buy more during a promotion because reference price affects their utility. In other words, the difference between the current price and the previous price causes a consumer to buy more.
 
-In the reference price literature, demand is isolated between periods. However, Ahn, Gumus and Kaminsky create a model for manufacturers facing demand that carries over between periods \cite{ahn} Their model is focused manufacturing decisions, but their inclusion of residual demand into the model is relevant. Consumers will wait until a future period for the price to fall. Consumers wait to purchase in future periods based whether the price in the current period exceeds their reservation price. Eventually they buy in the last period.
+In the reference price literature, demand is isolated between periods. However, Ahn, Gumus and Kaminsky create a model for manufacturers facing demand that carries over between periods \cite{ahn} Their model is focused manufacturing decisions facing residual demand, but their inclusion of residual demand is relevant. In their model, consumers wait until a future period for the price to fall. They only buy when price falls below their reservation price. Eventually they buy in the last period.
 
 \section{Econometric Model}
 
 \subsection{Winer's Model}
-My model borrows heavily from Winer's model. Formally, Winer's model describing the probability of purchasing brand $i$ at time $t$ is given by
+My model borrows heavily from Winer's model. Formally, Winer's model describes the probability of purchasing brand $i$ at time $t$ and is given by
 
 $$ {Pr}_{it} = \alpha_0 + \alpha_1 Vol_{it} + \alpha_2 ADV_{it} +  \alpha_3 \dfrac{P_{it}} {\sum_j P_{jt}} - \hat{P}_{it}+ \alpha_4 \dfrac {P_{it}}{\sum_j P_{jt}} + \epsilon_{it}$$
 
-$${Pr}_{it}$$ is a dummy variable representing whether or not the brand was purchased at time t before it is fit using the regression equation. This is a logistic regression. The data comes from the point of sale. If there are $j$ brands then there $j-1$ more data points are generated for all the brands that were not purchased.
+$${Pr}_{it}$$ is a dummy variable representing whether or not the brand was purchased at time $t$ before it is fit using the regression equation. This is a logistic regression. The data comes from the point of sale. If there are $j$ brands then there $j-1$ more data points are generated for all the brands that were not purchased.
 
-$$Vol_{it}$$ represents the volume in that period. 
+$$Vol_{it}$$ represents the volume at that time.
 
 $$ADV_{it}$$ is a dummy based on the advertising spending.
 
-$$\dfrac{P_{it}} {\sum_j P_{jt}} - \hat{P}_{it}$$
+$$\dfrac{P_{it}} {\sum_j P_{jt}} - \hat{P}_{it}$$ is meant to capture a reaction in the reference price.  In the model, $P_{it}$ is the price charged by brand $i$ at time $t$. $\hat{P}_{it}$ represents the consumers expectation for the price at the current time period period. It is just the estimated ${P}_{it}$ as a function of ${P}_{it-1}$ 
 
- is meant to capture a reaction in the reference price.  In the model, $P_{it}$ is the price charged by brand $i$ at time $t$. $\hat{P}_{it}$ represents the consumers expectation for the price in this time period. It is just the estimated ${P}_{it}$ as a function of ${P}_{it-1}$ 
-
-$$ \alpha_4 \dfrac {P_{it}}{\sum_j P_{jt}}$$ is meant to capture the overall pricing environment.
+$$ \alpha_4 \dfrac {P_{it}}{\sum_j P_{jt}}$$ is meant to represent the overall pricing environment.
 
 \subsection{Model Description}
 
-My model predicts the volume sold by brand $i$ in regions (CTA) $j$ at time $t$.
+My model emulates Winer's model by including previous quantity sold, consumer price expectations, competitors price. It predicts volume sold by brand $i$ in regions (CTA) $j$ at time $t$.
 
 $$Vol_{ijt} = \alpha_0 + \sum_{k} \alpha_{k} Brand_{kj} + \sum_{l} \alpha_{il} CTA_{l} + \sum_{k} \alpha_{kl} Price_{klt} + \sum_{kl} \alpha_{kl} Vol_{klt-1} + \epsilon_{it}$$
 
@@ -65,60 +63,66 @@ $$\sum_{k} \alpha_{kl} Price_{klt}$$ are the prices for each of the brands in ea
 
 $$\sum_{kl} \alpha_{kl} Vol_{klt-1}$$ represent the previous volume for each of the brands in each of the CTAs.
 
-I use volume instead of purchase probability because the syndicated data is not broken down at the transactional level. Purchase probability should be proportional to volume because the total volume does not vary greatly from period to period.
+(1) I use volume instead of purchase probability because the syndicated data is not at the transactional level. Purchase probability are roughly proportional to volume because the total volume does not vary greatly from period to period. 
 
-I include include the other brands past volumes and prices as additional regressors because it is equivalent to including their sum as a regressors as in Winer's model. Finally, I include dummy variables for brand and region and an interaction term to capture the purchasing effects associated with each individual brand.
+(2) I include include the other brands past volumes and prices as additional regressors because it is equivalent to including their sum as a regressors as in Winer's model. 
+
+(3) Finally, I include dummy variables for brand and region and an interaction term to capture the purchasing effects associated with each individual brand. This is due to the absence of interaction terms
+
+(4) Will also run various version of the model with interaction terms between brand, region, and prices.
 
 \section{Dynamic Programming}
 
 \subsection{Model Specification}
 
-I have specified a dynamic program model to capture the intuition that a consumer will buy more because they expect a high prices in the future. In this model, consumers do not buy more during the promotion because they derive utility from seeing a price decrease. They buy more because they expect future prices to go up the next time the visit the store. You can use the model to see how consumers will react to a change in everyday price.
+I have specified a dynamic programming model where consumers buy more because they expect higher prices in the future. In this model, consumers do not buy more during the promotion because they derive utility from seeing a price decrease. They buy more because they expect future prices to go up the next time the visit the store. You can use the model to see how consumers will react to a change in everyday price.
 
-I started my model with the standard economic model of consumer decisions where consumers try to maximize utility subject to a budget constraint using a quasi-linear utility function.
+I started my model with the standard economic model of consumer decisions where consumers try to maximize utility subject to a budget constraint. I use a special type of utility function called quasi-linear utility function.
 
 $$\text{Maximize}_{x} U(x) + y  \text{ Subject to } m = px + y $$
 
-By choosing quasi-linear utility function, we can re write our problem as an unconstrained problem (assuming $m$ is large enough) avoiding the need to calculate $m$ (the budget) empirically. 
+By choosing quasi-linear utility function, we can re-write our problem as an unconstrained problem (assuming $m$ is large enough) avoiding the need to calculate $m$ (the budget) empirically. 
 
 $$\text{Maximize}_{x,y} U(x) -px $$
 
 I then modify the model in 2 ways
 
-(1) First consumers must visit the store and consume over multiple periods. As a result, they try to maximize utility over multiple periods and form expectations about what prices will be in future periods. Expectations are formed using a rule: $$p^{expected}_t(p_{t-1})$$
+(1) Consumers must visit a store and consume over multiple periods. They try to maximize utility over multiple periods and form expectations about what prices will be in future periods. Expectations are formed using a rule: $$p^{exp}_t(p_{t-1})$$
 
-(2) consumers can store goods and carry them over to the next periods. Their left over consumption is given by a function: $$x^{residual}_t(x_t,x^{residual}_{t-1})$$
+(2) consumers can store goods and carry them over to the next periods. Their left over consumption is given by a function: $$x^{res}_t(x_{t-1},x^{res}_{t-1})$$
 
 The new problem is given by:
 
-$$ \text{Maximize}_{x^{expected}_t,x_0} alpha_0 U_0(x_t +x^{residual}_0) + \sum_1^T \alpha_t U_t(x^{expected}_t+x^{residual}_{t}) - px_0 - \sum_1^T p^{expected}_t x^{expected}_t $$
+$$ \text{Maximize}_{x^{exp}_t,x_0} alpha_0 U_0(x_t +x^{res}_0) + \sum_1^T \alpha_t U_t(x^{exp}_t+x^{res}_{t}) - px_0 - \sum_1^T p^{exp}_t x^{exp}_t $$
 
-In each period, the consumer uses this rule to choose $x_0$ and $x^{expected}_t$ as by product reflecting the fact that the consumer is planning for the future. The $\alpha$ terms are weights that represent the importance of future periods.
+In each period, the consumer uses this rule to choose $x_0$ and $x^{exp}_t$ as by product reflecting the fact that the consumer is planning for the future. The $\alpha$ terms are weights that represent the importance of future periods.
 
-The expected prices $p^{expected}_t$ may not match $p_t$ which means the consumer cannot plan perfectly for the future in each period. In each period the consumer needs to recalculate their expected prices for the future and decide on a new amount to consume, $x_0$.
+The exp prices $p^{exp}_t$ may not match $p_t$ which means the consumer cannot plan perfectly for the future in each period. In each period the consumer needs to recalculate their exp prices for the future and decide on a new amount to consume, $x_0$.
 
 \subsection{Expected Price Function}
 
-This model give a lot of importance to consumers expectations about future prices in relation to their current purchasing decisions. I was hoping to try several rules to describe how consumers form expectation and compare the results.
+This model give a lot of importance to consumers expectations about future prices in relation to their current purchasing decisions. I was hoping to try several rules where consumers form expectation and compare the results.
 
-One function for expected future price is:
+One such rule, I had in mind was:
 
-$p^{expected}_t = \dfrac {(2^t-1)p_{t-2}} {2^t} + \dfrac {(2^t+1)p_{t-1}} {2^t}$ 
+$p^{exp}_t = \dfrac {(2^t-1)p_{t-2}} {2^t} + \dfrac {(2^t+1)p_{t-1}} {2^t}$ 
 
-Because it has the property that consumers expectations fluctuate between high and low, but converge to the average between the promoted and non-promoted price.
+It has the property that consumers expectations fluctuate between high and low, but converge to and average between the promoted and non-promoted price.
 
 
 \subsection{Training the Model}
 
-One way to train the model is to choose $U(x_t + x^{residual}_t)$ and $x^{residual}_t(x_t,x^{residual}_{t-1})$ so that the maximization problem that chooses $x_0$ in each period has has a closed form, linear solution. This way, I can write $x_t(p_t^{expected},x^{residual}_t)$ as a linear function and estimate the parameters using a regression model.
+One way to train the model is to choose $U(x_t + x^{res}_t)$ and $x^{res}_t(x_t,x^{res}_{t-1})$ so that the maximization problem that chooses $x_0$ in each period has has a closed form, linear solution. This way, I can write $x_t(p_t^{exp},x^{res}_t)$ as a linear function and estimate the parameters using a regression model.
 
-$$U(x_t + x^{residual}_t) = -(x_t + x^{residual}_t)^2$$ 
+One attractive utility function is $U(x) = -x^2$. It is attractive because the consumer becomes satiated with the product in each period. They get disulity from consuming too much. They do not want to carry over from one period to another.
 
-and 
+$$U(x_t + x^{res}_t) = -(x_t + x^{res}_t)^2$$ 
 
-$$x^{residual}_t = x_t + x^{residual}_{t-1} - c$$
-I chose the utility function works because it allows the consumer to become satiated with the product in each period. They get disulity from consuming too much.
+An possible update rule would be:
 
+$$x^{res}_t = x_{t-1} + x^{res}_{t-1} - c$$
+
+This combination could produce a desired solution that is closed form and linear.
 
 \bibliography{edp_changes}{}
 \bibliographystyle{plain}
