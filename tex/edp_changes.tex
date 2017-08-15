@@ -37,7 +37,7 @@ In the reference price literature, demand is isolated between periods. However, 
 \subsection{Winer's Model}
 My model borrows heavily from Winer's model. Formally, Winer's model describes the probability of purchasing brand $i$ at time $t$ and is given by
 
-$$ {Pr}_{it} = \alpha_0 + \alpha_1 Vol_{it} + \alpha_2 ADV_{it} +  \alpha_3 \dfrac{P_{it}} {\sum_j P_{jt}} - \hat{P}_{it}+ \alpha_4 \dfrac {P_{it}}{\sum_j P_{jt}} + \epsilon_{it}$$
+$$ {Pr}_{it} = \alpha_0 + \alpha_1 Vol_{it} + \alpha_2 ADV_{it} +  \alpha_3 (\dfrac{P_{it}} {\sum_j P_{jt}} - \hat{P}_{it})+ \alpha_4 \dfrac {P_{it}}{\sum_j P_{jt}} + \epsilon_{it}$$
 
 $${Pr}_{it}$$ is a dummy variable representing whether or not the brand was purchased at time $t$ before it is fit using the regression equation. This is a logistic regression. The data comes from the point of sale. If there are $j$ brands then there $j-1$ more data points are generated for all the brands that were not purchased.
 
@@ -55,13 +55,13 @@ My model emulates Winer's model by including previous quantity sold, consumer pr
 
 $$Vol_{ijt} = \alpha_0 + \sum_{k} \alpha_{k} Brand_{kj} + \sum_{l} \alpha_{il} CTA_{l} + \sum_{k} \alpha_{kl} Price_{klt} + \sum_{kl} \alpha_{kl} Vol_{klt-1} + \epsilon_{it}$$
 
-$$\sum_{k} \alpha_{k} Brand_{kj}$$ are dummy variables representing each brand.
+$$\sum_{k} \alpha_{k} Brand_{kj}$$ Are dummy variables representing each brand.
 
-$$\sum_{l} \alpha_{l} CTA_{il}$$ are dummy variables representing each of the CTAs
+$$\sum_{l} \alpha_{l} CTA_{il}$$ Are dummy variables representing each of the CTAs
 
-$$\sum_{k} \alpha_{kl} Price_{klt}$$ are the prices for each of the brands in each of the CTAs
+$$\sum_{k} \alpha_{kl} Price_{klt}$$ Represent the prices for each of the brands in each of the CTAs
 
-$$\sum_{kl} \alpha_{kl} Vol_{klt-1}$$ represent the previous volume for each of the brands in each of the CTAs.
+$$\sum_{kl} \alpha_{kl} Vol_{klt-1}$$ Represent the previous volume for each of the brands in each of the CTAs.
 
 (1) I use volume instead of purchase probability because the syndicated data is not at the transactional level. Purchase probability are roughly proportional to volume because the total volume does not vary greatly from period to period. 
 
@@ -93,15 +93,15 @@ I then modify the model in 2 ways
 
 The new problem is given by:
 
-$$ \text{Maximize}_{x^{exp}_t,x_0} alpha_0 U_0(x_t +x^{res}_0) + \sum_1^T \alpha_t U_t(x^{exp}_t+x^{res}_{t}) - px_0 - \sum_1^T p^{exp}_t x^{exp}_t $$
+$$ \text{Maximize}_{x^{exp}_t,x_0} \alpha_0 U_0(x_t +x^{res}_0) + \sum_1^T \alpha_t U_t(x^{exp}_t+x^{res}_{t}) - px_0 - \sum_1^T p^{exp}_t x^{exp}_t $$
 
-In each period, the consumer uses this rule to choose $x_0$ and $x^{exp}_t$ as by product reflecting the fact that the consumer is planning for the future. The $\alpha$ terms are weights that represent the importance of future periods.
+In each period, the consumer uses this rule to choose $x_0$ (and $x^{exp}_t$ as a by-product)reflecting the fact that the consumer is planning for the future. The $\alpha$ terms are weights that represent the importance of future periods.
 
-The exp prices $p^{exp}_t$ may not match $p_t$ which means the consumer cannot plan perfectly for the future in each period. In each period the consumer needs to recalculate their exp prices for the future and decide on a new amount to consume, $x_0$.
+The expected prices $p^{exp}_t$ may not match $p_t$ which means the consumer cannot plan perfectly for the future in each period. In each period the consumer needs to decide on a new amount to consume based on their expected prices $p_t^{exp}$  and residual $x^{res}_0$ to calculate $x_0$. Hence, the dynamic nature of the problem.
 
 \subsection{Expected Price Function}
 
-This model give a lot of importance to consumers expectations about future prices in relation to their current purchasing decisions. I was hoping to try several rules where consumers form expectation and compare the results.
+This model places importance on consumers' expectations about future prices in relation to their current purchasing decisions. I was hoping to try several rules to dictate how consumers form expectations and compare the results.
 
 One such rule, I had in mind was:
 
