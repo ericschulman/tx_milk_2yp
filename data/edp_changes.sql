@@ -4,7 +4,15 @@ COUNT (DISTINCT group_edps.dim_group_key) as Groups,
 COUNT (DISTINCT group_edps.dim_date_key) as Dates 
   FROM group_edps;
 
-/*For each transaction put all the prices 25*31 prices by CTA and week (0) if undefined in the same week*/
+/*Number of CTA GROUP Combos*/
+SELECT COUNT(*)
+FROM
+(SELECT DISTINCT group_edps.dim_cta_key, group_edps.dim_group_key
+FROM group_edps
+GROUP BY group_edps.dim_cta_key, group_edps.dim_group_key);
+
+/*For each transaction put all the prices 491 prices by CTA and week (0) if undefined in the same week*/
+
 
 /*For each transaction put all the volumes from the week before of 25*33 CTA groups*/
 
