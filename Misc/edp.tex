@@ -1,0 +1,129 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+
+\title{Graphing EDP}
+\author{Eric Schulman}
+\date{July 2017}
+
+\DeclareMathOperator{\E}{\mathrm{E}}
+\DeclareMathOperator{\Var}{\mathrm{Var}}
+
+\begin{document}
+
+\maketitle
+
+\section{Functional Form of $p(t)$}
+
+The following section defines $p(t)$, the price function for the manufacturer price. 
+
+The function $p(t)$ is a piecewise function that takes on a low price (promotion) and a high price (everyday price). Because of the cyclical nature of promotions, prices are periodic. The duration of each sales cycle is $\lambda$ units of time and the duration of each promotion is $\omega$ units of time. After the promotion is over, the price goes back to its everday level for the rest of the period.
+
+
+$$p(t) =  \begin{cases} p_{promo} & t \bmod  \lambda \leq \omega \\ p_{edp} &  t \bmod  \lambda > \omega \\ \end{cases} $$
+
+For convenience, we can normalize the prices and normalize the length of the period. 
+
+The normalized prices are
+$$\delta = \dfrac{p_{promo}}{p_{edp}}$$ 
+Where $0 \leq \delta \leq 1$
+
+Additionally, the normalized periods are
+$$\theta = \dfrac{\omega}{\lambda}$$ 
+Where $0 \leq \theta \leq 1$
+
+So, $p(t)$ normalized in terms of $\delta$ and $\theta$ is 
+$$p(t) =  \begin{cases} \delta & t \bmod  1 \leq \theta \\ 1 &  t \bmod  1 > \theta \\ \end{cases} $$
+
+
+\begin{figure}
+\centering
+\includegraphics[scale = .5]{figure_1}
+\caption{This figure shows a graph of the wave. In the figure, $p_{edp} = 1$ and $p_{promo} = .5$. Additionally, in this figure $\omega = .5$ and $\lambda = 1$}
+\label{figure_1}
+\end{figure}
+
+
+\section{Calculating the Average}
+
+\subsection{Average Price Over One Cycle}
+
+We can calculate the expected price of $p(t)$. We start by calculating the average price $p(t)$ over one period i.e. $t\in[0,1]$
+
+$$\E[p(t)] = \int_{0}^{1} p(t) dt $$
+$$\E[p(t)] = \int_{0}^{\theta} \delta dt + \int_{\theta}^{1} dt$$
+$$\E[p(t)] = \delta \theta + 1 - \theta $$
+$$\E[p(t)] = 1 - (1-\delta)\theta $$
+
+\subsection{Average  Price Over $n$ Cycles}
+
+We can extend our average price to $n$ cylces i.e. $t\in[0,n]$ and $n$ is an integer. 
+
+$$E(p(t)) = \frac{1}{n} \int_{0}^{n} p(t) dt $$
+However, because of the cyclical nature of $p(t)$ we can evaluate the integral by repeating the first period $n$ times.
+$$E(p(t)) = \frac{1}{n} n \int_{0}^{1} p(t) dt $$
+$$E(p(t)) = \int_{0}^{1} p(t) dt $$
+$$\E[p(t)] = 1 - (1-\delta)\theta $$
+
+\subsection{Average  Price with an Offset}
+
+If the cycles are offset by $\tau$ we compute the average as follows.
+
+$$E(p(t)) = \frac{1}{n} \int_{0}^{n+\tau} p(t) dt $$
+$$E(p(t)) = \frac{1}{n+\tau} (n \int_{0}^{1} p(t) dt +  \int_{0}^{\tau} p(t) dt) $$
+$$E(p(t)) = \frac{1}{n+\tau} (n (1 - (1-\delta)\theta) + \int_{0}^{\tau} p(t) dt)$$
+
+In the case where $\tau \leq \theta$ then
+
+$$E(p(t)) = \frac{1}{n+\tau} (n (1 - (1-\delta)\theta) + \int_{0}^{\tau} \delta dt)$$
+$$E(p(t)) = \frac{1}{n+\tau} (n (1 - (1-\delta)\theta) + \delta\tau)$$
+
+In the case where $\tau > \theta$
+
+$$E(p(t)) = \frac{1}{n+\tau} ( n(1 - (1-\delta)\theta) + \int_{0}^{\theta} \delta dt + \int_{\theta}^{\tau}) dt $$
+$$E(p(t)) = \frac{1}{n+\tau} (n (1 - (1-\delta)\theta) + \delta \theta + \tau - \theta) $$
+$$E(p(t)) = \frac{1}{n+\tau} (n (1 - (1-\delta)\theta) + \tau - (1-\delta)\theta ) $$
+
+\subsection{Average  Price}
+
+In both cases we can see that as $n$ get abirtrarily large, $\E[p(t)]$ approaches $1 - (1-\delta)\theta$.
+
+So, $$\E[p(t)] = 1 - (1-\delta)\theta $$
+
+\section{Calculating the Variance}
+
+We can calculate the variance of the promotions in each period as well. Since the promotions repeat themselves, each period will have the same varaince.
+
+$$\Var[p(t)] = \E[p(t)^2] - (\E[p(t)])^2$$
+
+First compute $\E[p(t)^2]$
+
+$$\E[p(t)^2] = \int_{0}^{1} p(t)^2 dt $$
+$$\E[p(t)^2] = \int_{0}^{\theta} \delta^2 dt + \int_{\theta}^{1} dt$$
+$$\E[p(t)^2] = \delta^2 \theta + 1 - \theta $$
+$$\E[p(t)^2] = 1 - (1-\delta^2)\theta $$
+
+Then compute $\E[p(t)]^2$
+
+$$\E[p(t)]^2 = (1 - (1-\delta)\theta)^2 $$
+
+Combining these results,
+
+$$\Var[p(t)] = 1 - (1-\delta^2)\theta -  ( 1 - (1-\delta)\theta )^2$$
+
+Simplifying we have,
+
+$$\Var[p(t)] = (1- \delta)^2 (\theta - \theta^2)$$
+
+
+%$$\Var[p(t)] = E[ (p(t) - E[p(t)])^2 ] $$
+%$$\Var[p(t)] = \int_{0}^{1} ( p(t) - E[p(t)] )^2 $$
+%$$\Var[p(t)] = \int_{0}^{\theta} ( \delta - E[p(t)] )^2  dt + \int_{\theta}^{1} ( 1 - E[p(t)] )^2 dt $$
+%$$\Var[p(t)] = ( \delta - E[p(t)] )^2 \theta +  ( 1 - E[p(t)] )^2 (1-\theta) $$
+%(d - 1)^2 g (1 - g)
+%(d - 1)^2 (g - g^2)
+
+
+
+\end{document}
