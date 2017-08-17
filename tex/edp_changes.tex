@@ -12,13 +12,11 @@
 
 \section{Introduction}
 
-
 This proposal explains how I will use the reference price data to model consumer responses to every day price changes. I outline two approaches: a more traditional econometric model; and a dynamic program.
 
 I propose an econometric model similar to the model in Winer's 1986 paper \cite{winer}. In this paper, Winer models the probability consumers buy from a brand as a function of previous quantity sold, consumer price expectations, competitors price and advertising spending. Winer used data directly from the point of sale, so my model is modified to take advantage of the syndicated data.
 
 The second model is a dynamic program that draws on economic theory. It tries to capture the intuition behind a consumers going to the grocery store and making choosing an optimal amount to purchase based on their expectations about future prices. In the model, the consumer updates their expected prices, and choses the optimal amount to consume in each period.
-
 
 \section{Relevant Literature}
 
@@ -39,11 +37,11 @@ My model borrows heavily from Winer's model. Formally, Winer's model describes t
 
 $$ {Pr}_{it} = \alpha_0 + \alpha_1 Vol_{it} + \alpha_2 ADV_{it} +  \alpha_3 (\dfrac{P_{it}} {\sum_j P_{jt}} - \hat{P}_{it})+ \alpha_4 \dfrac {P_{it}}{\sum_j P_{jt}} + \epsilon_{it}$$
 
-$${Pr}_{it}$$ is a dummy variable representing whether or not the brand was purchased at time $t$ before it is fit using the regression equation. This is a logistic regression. The data comes from the point of sale. If there are $j$ brands then there $j-1$ more data points are generated for all the brands that were not purchased.
+$${Pr}_{it}$$ is a boolean variable representing whether or not the brand was purchased at time $t$ before it is fit using the regression equation. This is a logistic regression. The data comes from the point of sale. If there are $j$ brands then there $j-1$ more data points are generated for all the brands that were not purchased.
 
 $$Vol_{it}$$ represents the volume at that time.
 
-$$ADV_{it}$$ is a dummy based on the advertising spending.
+$$ADV_{it}$$ is a boolean based on the advertising spending.
 
 $$\dfrac{P_{it}} {\sum_j P_{jt}} - \hat{P}_{it}$$ is meant to capture a reaction in the reference price.  In the model, $P_{it}$ is the price charged by brand $i$ at time $t$. $\hat{P}_{it}$ represents the consumers expectation for the price at the current time period period. It is just the estimated ${P}_{it}$ as a function of ${P}_{it-1}$ 
 
@@ -53,13 +51,15 @@ $$ \alpha_4 \dfrac {P_{it}}{\sum_j P_{jt}}$$ is meant to represent the overall p
 
 My model emulates Winer's model by including previous quantity sold, consumer price expectations, competitors price. It predicts volume sold by brand $i$ in regions (CTA) $j$ at time $t$.
 
-$$Vol_{ijt} = \alpha_0 + \sum_{k} \alpha_{k} Brand_{kj} + \sum_{l} \alpha_{il} CTA_{l} + \sum_{k} \alpha_{kl} Price_{klt} + \sum_{kl} \alpha_{kl} Vol_{klt-1} + \epsilon_{it}$$
+$$Vol_{ijt} = \alpha_0 + \sum_{k} \alpha_{k} Group_{kj} + \sum_{l} \alpha_{il} CTA_{l} + \sum_{k} \alpha_{kl} Price_{klt} + \sum_{kl} Vol_{ijt-1} + \sum_{k} Week_{kt} \epsilon_{it}$$
 
-$$\sum_{k} \alpha_{k} Brand_{kj}$$ Are dummy variables representing each brand.
+$$\sum_{k} \alpha_{k} Brand_{kj}$$ Are boolean variables representing each brand.
 
-$$\sum_{l} \alpha_{l} CTA_{il}$$ Are dummy variables representing each of the CTAs
+$$\sum_{l} \alpha_{l} CTA_{il}$$ Are boolean variables representing each of the CTAs
 
 $$\sum_{k} \alpha_{kl} Price_{klt}$$ Represent the prices for each of the brands in each of the CTAs
+
+$$\sum_{kl} \alpha_{kl} Vol_{klt-1}$$ Represent the previous volume for each of the brands in each of the CTAs.
 
 $$\sum_{kl} \alpha_{kl} Vol_{klt-1}$$ Represent the previous volume for each of the brands in each of the CTAs.
 
@@ -67,7 +67,7 @@ $$\sum_{kl} \alpha_{kl} Vol_{klt-1}$$ Represent the previous volume for each of 
 
 (2) I include include the other brands past volumes and prices as additional regressors because it is equivalent to including their sum as a regressors as in Winer's model. 
 
-(3) Finally, I include dummy variables for brand and region and an interaction term to capture the purchasing effects associated with each individual brand. This is due to the absence of interaction terms
+(3) Finally, I include boolean variables for brand and region and an interaction term to capture the purchasing effects associated with each individual brand. This is due to the absence of interaction terms
 
 (4) Will also run various version of the model with interaction terms between brand, region, and prices.
 

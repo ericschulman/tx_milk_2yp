@@ -20,3 +20,26 @@ GROUP BY group_edps.dim_cta_key, group_edps.dim_group_key);
 
 /*For each of the 31 CTA*/
 
+
+/*
+Linear models between
+CTA
+Group
+
+Use brand and size first
+use brand vol_(t-1)
+Average
+
+1 model all t-1,k
+
+1 Price effects all 500 other prices
+also do an average price
+
+Incremental value of a brand
+
+Really after brand loyalty (only 5 variables)
+CTA
+Time, week
+
+Try different model
+*/
