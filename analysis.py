@@ -1,156 +1,175 @@
-
 import numpy as np
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 import sqlite3
+import csv
+import os
+
+def create_db():
+	"""run the sql file to create the db"""
+	db = 'data/edp_changes.db'
+	f = open('data/edp_changes.sql','r')
+	sql = f.read()
+	if (os.path.isfile(db) ):
+		os.remove(db)
+	con = sqlite3.connect(db) #create the db
+	cur = con.cursor()
+	cur.executescript(sql)
+	con.commit()
 
 
-def list_cta_groups():
-	conn = sqlite3.connect('data/edp_changes.db')
-	c = conn.cursor()
-	query1 = ('SELECT DISTINCT group_edps.dim_cta_key, group_edps.dim_group_key ' +
-			'FROM group_edps ' +
-			'GROUP BY group_edps.dim_cta_key, group_edps.dim_group_key')
-	result = []
-	for row in c.execute(query1):
-		result.append(row)
-	return result
+def load_initial():
+	con = sqlite3.connect('data/edp_changes.db') #create the db
+	cur = con.cursor()
 
-
-def gen_weekly_price_vol():
-	"""generate a list of prices/volumes for each of the cta groups
-	each week"""
+	f = open('data/group_edps.csv')
 	
-	#set up db stuff
-	conn = sqlite3.connect('data/edp_changes.db')
-	c = conn.cursor()
-	query1 = ("select group_edps.price, group_edps.eq_vol, group_edps.week "
-	+ "from group_edps "
-	+ "where group_edps.dim_cta_key =? "
-	+ "and group_edps.dim_group_key =? "
-	+ "and (group_edps.week =? or group_edps.week=?)")
+	reader = csv.reader(f)
+	headers = reader.next() #skip the header line
+	for line in reader:
+		cur.execute("INSERT INTO group_edps VALUES (?,?,?,?,?,?,?,?);", line)
+		
+	con.commit()
+	con.close()
+	f.close()
+
+
+def create_dummy_tables(arg,type_arg):
+	"""setup list of CTAS and group dummies in the database"""
+	con = sqlite3.connect('data/edp_changes.db') #create the db
+	cur = con.cursor()
+
+	#first create a view to see the distinct categories
+	query0 = "CREATE VIEW %s_view AS SELECT DISTINCT group_edps.%s"%(arg,arg)
+	query0 = query0 + " FROM group_edps  GROUP BY group_edps.%s;"%(arg)
+
+	cur.execute(query0)
+
+	#then use the view to get all the unique listings
+	query1 = 'select * from %s_view;'%arg 
+	cur.execute(query1)
+	results = cur.fetchall()
+	query2 = 'CREATE TABLE %s (%s %s,'%(arg,arg,type_arg)
+
+	#create all the various columns
+	for row in range(1,len(results)):
+		query2 = query2 + '`%s` INTEGER,'% (str(results[row][0]) )
+
+	query2 = query2 + 'PRIMARY KEY(%s));'%arg
+	cur.execute(query2)
+
+	#create the dummy variables, finally
+	query3 = 'INSERT INTO %s VALUES '%arg 
+	line = [0]*(len(results))
+	for row in range(len(results)):
+		line[0] = results[row][0] if type_arg == 'INTEGER' else str(results[row][0])
+		cur.execute(query3+str(tuple(line))+ ';')
+		if (row < len(results)-1 ):
+			line[row+1] = 1
+			line[row] = 0
+			
+
+	con.commit()
+	con.close()
+
+
+def create_group_dummies():
+	"""setup list of group dummies in the database"""
+	query1 = 'select * from dim_group_key_view'
+	con = sqlite3.connect('data/edp_changes.db') #create the db
+	cur = con.cursor()
+	cur.execute(query1)
+	results = cur.fetchall()
 	
-	#open 2 files (write simultaneously so that only 2 queries are necessary)
-	price_doc = open('data/weekly_price.csv','w+')
-	vol_doc = open('data/weekly_vol.csv','w+')
-	price_doc.write('week,')
-	vol_doc.write('week,')
+	queryd = 'INSERT INTO dairy VALUES '
+	queryf = 'INSERT INTO flavor VALUES '
+	queryb = 'INSERT INTO brand  VALUES '
+	querys = 'INSERT INTO size VALUES '
 	
+	for i in results:
+		group = str(i[0])
+		dairy = (group,1 if group.find('_D') >-1 else 0)
+		
+		flavor = (group,1 if group.find('_F') >-1 else 0)
+		
+		brand = (
+			group, 1 if group.find('CM_') >-1 else 0,
+			1 if group.find('DD_') >-1 else 0,
+			1 if group.find('ID_') >-1 else 0,
+			1 if group.find('PL_') >-1 else 0)
+		
+		size = (
+			group,
+			1 if group.find('_32') >-1 else 0,
+			1 if group.find('_64') >-1 else 0,
+			1 if group.find('_48') >-1 else 0)
 
-	#set up cols
-	cols = list_cta_groups()
-	for col in cols:
-		price_doc.write('"'+ str( (str(col[0]),str(col[1]),'price') ) + '",')
-		vol_doc.write('"'+ str( (str(col[0]),str(col[1]),'vol') )   + '",')
+		cur.execute(queryd+str(dairy)+ ';')
+		cur.execute(queryf+str(flavor)+ ';')
+		cur.execute(queryb+str(brand)+ ';')
+		cur.execute(querys+str(size) + ';')
+
+	con.commit()
+	con.close()
 
 
-	#iterate through each week to find all the other prices
-	for i in range(1,158):
-		print(i)
-		price_doc.write("\n" + str(i)+",")
-		vol_doc.write("\n" + str(i)+",")
-		for col in cols:
-			for row in c.execute( query1,(col[0],col[1],str(i),str(i-1),) ):
-				if(row[2]==str(i)):
-					price_doc.write( str(row[0]) +"," )
-				if(row[2]==str(i-1)):
-					vol_doc.write( str(row[1]) +"," )
-
-	price_doc.close()
-	vol_doc.close()
+def setup_db():
+	"""use this function to set up the database before regressions"""
+	create_db()
+	load_initial()
+	create_dummy_tables('dim_group_key','TEXT')
+	create_dummy_tables('dim_cta_key','TEXT')
+	create_dummy_tables('week','INTEGER')
+	create_group_dummies()
 
 
-def cta_group_dummies():
-	#setup list of CTAS and groups
-	ctas = []
-	groups = []
-	conn = sqlite3.connect('data/edp_changes.db')
-	c = conn.cursor()
-	query1 = ('SELECT DISTINCT group_edps.dim_cta_key ' +
-			'FROM group_edps ' +
-			'GROUP BY group_edps.dim_cta_key')
-	query2 = ('SELECT DISTINCT group_edps.dim_group_key ' +
-			'FROM group_edps ' +
-			'GROUP BY group_edps.dim_group_key')
-	query3 = ('select group_edps.dim_cta_key, group_edps.week, '+
-		'group_edps.dim_group_key, group_edps.price, group_edps.eq_vol '+
-		'from group_edps')
+def isfloat(value):
+	try:
+		float(value)
+		return True
+	except ValueError:
+		return False
 
-	doc = open('data/edp_changes.csv','w+')
-	doc.write ('week,price,vol,')
+def sql_to_np(q):
+	for i in q:
+		for j in i:
+			j = float(str(j)) if isfloat(str(j)) else float('nan')
+	np.array([np.array(i) for i in q])
 
-	for row in c.execute(query1):
-		ctas.append(row[0])
-		doc.write( str(row[0]) +',')
-	
-	for row in c.execute(query2):
-		groups.append(row[0])
-		doc.write( str(row[0]) +',')
 
-	for row in c.execute(query3):
-		doc.write('\n')
-		doc.write('%s,%s,%s,'%(str(row[1]),str(row[3]),str(row[4])))
-
-		for cta in ctas:
-			dum = '1' if row[0] == cta else '0'
-			doc.write(dum +',')
-
-		for group in groups:
-			#if group == 'PL_64_D_U': print 'made it'
-			dum = '1' if str(row[2]) == str(group) else '0'
-			#print ('group: %s, group(check): %s, dum:%s'% (str(group),str(row[2]),dum)) 
-			doc.write(dum +',')
-
-	doc.close()
-
-#TODO make seperate dummy docs
-#TODO add brand
-#TODO size
-#TODO Dairy 
-##TODO add flavor
-#TODO week dummy
 
 
 def regress():
-	"""Used for a test regression"""
-	data = np.genfromtxt('data/edp_changes.csv', delimiter=',', names=True)
-	vol = data['vol']
+	"""Used for a test regression, will take a database query as an argument, and
+	return what is necessary eventually"""
+	
+	con = sqlite3.connect('data/edp_changes.db') #create the db
+	cur = con.cursor()
 
-	#take each row and save it as an np array
+	#get y from the db
+	cur.execute('select eq_vol from group_edps')
+	y = cur.fetchall()
+	y =  np.array([i[0] for i in y])
 
-	regressors = data.view((float, len(data.dtype.names))) #not sure what this does, but it seems to work
-
-	print regressors.shape
-	print regressors[108]
-
-	#delete dummy variables to avoid collinearity
-	#vol and week number are not useful right now
-	#delete extra 'end' column
-	regressors = np.delete(regressors ,[59,34,3,2,0] ,axis=1)
-
-	print regressors[108]
-
-	print regressors.shape
-
-
-
-	#regressors = np.matrix.transpose(regressors)
-
-	#print(len(regressors))
-	#print(len(regressors[0]))
-
+	#get regressors from the db
+	cur.execute('select * from reg1')
+	regressors = cur.fetchall()
+	regressors = sql_to_np(regressors)
+	regressors = np.delete(regressors, [0,1,2,4,5,6,7,8], axis = 1)
+	print (regressors)
 	regressors = sm.add_constant(regressors)
 
-	model = sm.GLS(vol,regressors,missing = 'drop')
-	
+	model = sm.GLS(y,regressors,missing = 'drop')
 	fitted_model = model.fit()
 
-	result_doc = open('results.txt','w+')
+	#write results
+	result_doc = open('results1.txt','w+')
 	result_doc.write( fitted_model.summary().as_text() )
 	result_doc.close()
 
 
+
 if __name__ == "__main__":
-	#cta_group_dummies()
+	setup_db()
 	regress()
 	
