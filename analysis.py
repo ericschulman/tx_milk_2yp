@@ -103,36 +103,54 @@ def cta_group_dummies():
 
 	doc.close()
 
+#TODO make seperate dummy docs
+#TODO add brand
+#TODO size
+#TODO Dairy 
+##TODO add flavor
+#TODO week dummy
+
+
 def regress():
 	"""Used for a test regression"""
 	data = np.genfromtxt('data/edp_changes.csv', delimiter=',', names=True)
 	vol = data['vol']
 
+	#take each row and save it as an np array
+
+	regressors = data.view((float, len(data.dtype.names))) #not sure what this does, but it seems to work
+
+	print regressors.shape
+	print regressors[108]
+
 	#delete dummy variables to avoid collinearity
-	np.delete(data,34)
-	np.delete(data,3)
-
 	#vol and week number are not useful right now
-	np.delete(data,2)
-	np.delete(data,0)
+	#delete extra 'end' column
+	regressors = np.delete(regressors ,[59,34,3,2,0] ,axis=1)
 
-	regressors = np.matrix.transpose(data)
+	print regressors[108]
+
+	print regressors.shape
+
+
+
+	#regressors = np.matrix.transpose(regressors)
+
+	#print(len(regressors))
+	#print(len(regressors[0]))
+
 	regressors = sm.add_constant(regressors)
-	regressors.astype(np.float)
 
-	model = sm.OLS(vol,regressors,missing = 'drop')
+	model = sm.GLS(vol,regressors,missing = 'drop')
 	
 	fitted_model = model.fit()
 
 	result_doc = open('results.txt','w+')
-	result_doc.write( fitted_model.summary() )
-	resutl_doc.close()
+	result_doc.write( fitted_model.summary().as_text() )
+	result_doc.close()
 
-
-	
-
-	
 
 if __name__ == "__main__":
 	#cta_group_dummies()
 	regress()
+	
