@@ -74,7 +74,7 @@ def create_dummy_tables(arg,type_arg):
 
 
 def create_group_dummies():
-	"""setup list of group dummies in the database"""
+	"""setup list of group dummy variables in the database"""
 	query1 = 'select * from dim_group_key_view'
 	con = sqlite3.connect('data/edp_changes.db') #create the db
 	cur = con.cursor()
@@ -123,53 +123,57 @@ def setup_db():
 	create_group_dummies()
 
 
-def isfloat(value):
+def safe_float(x):
+	"""convert to float or return nan"""
 	try:
-		float(value)
-		return True
-	except ValueError:
-		return False
-
-def sql_to_np(q):
-	for i in q:
-		for j in i:
-			j = float(str(j)) if isfloat(str(j)) else float('nan')
-	np.array([np.array(i) for i in q])
+		return float(str(x))
+	except:
+		return float('NaN')
 
 
-
-
-def regress():
+def regress(name,omit):
 	"""Used for a test regression, will take a database query as an argument, and
-	return what is necessary eventually"""
+	return what is necessary eventually
+
+	name is the name of the table, and omit is the columns to remove from the query
+	because sqlite doesn't support dropping columns"""
 	
 	con = sqlite3.connect('data/edp_changes.db') #create the db
 	cur = con.cursor()
 
 	#get y from the db
-	cur.execute('select eq_vol from group_edps')
+	cur.execute('select eq_vol from %s'%name)
 	y = cur.fetchall()
-	y =  np.array([i[0] for i in y])
+	y = np.array([ safe_float(i[0]) for i in y]).astype(np.float)
 
 	#get regressors from the db
-	cur.execute('select * from reg1')
+	cur.execute('select * from %s'%name)
 	regressors = cur.fetchall()
-	regressors = sql_to_np(regressors)
-	regressors = np.delete(regressors, [0,1,2,4,5,6,7,8], axis = 1)
-	print (regressors)
+	regressors = np.array([ np.array([safe_float(j) for j in i]).astype(np.float)
+			 for i in regressors])
+	regressors = np.delete(regressors, omit, axis = 1)
+	
+	#run the regression
 	regressors = sm.add_constant(regressors)
-
 	model = sm.GLS(y,regressors,missing = 'drop')
 	fitted_model = model.fit()
 
 	#write results
-	result_doc = open('results1.txt','w+')
+	result_doc = open('results/results_%s.txt'%name,'w+')
 	result_doc.write( fitted_model.summary().as_text() )
 	result_doc.close()
 
 
-
 if __name__ == "__main__":
 	setup_db()
-	regress()
+	regress('reg1',[0,1,2,4,5,6,7,8])
+	regress('reg2',[0,1,2,4,5,6,7,8,10,12,17])
+	regress('reg3',[0,1,2,4,5,6,7,8,10,12,17,21])
+	regress('reg4',[0,1,2,4,5,6,7,8,10,12,17,21])
+	regress('reg5',[0,1,2,4,5,6,7,8])
+	regress('reg6',[0,1,2,4,5,6,7,8,165])
+	regress('reg7',[0,1,2,4,5,6,7,8,13])
+	regress('reg8',[0,1,2,4,5,6,7,8,10,12,17,21,178])
+
+
 	
