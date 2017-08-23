@@ -54,8 +54,7 @@ FOREIGN KEY (dim_cta_key) REFERENCES groups(dim_cta_key)
 CREATE VIEW prev_price AS
 SELECT a.dim_cta_key,
 a.dim_group_key,
-a.week, 
-a.price,
+a.week,
 b.price as prev_price1,
 c.price as prev_price2
 FROM group_edps AS a, group_edps AS b, group_edps AS c
@@ -67,7 +66,7 @@ AND a.dim_group_key = c.dim_group_key
 AND a.dim_cta_key = c.dim_cta_key;
 
 
-/*create view with sum of weekly prices*/
+/*create view with previous vol (Back 2)*/
 CREATE VIEW prev_vol AS
 SELECT a.dim_cta_key,
 a.dim_group_key,
@@ -83,15 +82,25 @@ AND a.dim_group_key = c.dim_group_key
 AND a.dim_cta_key = c.dim_cta_key;
 
 
-/*create view with sum of weekly volumes*/
-CREATE VIEW aggregates AS
-SELECT dim_cta_key,
-dim_group_key,
+/*create view with sum of week_ag volumes*/
+CREATE VIEW week_ag AS
+SELECT
 week,
 sum(eq_vol) as total_vol,
 avg(price) as avg_price
 FROM group_edps
 GROUP BY week;
+
+
+/*week_ag volumes and average prices by CTA*/
+CREATE VIEW cta_ag AS
+SELECT
+week,
+dim_cta_key,
+sum(eq_vol) as total_vol,
+avg(price) as avg_price
+FROM group_edps
+GROUP BY week, dim_cta_key;
 
 
 /*view for first regression just brand and price*/
@@ -132,11 +141,13 @@ AND brand.dim_group_key = group_edps.dim_group_key
 AND size.dim_group_key = group_edps.dim_group_key
 AND dim_cta_key.dim_cta_key = group_edps.dim_cta_key;
 
+
 /*view for first regression with just CTA*/
 CREATE VIEW reg5 AS
 SELECT * FROM
 group_edps, dim_cta_key
 WHERE dim_cta_key.dim_cta_key = group_edps.dim_cta_key;
+
 
 /*view for first regression with  CTA and week*/
 CREATE VIEW reg6 AS
@@ -144,6 +155,7 @@ SELECT * FROM
 group_edps, week, dim_cta_key
 WHERE week.week = group_edps.week
 AND dim_cta_key.dim_cta_key = group_edps.dim_cta_key;
+
 
 /*view for first regression with just CTA and brand*/
 CREATE VIEW reg7 AS
@@ -166,23 +178,91 @@ AND dim_cta_key.dim_cta_key = group_edps.dim_cta_key;
 
 
 /*regression with prev 1 volume*/
-
-
+CREATE VIEW reg9 AS
+SELECT  group_edps.eq_vol, group_edps.price, prev_vol.prev_vol1 
+FROM group_edps, prev_vol
+WHERE group_edps.dim_group_key = prev_vol.dim_group_key
+AND group_edps.week = prev_vol.week
+AND group_edps.dim_cta_key = prev_vol.dim_cta_key;
 
 
 /*regression with prev 2 vol*/
-
-
-/*regression with prev 2 price, sum vol*/
+CREATE VIEW reg10 AS
+SELECT group_edps.eq_vol, group_edps.price, prev_vol.prev_vol1, prev_vol.prev_vol2
+FROM group_edps, prev_vol
+WHERE group_edps.dim_group_key = prev_vol.dim_group_key
+AND group_edps.week = prev_vol.week
+AND group_edps.dim_cta_key = prev_vol.dim_cta_key;
 
 
 /*regression with prev 1 price*/
+CREATE VIEW reg11 AS
+SELECT  group_edps.eq_vol, group_edps.price, prev_price.prev_price1 
+FROM group_edps, prev_price
+WHERE group_edps.dim_group_key = prev_price.dim_group_key
+AND group_edps.week = prev_price.week
+AND group_edps.dim_cta_key = prev_price.dim_cta_key;
 
 
 /*regression with prev 2 price*/
-
-
-/*regression with prev 2 price, sum vol*/
+CREATE VIEW reg12 AS
+SELECT  group_edps.eq_vol, group_edps.price, prev_price.prev_price1,  prev_price.prev_price2
+FROM group_edps, prev_price
+WHERE group_edps.dim_group_key = prev_price.dim_group_key
+AND group_edps.week = prev_price.week
+AND group_edps.dim_cta_key = prev_price.dim_cta_key;
 
 
 /*regression with prev price, prev vol, sum vol, sum price*/
+CREATE VIEW reg13 AS
+SELECT * FROM
+group_edps, dairy, flavor, brand, size, prev_price, prev_vol, week_ag
+WHERE dairy.dim_group_key = group_edps.dim_group_key
+AND flavor.dim_group_key = group_edps.dim_group_key
+AND brand.dim_group_key = group_edps.dim_group_key
+AND size.dim_group_key = group_edps.dim_group_key
+AND group_edps.dim_group_key = prev_price.dim_group_key
+AND group_edps.week = prev_price.week
+AND group_edps.dim_cta_key = prev_price.dim_cta_key
+AND group_edps.dim_group_key = prev_vol.dim_group_key
+AND group_edps.week = prev_vol.week
+AND group_edps.dim_cta_key = prev_vol.dim_cta_key
+AND group_edps.week = week_ag.week;
+
+
+/*regression with prev price, prev vol, sum vol, sum price*/
+CREATE VIEW reg14 AS
+SELECT * FROM
+group_edps, dairy, flavor, brand, size, prev_price, prev_vol, cta_ag
+WHERE dairy.dim_group_key = group_edps.dim_group_key
+AND flavor.dim_group_key = group_edps.dim_group_key
+AND brand.dim_group_key = group_edps.dim_group_key
+AND size.dim_group_key = group_edps.dim_group_key
+AND group_edps.dim_group_key = prev_price.dim_group_key
+AND group_edps.week = prev_price.week
+AND group_edps.dim_cta_key = prev_price.dim_cta_key
+AND group_edps.dim_group_key = prev_vol.dim_group_key
+AND group_edps.week = prev_vol.week
+AND group_edps.dim_cta_key = prev_vol.dim_cta_key
+AND group_edps.week = cta_ag.week
+AND group_edps.dim_cta_key = cta_ag.dim_cta_key;
+
+
+/*regression with prev price, prev vol, sum vol, sum price*/
+CREATE VIEW reg15 AS
+SELECT * FROM
+group_edps, dairy, flavor, brand, size, week, dim_cta_key, prev_price, prev_vol, cta_ag
+WHERE dairy.dim_group_key = group_edps.dim_group_key
+AND flavor.dim_group_key = group_edps.dim_group_key
+AND brand.dim_group_key = group_edps.dim_group_key
+AND size.dim_group_key = group_edps.dim_group_key
+AND week.week = group_edps.week
+AND dim_cta_key.dim_cta_key = group_edps.dim_cta_key
+AND group_edps.dim_group_key = prev_price.dim_group_key
+AND group_edps.week = prev_price.week
+AND group_edps.dim_cta_key = prev_price.dim_cta_key
+AND group_edps.dim_group_key = prev_vol.dim_group_key
+AND group_edps.week = prev_vol.week
+AND group_edps.dim_cta_key = prev_vol.dim_cta_key
+AND group_edps.week = cta_ag.week
+AND group_edps.dim_cta_key = cta_ag.dim_cta_key;

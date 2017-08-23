@@ -151,6 +151,9 @@ def regress(name,omit):
 	regressors = cur.fetchall()
 	regressors = np.array([ np.array([safe_float(j) for j in i]).astype(np.float)
 			 for i in regressors])
+	#print(regressors[1][21])
+	#print(regressors[1][26])
+	#print(regressors[1][31])
 	regressors = np.delete(regressors, omit, axis = 1)
 	
 	#run the regression
@@ -166,14 +169,23 @@ def regress(name,omit):
 
 if __name__ == "__main__":
 	setup_db()
-	regress('reg1',[0,1,2,4,5,6,7,8])
-	regress('reg2',[0,1,2,4,5,6,7,8,10,12,17])
-	regress('reg3',[0,1,2,4,5,6,7,8,10,12,17,21])
-	regress('reg4',[0,1,2,4,5,6,7,8,10,12,17,21])
-	regress('reg5',[0,1,2,4,5,6,7,8])
-	regress('reg6',[0,1,2,4,5,6,7,8,165])
-	regress('reg7',[0,1,2,4,5,6,7,8,13])
-	regress('reg8',[0,1,2,4,5,6,7,8,10,12,17,21,178])
+	#regress('reg1',[0,1,2,4,5,6,7,8])
+	#regress('reg2',[0,1,2,4,5,6,7,8,10,12,17])
+	#regress('reg3',[0,1,2,4,5,6,7,8,10,12,17,21])
+	#regress('reg4',[0,1,2,4,5,6,7,8,10,12,17,21])
+	#regress('reg5',[0,1,2,4,5,6,7,8])
+	#regress('reg6',[0,1,2,4,5,6,7,8,165])
+	#regress('reg7',[0,1,2,4,5,6,7,8,13])
+	#regress('reg8',[0,1,2,4,5,6,7,8,10,12,17,21,178])
+	#regress('reg9',[1])
+	#regress('reg10',[1])
+	#regress('reg11',[1])
+	#regress('reg12',[1])
+	regress('reg13',[0,1,2,4,5,6,7,8,10,12,17,21,22,23,26,27,28,31])
+	#regress('reg14',[0,1,2,4,5,6,7,8,10,12,17,21,22,23,26,27,28,31,32])
+	#regress('reg15',[0,1,2,4,5,6,7,8,10,12,17,21,178,209,210,211,214,215,216,219,220])
+
+
 
 
 	
