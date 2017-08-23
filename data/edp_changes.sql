@@ -50,7 +50,49 @@ FOREIGN KEY (dim_group_key) REFERENCES size(dim_group_key)
 FOREIGN KEY (dim_cta_key) REFERENCES groups(dim_cta_key)
 );
 
-/*create view with total price, total vol, and vol t-1*/
+/*create view with previous prices (Back 2)*/
+CREATE VIEW prev_price AS
+SELECT a.dim_cta_key,
+a.dim_group_key,
+a.week, 
+a.price,
+b.price as prev_price1,
+c.price as prev_price2
+FROM group_edps AS a, group_edps AS b, group_edps AS c
+WHERE a.week = (b.week+1) 
+AND a.dim_group_key = b.dim_group_key
+AND a.dim_cta_key = b.dim_cta_key
+AND a.week = (c.week+2) 
+AND a.dim_group_key = c.dim_group_key
+AND a.dim_cta_key = c.dim_cta_key;
+
+
+/*create view with sum of weekly prices*/
+CREATE VIEW prev_vol AS
+SELECT a.dim_cta_key,
+a.dim_group_key,
+a.week, 
+b.eq_vol as prev_vol1,
+c.eq_vol as prev_vol2
+FROM group_edps AS a, group_edps AS b, group_edps AS c
+WHERE a.week = (b.week+1) 
+AND a.dim_group_key = b.dim_group_key
+AND a.dim_cta_key = b.dim_cta_key
+AND a.week = (c.week+2) 
+AND a.dim_group_key = c.dim_group_key
+AND a.dim_cta_key = c.dim_cta_key;
+
+
+/*create view with sum of weekly volumes*/
+CREATE VIEW aggregates AS
+SELECT dim_cta_key,
+dim_group_key,
+week,
+sum(eq_vol) as total_vol,
+avg(price) as avg_price
+FROM group_edps
+GROUP BY week;
+
 
 /*view for first regression just brand and price*/
 CREATE VIEW reg1 AS
@@ -123,3 +165,24 @@ AND week.week = group_edps.week
 AND dim_cta_key.dim_cta_key = group_edps.dim_cta_key;
 
 
+/*regression with prev 1 volume*/
+
+
+
+
+/*regression with prev 2 vol*/
+
+
+/*regression with prev 2 price, sum vol*/
+
+
+/*regression with prev 1 price*/
+
+
+/*regression with prev 2 price*/
+
+
+/*regression with prev 2 price, sum vol*/
+
+
+/*regression with prev price, prev vol, sum vol, sum price*/
