@@ -16,6 +16,7 @@ def create_db():
 	cur = con.cursor()
 	cur.executescript(sql)
 	con.commit()
+	con.close()
 
 
 def load_initial():
@@ -131,12 +132,23 @@ def safe_float(x):
 		return float('NaN')
 
 
-def regress(name,omit):
+def set_up_regress(sql_file):
+	con = sqlite3.connect('data/edp_changes.db') #create the db
+	cur = con.cursor()
+	f = open('%s.sql'%sql_file,'r')
+	sql = f.read()
+	cur.executescript(sql)
+	con.commit()
+	con.close()
+
+
+def regress(sql_file, name,omit):
 	"""Used for a test regression, will take a database query as an argument, and
 	return what is necessary eventually
 
 	name is the name of the table, and omit is the columns to remove from the query
-	because sqlite doesn't support dropping columns"""
+	because sqlite doesn't support dropping columns
+	sql_file names the file that generates the relevant tables and the folder where results go"""
 	
 	con = sqlite3.connect('data/edp_changes.db') #create the db
 	cur = con.cursor()
@@ -151,9 +163,7 @@ def regress(name,omit):
 	regressors = cur.fetchall()
 	regressors = np.array([ np.array([safe_float(j) for j in i]).astype(np.float)
 			 for i in regressors])
-	#print(regressors[1][21])
-	#print(regressors[1][26])
-	#print(regressors[1][31])
+	
 	regressors = np.delete(regressors, omit, axis = 1)
 	
 	#run the regression
@@ -162,28 +172,41 @@ def regress(name,omit):
 	fitted_model = model.fit()
 
 	#write results
-	result_doc = open('results/results_%s.txt'%name,'w+')
+	result_doc = open('results/%s/results_%s.txt'%(sql_file,name),'w+')
 	result_doc.write( fitted_model.summary().as_text() )
 	result_doc.close()
 
 
 if __name__ == "__main__":
 	setup_db()
-	#regress('reg1',[0,1,2,4,5,6,7,8])
-	#regress('reg2',[0,1,2,4,5,6,7,8,10,12,17])
-	#regress('reg3',[0,1,2,4,5,6,7,8,10,12,17,21])
-	#regress('reg4',[0,1,2,4,5,6,7,8,10,12,17,21])
-	#regress('reg5',[0,1,2,4,5,6,7,8])
-	#regress('reg6',[0,1,2,4,5,6,7,8,165])
-	#regress('reg7',[0,1,2,4,5,6,7,8,13])
-	#regress('reg8',[0,1,2,4,5,6,7,8,10,12,17,21,178])
-	#regress('reg9',[1])
-	#regress('reg10',[1])
-	#regress('reg11',[1])
-	#regress('reg12',[1])
-	regress('reg13',[0,1,2,4,5,6,7,8,10,12,17,21,22,23,26,27,28,31])
-	#regress('reg14',[0,1,2,4,5,6,7,8,10,12,17,21,22,23,26,27,28,31,32])
-	#regress('reg15',[0,1,2,4,5,6,7,8,10,12,17,21,178,209,210,211,214,215,216,219,220])
+	set_up_regress('reg')
+	# regress('reg','reg1',[0,1,2,4,5,6,7,8])
+	# regress('reg','reg2',[0,1,2,4,5,6,7,8,10,12,17])
+	# regress('reg','reg3',[0,1,2,4,5,6,7,8,10,12,17,21])
+	# regress('reg','reg4',[0,1,2,4,5,6,7,8,10,12,17,21])
+	# regress('reg','reg5',[0,1,2,4,5,6,7,8])
+	# regress('reg','reg6',[0,1,2,4,5,6,7,8,165])
+	# regress('reg','reg7',[0,1,2,4,5,6,7,8,13])
+	# regress('reg','reg8',[0,1,2,4,5,6,7,8,10,12,17,21,178])
+	# regress('reg','reg9',[0])
+	# regress('reg','reg10',[0])
+	# regress('reg','reg11',[0])
+	# regress('reg','reg12',[0])
+	# regress('reg','reg13',[0,1,2,4,5,6,7,8,10,12,17,21,22,23,26,27,28,31])
+	# regress('reg','reg14',[0,1,2,4,5,6,7,8,10,12,17,21,22,23,26,27,28,31,32])
+	# regress('reg','reg15',[0,1,2,4,5,6,7,8,10,12,17,21,178,209,210,211,214,215,216,219,220])
+	# regress('reg','reg1_fixed',[0,1,2,4,5,6,7,8,13,14,15])
+	# regress('reg','reg2_fixed',[0,1,2,4,5,6,7,8,10,12,17,21,22,23])
+	# regress('reg','reg15_vol',[0,1,2,4,5,6,7,8,10,12,17,21,178,209,210,211,214,215])
+	# regress('reg','reg2_vol',[0,1,2,4,5,6,7,8,10,12,17])
+	# regress('reg','reg3_vol',[0,1,2,4,5,6,7,8,10,12,17,21])
+	# regress('reg','reg4_vol',[0,1,2,4,5,6,7,8,10,12,17,21])
+	# regress('reg','reg8_vol',[0,1,2,4,5,6,7,8,10,12,17,21,178])
+	# regress('reg','reg17',[0,1,2,4,5,6,7,8,10,12,17,21,52,53,54,57,58])
+	# regress('reg','reg18',[0,1,2,4,5,6,7,8,10,12,17,21,22,23,26,27])
+	# regress('reg','reg18_fixed',[0,1,2,4,5,6,7,8,10,12,17,21,22,23,26])
+	regress('reg','reg19',[0,1,2,4,5,6,7,8,10,12,17,21,22,23,26,29])
+
 
 
 
