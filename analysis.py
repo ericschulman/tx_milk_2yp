@@ -142,6 +142,40 @@ def set_up_regress(sql_file):
 	con.close()
 
 
+def regress(sql_file, name,omit, instr = []):
+	"""Used for a test regression, will take a database query as an argument, and
+	return what is necessary eventually
+
+	name is the name of the table, and omit is the columns to remove from the query
+	because sqlite doesn't support dropping columns
+	sql_file names the file that generates the relevant tables and the folder where results go"""
+	
+	con = sqlite3.connect('data/edp_changes.db') #create the db
+	cur = con.cursor()
+
+	#get y from the db
+	cur.execute('select eq_vol from %s'%name)
+	y = cur.fetchall()
+	y = np.array([ safe_float(i[0]) for i in y]).astype(np.float)
+
+	#get regressors from the db
+	cur.execute('select * from %s'%name)
+	regressors = cur.fetchall()
+	regressors = np.array([ np.array([safe_float(j) for j in i]).astype(np.float)
+			 for i in regressors])
+	
+	regressors = np.delete(regressors, omit, axis = 1)
+	
+	#run the regression
+	regressors = sm.add_constant(regressors)
+	model = sm.IV2SLS(y,regressors, instrument = instr, missing = 'drop')
+	fitted_model = model.fit()
+
+	#write results
+	result_doc = open('results/%s/results_%s.txt'%(sql_file,name),'w+')
+	result_doc.write( fitted_model.summary().as_text() )
+	result_doc.close()
+
 def regress(sql_file, name,omit):
 	"""Used for a test regression, will take a database query as an argument, and
 	return what is necessary eventually
@@ -172,9 +206,10 @@ def regress(sql_file, name,omit):
 	fitted_model = model.fit()
 
 	#write results
-	result_doc = open('results/%s/results_%s.txt'%(sql_file,name),'w+')
-	result_doc.write( fitted_model.summary().as_text() )
+	result_doc = open('results/%s/results_%s.tex'%(sql_file,name),'w+')
+	result_doc.write( fitted_model.summary().as_latex() )
 	result_doc.close()
+
 
 
 def run_reg():
@@ -209,10 +244,10 @@ def run_reg():
 
 def run_regf():
 	"""code for running the regressions in regf.sql"""
-	regress('regf','regf1',[0,1,2,4,5,6,7,8,10,12,17,21,22,23,26])
-	regress('regf','regf2',[0,1,2,4,5,6,7,8,10,12,17,21,22,23,26,29])
-	regress('regf','regf3',[0,1,2,4,5,6,7,8,10,12,17,21,22,23,26,29])
-	regress('regf','regf2',[0,1,2,4,5,6,7,8,10,12,17,21,22,23,26,29,60])
+	regress('regf','regf1',[0,1,2,5,6,7,8,10,12,17,21,22,23,26])
+	regress('regf','regf2',[0,1,2,5,6,7,8,10,12,17,21,22,23,26,29])
+	regress('regf','regf3',[0,1,2,5,6,7,8,10,12,17,21,22,23,26,29])
+	regress('regf','regf4',[0,1,2,5,6,7,8,10,12,17,21,22,23,26,29,60])
 
 
 if __name__ == "__main__":

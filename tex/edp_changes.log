@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.4.17)  14 AUG 2017 23:16
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.4.17)  24 AUG 2017 23:09
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -103,40 +103,124 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 9.
 LaTeX Font Info:    ... okay on input line 9.
  [1
 
-{/usr/share/texlive/texmf-dist/fonts/map/pdftex/updmap/pdftex.map}] [2]
-Overfull \hbox (6.13408pt too wide) detected at line 56
-\OML/cmm/m/it/10 Vol[] \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 [] \OT1/cmr/m/n/10 +
- [] \OML/cmm/m/it/10 []Brand[] \OT1/cmr/m/n/10 + [] \OML/cmm/m/it/10 []CTA[] 
-\OT1/cmr/m/n/10 + [] \OML/cmm/m/it/10 []Price[] \OT1/cmr/m/n/10 + [] \OML/cmm/
-m/it/10 []Vol[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 ^^O[]
+{/usr/share/texlive/texmf-dist/fonts/map/pdftex/updmap/pdftex.map}]
+Overfull \hbox (604.06155pt too wide) detected at line 50
+\OML/cmm/m/it/10 ^^NVol[] \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 [] \OT1/cmr/m/n/1
+0 + \OML/cmm/m/it/10 []PRICE[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 []EDP[] \OT
+1/cmr/m/n/10 + \OML/cmm/m/it/10 []DAIRY[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 
+[]flavor[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 []CM[] \OT1/cmr/m/n/10 + \OML/cm
+m/m/it/10 []DD[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 []ID[] \OT1/cmr/m/n/10 + 
+\OML/cmm/m/it/10 []PL[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 []SIZE\OT1/cmr/m/n
+/10 32[] + \OML/cmm/m/it/10 []SIZE\OT1/cmr/m/n/10 64[] + \OML/cmm/m/it/10 []S
+IZE\OT1/cmr/m/n/10 48[] + \OML/cmm/m/it/10 []PRICE[] \OT1/cmr/m/n/10 + \OML/cm
+m/m/it/10 []PRICE[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 [][] \OT1/cmr/m/n/10 +
+ \OML/cmm/m/it/10 [][]
  []
 
-[3] [4] (./edp_changes.bbl) [5] (./edp_changes.aux) ) 
+[2]
+! Extra }, or forgotten $.
+l.82 $$\sum_{ij} Price_{ij}}
+                             $$
+? 
+
+Overfull \hbox (663.6012pt too wide) detected at line 87
+\OML/cmm/m/it/10 ^^NVol[] \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 [] \OT1/cmr/m/n/1
+0 + \OML/cmm/m/it/10 []PRICE[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 []EDP[] \OT
+1/cmr/m/n/10 + \OML/cmm/m/it/10 []DAIRY[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 
+[]flavor[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 []CM[] \OT1/cmr/m/n/10 + \OML/cm
+m/m/it/10 []DD[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 []ID[] \OT1/cmr/m/n/10 + 
+\OML/cmm/m/it/10 []PL[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 []SIZE\OT1/cmr/m/n
+/10 32[] + \OML/cmm/m/it/10 []SIZE\OT1/cmr/m/n/10 64[] + \OML/cmm/m/it/10 []S
+IZE\OT1/cmr/m/n/10 48[] + \OML/cmm/m/it/10 []PRICE[] \OT1/cmr/m/n/10 + \OML/cm
+m/m/it/10 []PRICE[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 [][] \OT1/cmr/m/n/10 +
+ \OML/cmm/m/it/10 [][] \OT1/cmr/m/n/10 + [] \OML/cmm/m/it/10 []CTA[]
+ []
+
+[3]
+Overfull \hbox (676.24907pt too wide) detected at line 93
+\OML/cmm/m/it/10 ^^NVol[] \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 [] \OT1/cmr/m/n/1
+0 + \OML/cmm/m/it/10 []PRICE[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 []EDP[] \OT
+1/cmr/m/n/10 + \OML/cmm/m/it/10 []DAIRY[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 
+[]flavor[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 []CM[] \OT1/cmr/m/n/10 + \OML/cm
+m/m/it/10 []DD[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 []ID[] \OT1/cmr/m/n/10 + 
+\OML/cmm/m/it/10 []PL[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 []SIZE\OT1/cmr/m/n
+/10 32[] + \OML/cmm/m/it/10 []SIZE\OT1/cmr/m/n/10 64[] + \OML/cmm/m/it/10 []S
+IZE\OT1/cmr/m/n/10 48[] + \OML/cmm/m/it/10 []PRICE[] \OT1/cmr/m/n/10 + \OML/cm
+m/m/it/10 []PRICE[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 [][] \OT1/cmr/m/n/10 +
+ \OML/cmm/m/it/10 [][] \OT1/cmr/m/n/10 + [] \OML/cmm/m/it/10 []WEEK[]
+ []
+
+! Undefined control sequence.
+l.96 $$\sum_{i=0}^{156} \alpha_i \WEEK
+                                      _i $$
+? 
+! Double subscript.
+l.96 $$\sum_{i=0}^{156} \alpha_i \WEEK_
+                                       i $$
+? 
+! Undefined control sequence.
+l.108 \toprule
+              
+? 
+! Undefined control sequence.
+<recently read> \bottomrule 
+                            
+l.117 \bottomrule
+                 
+? 
+! Undefined control sequence.
+<recently read> \midrule 
+                         
+l.121 \midrule
+              
+? 
+! Undefined control sequence.
+<recently read> \bottomrule 
+                            
+l.138 \bottomrule
+                 
+? 
+! Undefined control sequence.
+<recently read> \bottomrule 
+                            
+l.145 \bottomrule
+                 
+? 
+
+Overfull \hbox (21.5951pt too wide) in paragraph at lines 107--148
+ [] 
+ []
+
+
+Overfull \hbox (2.03647pt too wide) in paragraph at lines 107--148
+ [] 
+ []
+
+[4] (./edp_changes.bbl) [5] (./edp_changes.aux) ) 
 Here is how much of TeX's memory you used:
- 939 strings out of 493069
- 10612 string characters out of 6138222
- 67248 words of memory out of 5000000
- 4521 multiletter control sequences out of 15000+600000
- 9061 words of font info for 33 fonts, out of 8000000 for 9000
+ 944 strings out of 493069
+ 10657 string characters out of 6138222
+ 74248 words of memory out of 5000000
+ 4525 multiletter control sequences out of 15000+600000
+ 9369 words of font info for 34 fonts, out of 8000000 for 9000
  1137 hyphenation exceptions out of 8191
- 27i,6n,20p,531b,187s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/f
-onts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/t
-ype1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
-msfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr
-12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb>
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/sh
-are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texl
-ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on edp_changes.pdf (5 pages, 150477 bytes).
+ 27i,7n,20p,531b,187s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.
+pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share
+/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on edp_changes.pdf (5 pages, 153066 bytes).
 PDF statistics:
- 72 PDF objects out of 1000 (max. 8388607)
- 51 compressed objects within 1 object stream
+ 68 PDF objects out of 1000 (max. 8388607)
+ 48 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

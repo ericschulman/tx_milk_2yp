@@ -26,13 +26,9 @@ Many economists have tried to create econometric models to predict consumers rea
 
 Another model worth mentioning is Krishnamurthi and Raj's econometric model which tries to predict the volume of the good purchased. They improve on Winer's model in their 1991 paper using an econometric technique called structural equations \cite{krishnamurthi}. This techniques uses separate econometric equations to model brand loyalty and volume. It produces results that are considered more statistically sound. Also it reflects the intuition that consumers decide on both brand and quantity.
 
-More theoretical papers and papers involving dynamic programming are also relevant to my second approach. Putler created a framework for including reference prices into a theoretical economic model of consumer choice \cite{putler}. In his model, consumers buy more during a promotion because reference price affects their utility. In other words, the difference between the current price and the previous price causes a consumer to buy more.
 
-In the reference price literature, demand is isolated between periods. However, Ahn, Gumus and Kaminsky create a model for manufacturers facing demand that carries over between periods \cite{ahn} Their model is focused manufacturing decisions facing residual demand, but their inclusion of residual demand is relevant. In their model, consumers wait until a future period for the price to fall. They only buy when price falls below their reservation price. Eventually they buy in the last period.
 
-\section{Econometric Model}
-
-\subsection{Winer's Model}
+\section{Winer's Model}
 My model borrows heavily from Winer's model. Formally, Winer's model describes the probability of purchasing brand $i$ at time $t$ and is given by
 
 $$ {Pr}_{it} = \alpha_0 + \alpha_1 Vol_{it} + \alpha_2 ADV_{it} +  \alpha_3 (\dfrac{P_{it}} {\sum_j P_{jt}} - \hat{P}_{it})+ \alpha_4 \dfrac {P_{it}}{\sum_j P_{jt}} + \epsilon_{it}$$
@@ -47,82 +43,115 @@ $$\dfrac{P_{it}} {\sum_j P_{jt}} - \hat{P}_{it}$$ is meant to capture a reaction
 
 $$ \alpha_4 \dfrac {P_{it}}{\sum_j P_{jt}}$$ is meant to represent the overall pricing environment.
 
-\subsection{Model Description}
+\section{Model Description}
 
-My model emulates Winer's model by including previous quantity sold, consumer price expectations, competitors price. It predicts volume sold by brand $i$ in regions (CTA) $j$ at time $t$.
+My model emulates Winer's model by including previous quantity sold, consumer price expectations, competitors price. It predicts volume sold by group $i$ in CTA $j$ at time $t$.
 
-$$Vol_{ijt} = \alpha_0 + \sum_{k} \alpha_{k} Group_{kj} + \sum_{l} \alpha_{il} CTA_{l} + \sum_{k} \alpha_{kl} Price_{klt} + \sum_{kl} Vol_{ijt-1} + \sum_{k} Week_{kt} \epsilon_{it}$$
+$$\Delta Vol_{ijt} = \alpha_0 + \alpha_1 PRICE_{ijt} + \alpha_2 EDP_{ijt} + \alpha_3 DAIRY_{ij} + \alpha_4 flavor_{ij} + \alpha_5 CM_{ij} + \alpha_6 DD_{ij} + \alpha_{7} ID_{ij} + \alpha_{8} PL_{ij} + \alpha_{9} SIZE32_{ij} +\alpha_{10} SIZE64_{ij}  + \alpha_{11} SIZE48_{ij} + \alpha_{13} PRICE_{ijt-1} + \alpha_{13} PRICE_{ijt-2}  + \alpha_{14}{\sum_{ij} VOL_{ijt}}   + \alpha_{15} {\sum_{ij} Price_{ij}}   $$
 
-$$\sum_{k} \alpha_{k} Brand_{kj}$$ Are boolean variables representing each brand.
+$$\delta Vol_{ijt}$$ is the weekly change in volume. I chose weekly change because previous volume dominates volume in terms of statistical significant. It makes it easier to identify which models have more explanatory power.
 
-$$\sum_{l} \alpha_{l} CTA_{il}$$ Are boolean variables representing each of the CTAs
+$$PRICE_{ijt}$$ is the price of the group in the CTA
 
-$$\sum_{k} \alpha_{kl} Price_{klt}$$ Represent the prices for each of the brands in each of the CTAs
+$$EDP_{ijt}$$
 
-$$\sum_{kl} \alpha_{kl} Vol_{klt-1}$$ Represent the previous volume for each of the brands in each of the CTAs.
+$$DAIRY_{ij}$$
 
-$$\sum_{kl} \alpha_{kl} Vol_{klt-1}$$ Represent the previous volume for each of the brands in each of the CTAs.
+$$flavor_{ij}$$
 
-(1) I use volume instead of purchase probability because the syndicated data is not at the transactional level. Purchase probability are roughly proportional to volume because the total volume does not vary greatly from period to period. 
+$$CM_{ij}$$
 
-(2) I include include the other brands past volumes and prices as additional regressors because it is equivalent to including their sum as a regressors as in Winer's model. 
+$$DD_{ij}$$
 
-(3) Finally, I include boolean variables for brand and region and an interaction term to capture the purchasing effects associated with each individual brand. This is due to the absence of interaction terms
+$$ID_{ij} $$
 
-(4) Will also run various version of the model with interaction terms between brand, region, and prices.
+$$PL_{ij} $$
 
-\section{Dynamic Programming}
+$$SIZE32_{ij}$$
 
-\subsection{Model Specification}
+$$SIZE64_{ij} $$
 
-I have specified a dynamic programming model where consumers buy more because they expect higher prices in the future. In this model, consumers do not buy more during the promotion because they derive utility from seeing a price decrease. They buy more because they expect future prices to go up the next time the visit the store. You can use the model to see how consumers will react to a change in everyday price.
+$$SIZE48_{ij}$$
 
-I started my model with the standard economic model of consumer decisions where consumers try to maximize utility subject to a budget constraint. I use a special type of utility function called quasi-linear utility function.
+$$PRICE_{ijt-1} $$
 
-$$\text{Maximize}_{x} U(x) + y  \text{ Subject to } m = px + y $$
+$$PRICE_{ijt-2} $$
 
-By choosing quasi-linear utility function, we can re-write our problem as an unconstrained problem (assuming $m$ is large enough) avoiding the need to calculate $m$ (the budget) empirically. 
+$$ {\sum_{ij} VOL_{ijt}} $$
 
-$$\text{Maximize}_{x,y} U(x) -px $$
+$$\sum_{ij} Price_{ij}} $$
 
-I then modify the model in 2 ways
-
-(1) Consumers must visit a store and consume over multiple periods. They try to maximize utility over multiple periods and form expectations about what prices will be in future periods. Expectations are formed using a rule: $$p^{exp}_t(p_{t-1})$$
-
-(2) consumers can store goods and carry them over to the next periods. Their left over consumption is given by a function: $$x^{res}_t(x_{t-1},x^{res}_{t-1})$$
-
-The new problem is given by:
-
-$$ \text{Maximize}_{x^{exp}_t,x_0} \alpha_0 U_0(x_t +x^{res}_0) + \sum_1^T \alpha_t U_t(x^{exp}_t+x^{res}_{t}) - px_0 - \sum_1^T p^{exp}_t x^{exp}_t $$
-
-In each period, the consumer uses this rule to choose $x_0$ (and $x^{exp}_t$ as a by-product)reflecting the fact that the consumer is planning for the future. The $\alpha$ terms are weights that represent the importance of future periods.
-
-The expected prices $p^{exp}_t$ may not match $p_t$ which means the consumer cannot plan perfectly for the future in each period. In each period the consumer needs to decide on a new amount to consume based on their expected prices $p_t^{exp}$  and residual $x^{res}_0$ to calculate $x_0$. Hence, the dynamic nature of the problem.
-
-\subsection{Expected Price Function}
-
-This model places importance on consumers' expectations about future prices in relation to their current purchasing decisions. I was hoping to try several rules to dictate how consumers form expectations and compare the results.
-
-One such rule, I had in mind was:
-
-$p^{exp}_t = \dfrac {(2^t-1)p_{t-2}} {2^t} + \dfrac {(2^t+1)p_{t-1}} {2^t}$ 
-
-It has the property that consumers expectations fluctuate between high and low, but converge to and average between the promoted and non-promoted price.
+\subsection{CTA Dummy Variables}
 
 
-\subsection{Training the Model}
+$$\delta Vol_{ijt} = \alpha_0 + \alpha_1 PRICE_{ijt} + \alpha_2 EDP_{ijt} + \alpha_3 DAIRY_{ij} + \alpha_4 flavor_{ij} + \alpha_5 CM_{ij} + \alpha_6 DD_{ij} + \alpha_{7} ID_{ij} + \alpha_{8} PL_{ij} + \alpha_{9} SIZE32_{ij} +\alpha_{10} SIZE64_{ij}  + \alpha_{11} SIZE48_{ij} + \alpha_{13} PRICE_{ijt-1} + \alpha_{13} PRICE_{ijt-2}  + \alpha_{14}{\sum_{ij} VOL_{ijt}}   + \alpha_{15} {\sum_{ij} Price_{ij}}   + \sum_{i=1}^{31} \alpha_i CTA_i $$
 
-One way to train the model is to choose $U(x_t + x^{res}_t)$ and $x^{res}_t(x_t,x^{res}_{t-1})$ so that the maximization problem that chooses $x_0$ in each period has has a closed form, linear solution. This way, I can write $x_t(p_t^{exp},x^{res}_t)$ as a linear function and estimate the parameters using a regression model.
+$$ \sum_{i=1}^{31} \alpha_i CTA_i $$
 
-One attractive utility function is $U(x) = -x^2$. It is attractive because the consumer becomes satiated with the product in each period. They get disulity from consuming too much. They do not want to carry over from one period to another.
+\subsection{Week Dummy Variables}
 
-$$U(x_t + x^{res}_t) = -(x_t + x^{res}_t)^2$$ 
+$$\delta Vol_{ijt} = \alpha_0 + \alpha_1 PRICE_{ijt} + \alpha_2 EDP_{ijt} + \alpha_3 DAIRY_{ij} + \alpha_4 flavor_{ij} + \alpha_5 CM_{ij} + \alpha_6 DD_{ij} + \alpha_{7} ID_{ij} + \alpha_{8} PL_{ij} + \alpha_{9} SIZE32_{ij} +\alpha_{10} SIZE64_{ij}  + \alpha_{11} SIZE48_{ij} + \alpha_{13} PRICE_{ijt-1} + \alpha_{13} PRICE_{ijt-2}  + \alpha_{14}{\sum_{ij} VOL_{ijt}}   + \alpha_{15} {\sum_{ij} Price_{ij}}   + \sum_{i=0}^{156} \alpha_i WEEK_i $$
 
-An possible update rule would be:
 
-$$x^{res}_t = x_{t-1} + x^{res}_{t-1} - c$$
+$$\sum_{i=0}^{156} \alpha_i \WEEK_i $$
 
-This combination could produce a desired solution that is closed form and linear.
+\subsection{2 Stage Least Squares}
+
+Winer uses Price like an IV. He does 2 stage least squares. I plan to do the same thing.
+
+\section{Preliminary Results}
+
+\subsection{Basic Model}
+
+\begin{center}
+\begin{tabular}{lclc}
+\toprule
+\textbf{Dep. Variable:}    &        y         & \textbf{  R-squared:         } &      0.263    \\
+\textbf{Model:}            &       GLS        & \textbf{  Adj. R-squared:    } &      0.263    \\
+\textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } &      1491.    \\
+\textbf{Date:}             & Thu, 24 Aug 2017 & \textbf{  Prob (F-statistic):} &      0.00     \\
+\textbf{Time:}             &     23:05:06     & \textbf{  Log-Likelihood:    } & -9.1863e+05   \\
+\textbf{No. Observations:} &       62567      & \textbf{  AIC:               } &  1.837e+06    \\
+\textbf{Df Residuals:}     &       62551      & \textbf{  BIC:               } &  1.837e+06    \\
+\textbf{Df Model:}         &          15      & \textbf{                     } &               \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lcccccc}
+               & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$>$$|$t$|$} & \textbf{[0.025} & \textbf{0.975]}  \\
+\midrule
+\textbf{const} &    1.059e+04  &     3.41e+04     &     0.311  &         0.756        &    -5.62e+04    &     7.74e+04     \\
+\textbf{x1}    &   -2.023e+06  &     1.64e+04     &  -123.541  &         0.000        &    -2.06e+06    &    -1.99e+06     \\
+\textbf{x2}    &    1.629e+05  &     2.17e+04     &     7.513  &         0.000        &      1.2e+05    &     2.05e+05     \\
+\textbf{x3}    &    1689.5385  &     7618.685     &     0.222  &         0.824        &    -1.32e+04    &     1.66e+04     \\
+\textbf{x4}    &    4567.2173  &     6859.456     &     0.666  &         0.506        &    -8877.330    &      1.8e+04     \\
+\textbf{x5}    &    2.226e+04  &     1.23e+04     &     1.809  &         0.070        &    -1856.427    &     4.64e+04     \\
+\textbf{x6}    &    9105.3157  &     1.21e+04     &     0.751  &         0.453        &    -1.47e+04    &     3.29e+04     \\
+\textbf{x7}    &    1.393e+04  &     1.28e+04     &     1.092  &         0.275        &    -1.11e+04    &     3.89e+04     \\
+\textbf{x8}    &     3.15e+04  &      1.2e+04     &     2.630  &         0.009        &     8023.628    &      5.5e+04     \\
+\textbf{x9}    &   -6344.7006  &     1.08e+04     &    -0.588  &         0.557        &    -2.75e+04    &     1.48e+04     \\
+\textbf{x10}   &   -2113.0252  &      1.3e+04     &    -0.162  &         0.871        &    -2.76e+04    &     2.34e+04     \\
+\textbf{x11}   &    2221.5663  &     1.78e+04     &     0.125  &         0.901        &    -3.26e+04    &      3.7e+04     \\
+\textbf{x12}   &    2.313e+06  &     1.82e+04     &   127.049  &         0.000        &     2.28e+06    &     2.35e+06     \\
+\textbf{x13}   &   -4.665e+05  &     1.62e+04     &   -28.823  &         0.000        &    -4.98e+05    &    -4.35e+05     \\
+\textbf{x14}   &       0.0009  &     7.51e-05     &    12.348  &         0.000        &        0.001    &        0.001     \\
+\textbf{x15}   &   -2.289e+05  &      2.3e+04     &    -9.932  &         0.000        &    -2.74e+05    &    -1.84e+05     \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lclc}
+\textbf{Omnibus:}       & 23468.865 & \textbf{  Durbin-Watson:     } &      2.813    \\
+\textbf{Prob(Omnibus):} &    0.000  & \textbf{  Jarque-Bera (JB):  } & 16947552.135  \\
+\textbf{Skew:}          &   -0.135  & \textbf{  Prob(JB):          } &       0.00    \\
+\textbf{Kurtosis:}      &   83.628  & \textbf{  Cond. No.          } &   5.68e+09    \\
+\bottomrule
+\end{tabular}
+%\caption{GLS Regression Results}
+\end{center}
+
+
+\subsection{Adding Dummy Variables}
+
+
+\subsection{2 Stage Least Squares}
 
 \bibliography{edp_changes}{}
 \bibliographystyle{plain}

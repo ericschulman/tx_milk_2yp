@@ -50,6 +50,7 @@ FOREIGN KEY (dim_group_key) REFERENCES size(dim_group_key)
 FOREIGN KEY (dim_cta_key) REFERENCES groups(dim_cta_key)
 );
 
+
 /*create view with previous prices (Back 2)*/
 CREATE VIEW prev_price AS
 SELECT a.dim_cta_key,
@@ -101,6 +102,7 @@ sum(eq_vol) as total_vol,
 avg(price) as avg_price
 FROM group_edps
 GROUP BY week, dim_cta_key;
+
 
 /*view designed to show volume change to use as regressors*/
 CREATE VIEW vol_changes AS

@@ -49,7 +49,7 @@ AND vol_changes.dim_cta_key = cta_ag.dim_cta_key;
 
 
 /*basic model with CTA dummies and weekly dummies*/
-CREATE VIEW regf4_vol AS
+CREATE VIEW regf4 AS
 SELECT *
 FROM
 vol_changes, dairy, flavor, brand, size, prev_price, cta_ag, dim_cta_key, week
