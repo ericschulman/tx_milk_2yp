@@ -242,6 +242,13 @@ def run_reg():
 	regress('reg','reg19',[0,1,2,4,5,6,7,8,10,12,17,21,22,23,26,29])
 
 
+def run_reg_good():
+	regress('reg','reg15_vol',[0,1,2,4,5,6,7,8,10,12,17,21,178,209,210,211,214,215])
+	regress('reg','reg17',[0,1,2,4,5,6,7,8,10,12,17,21,52,53,54,57,58])
+	regress('reg','reg18_fixed',[0,1,2,4,5,6,7,8,10,12,17,21,22,23,26])
+	regress('reg','reg19',[0,1,2,4,5,6,7,8,10,12,17,21,22,23,26,29])
+
+
 def run_regf():
 	"""code for running the regressions in regf.sql"""
 	regress('regf','regf1',[0,1,2,5,6,7,8,10,12,17,21,22,23,26])
@@ -252,8 +259,8 @@ def run_regf():
 
 if __name__ == "__main__":
 	setup_db()
-	set_up_regress('regf')
-	run_regf()
+	set_up_regress('reg')
+	run_reg_good()
 
 
 
