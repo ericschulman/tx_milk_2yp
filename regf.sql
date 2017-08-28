@@ -28,7 +28,10 @@ AND vol_changes.dim_group_key = prev_price.dim_group_key
 AND vol_changes.week = prev_price.week
 AND vol_changes.dim_cta_key = prev_price.dim_cta_key
 AND vol_changes.week = week_ag.week
-AND week.week = vol_changes.week;
+AND week.week = vol_changes.week
+AND group_edps.dim_group_key = prev_vol.dim_group_key
+AND group_edps.week = prev_vol.week
+AND group_edps.dim_cta_key = prev_vol.dim_cta_key;
 
 
 /*basic model with CTA dummies (prices and volumes reflect this) */
@@ -45,7 +48,10 @@ AND vol_changes.dim_group_key = prev_price.dim_group_key
 AND vol_changes.week = prev_price.week
 AND vol_changes.dim_cta_key = prev_price.dim_cta_key
 AND vol_changes.week = cta_ag.week
-AND vol_changes.dim_cta_key = cta_ag.dim_cta_key;
+AND vol_changes.dim_cta_key = cta_ag.dim_cta_key
+AND group_edps.dim_group_key = prev_vol.dim_group_key
+AND group_edps.week = prev_vol.week
+AND group_edps.dim_cta_key = prev_vol.dim_cta_key;
 
 
 /*basic model with CTA dummies and weekly dummies*/
@@ -63,4 +69,7 @@ AND vol_changes.dim_group_key = prev_price.dim_group_key
 AND vol_changes.week = prev_price.week
 AND vol_changes.dim_cta_key = prev_price.dim_cta_key
 AND vol_changes.week = cta_ag.week
-AND vol_changes.dim_cta_key = cta_ag.dim_cta_key;
+AND vol_changes.dim_cta_key = cta_ag.dim_cta_key
+AND group_edps.dim_group_key = prev_vol.dim_group_key
+AND group_edps.week = prev_vol.week
+AND group_edps.dim_cta_key = prev_vol.dim_cta_key;

@@ -143,7 +143,7 @@ def set_up_regress(sql_file):
 	con.close()
 
 
-def regress(sql_file, name,omit):
+def regress(sql_file, view_name, omit, log=False):
 	"""Used for a test regression, will take a database query as an argument, and
 	return what is necessary eventually
 
@@ -151,35 +151,50 @@ def regress(sql_file, name,omit):
 	because sqlite doesn't support dropping columns
 	sql_file names the file that generates the relevant tables and the folder where results go"""
 	
-	con = sqlite3.connect('data/edp_changes.db') #create the db
+	con = sqlite3.connect('data/edp_changes.db')
 	cur = con.cursor()
 
-	#get y from the db
-	cur.execute('select eq_vol from %s'%name)
-	y = cur.fetchall()
-	y = np.array([ safe_float(i[0]) for i in y]).astype(np.float)
 
 	#get regressors from the db
-	cur.execute('select * from %s'%name)
+	cur.execute('select * from %s'%view_name)
 	regressors = cur.fetchall()
 	regressors = np.array([ np.array([safe_float(j) for j in i]).astype(np.float)
 			 for i in regressors])
-	
+
 	regressors = np.delete(regressors, omit, axis = 1)
 	
-	#run the regression
-	regressors = sm.add_constant(regressors)
-	model = sm.GLS(y,regressors,missing = 'drop')
-	fitted_model = model.fit()
+	#delete nan lines
+	regressors = regressors[~np.isnan(regressors).any(axis=1)]
 
-	#write results
-	result_doc = open('results/%s/results_%s.tex'%(sql_file,name),'w+')
-	result_doc.write( fitted_model.summary().as_latex() )
+	y = regressors[:,2]
+
+	if (log == True):
+		y = np.log(y)
+
+	#set up instruments
+	X = regressors
+	X = np.delete(X, 2, axis = 1)
+	X = sm.add_constant(X)
+
+	#clean the endogenous explanatory variable of endogeneity
+	stage1 = sm.OLS(y,X).fit()
+
+	#write stage 1 results
+
+	file_path = 'results/%s/result_%s.'%(sql_file,view_name)
+	if(log==True):
+		file_path = 'results/%s/result_%s_log.'%(sql_file,view_name)
+
+	result_doc = open(file_path +'txt','w+')
+	result_doc.write( stage1.summary().as_text() )
+	result_doc.close()
+
+	result_doc = open(file_path +'tex','w+')
+	result_doc.write( stage1.summary().as_latex() )
 	result_doc.close()
 
 
-
-def regressIV(sql_file, view_name, result_name, instr_list, endog_ind, omit):
+def regressIV(sql_file, view_name, result_name, instr_list, endog_ind, omit,log=False):
 	"""Used for a test regression, will take a database query as an argument, and
 	return what is necessary eventually
 
@@ -214,34 +229,40 @@ def regressIV(sql_file, view_name, result_name, instr_list, endog_ind, omit):
 	stage1 = sm.OLS(endog,instr).fit()
 
 	#write stage 1 results
-	result_doc = open('results/%sIV/result_%s_s1.txt'%(sql_file,result_name),'w+')
+	result_doc = open('results/%s/result_%s_s1.txt'%(sql_file,result_name),'w+')
 	result_doc.write( stage1.summary().as_text() )
+	result_doc.close()
+
+	result_doc = open('results/%s/result_%s_s1.tex'%(sql_file,result_name),'w+')
+	result_doc.write( stage1.summary().as_latex() )
 	result_doc.close()
 
 
 	#########stage 2########
 	#save vol as the explanatory variable
 	y = regressors[:,2]
+	if (log == True):
+		y = np.log(y)
 
 	#set up exog array for stage 2
-	print(type(stage1))
 	clean = stage1.fittedvalues
-	print( clean )
 	clean = np.reshape(clean,(len(clean),1))
-	print( clean )
 
 	exog = np.delete(regressors, [instr_list], axis = 1)
 	exog = np.append(clean,exog,axis=1)
 	exog = sm.add_constant(exog)
-	print(exog)
 
 	stage2 = sm.OLS(y,exog).fit()
-	
 
 	#write results
-	result_doc = open('results/%sIV/results_%s_s2.txt'%(sql_file,result_name),'w+')
+	result_doc = open('results/%s/results_%s_s2.txt'%(sql_file,result_name),'w+')
 	result_doc.write( stage2.summary().as_text() )
 	result_doc.close()
+
+	result_doc = open('results/%s/results_%s_s2.tex'%(sql_file,result_name),'w+')
+	result_doc.write( stage2.summary().as_text() )
+	result_doc.close()
+
 
 
 
@@ -295,10 +316,19 @@ def run_regf_IV():
 	regressIV('regf','regf1', 'edp', [0,1,2,12,13], 0, [0,1,2,5,7,8,10,12,17,21,22,23,26])
 
 
+def run_reg3():
+	regress('reg3','reg31',[0,1,2,5,7,8,10,12,17,21,22,23,26,29,30,31])
+	regress('reg3','reg31',[0,1,2,5,7,8,10,12,17,21,22,23,26,29,30,31], log=True)
+	regress('reg3','reg32',[0,1,2,5,7,8,10,12,17,21,22,23,26,29,30,31,34], log=True)
+	regress('reg3','reg33',[0,1,2,5,7,8,10,12,17,21,22,23,26,29,30,31,34], log=True)
+	regressIV('reg3','reg31', 'reg31iv1', [0,2,12,13], 0, [0,1,2,5,7,8,10,12,17,21,22,23,26,29,30,31],log=True)
+	regressIV('reg3','reg31', 'reg31iv2', [0,1,2,12,13], 0, [0,1,2,5,7,8,10,12,17,21,22,23,26,29,30,31], log=True)
+
+
 if __name__ == "__main__":
 	setup_db()
-	set_up_regress('regf')
-	run_regf_IV()
+	set_up_regress('reg3')
+	run_reg3()
 
 
 
