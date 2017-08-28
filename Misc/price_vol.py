@@ -40,3 +40,55 @@ def gen_weekly_price_vol():
 
 	price_doc.close()
 	vol_doc.close()
+
+
+def regressIV(sql_file, name,  iv_list, omit):
+	"""Used for a test regression, will take a database query as an argument, and
+	return what is necessary eventually
+
+	name is the name of the table, and omit is the columns to remove from the query
+	because sqlite doesn't support dropping columns
+	sql_file names the file that generates the relevant tables and the folder where results go"""
+	
+	con = sqlite3.connect('data/edp_changes.db') #create the db
+	cur = con.cursor()
+
+	#get y from the db
+	cur.execute('select eq_vol from %s'%name)
+
+	#get regressors from the db
+	cur.execute('select * from %s'%name)
+	regressors = cur.fetchall()
+	regressors = np.array([ np.array([safe_float(j) for j in i]).astype(np.float)
+			 for i in regressors])
+
+	regressors = np.delete(regressors, omit, axis = 1)
+	
+	#delete nan lines
+	regressors = regressors[~np.isnan(regressors).any(axis=1)]
+
+	#save y and IV
+	endog = regressors[:,2]
+	print(endog)
+
+	#set up instrument 
+	instr = regressors
+	instr = np.delete(instr, 2, axis = 1)
+	instr = sm.add_constant(instr)
+	print(instr)
+	
+	#set up exog
+	exog = np.delete(regressors, iv_list, axis = 1)
+	exog = sm.add_constant(exog)
+	print(exog)
+
+	#stage1 = OLS(endog, exog).fit()
+	stage2 = IV2SLS(endog,exog,instr)
+	
+	fitted_model = stage2.fit()
+	
+
+	#write results
+	result_doc = open('results/%sIV/results_%s.txt'%(sql_file,name),'w+')
+	result_doc.write( fitted_model.summary().as_text() )
+	result_doc.close()

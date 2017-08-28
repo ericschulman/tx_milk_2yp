@@ -4,6 +4,7 @@ import statsmodels.formula.api as smf
 import sqlite3
 import csv
 import os
+from statsmodels.sandbox.regression.gmm import IV2SLS 
 
 def create_db():
 	"""run the sql file to create the db"""
@@ -142,40 +143,6 @@ def set_up_regress(sql_file):
 	con.close()
 
 
-def regress(sql_file, name,omit, instr = []):
-	"""Used for a test regression, will take a database query as an argument, and
-	return what is necessary eventually
-
-	name is the name of the table, and omit is the columns to remove from the query
-	because sqlite doesn't support dropping columns
-	sql_file names the file that generates the relevant tables and the folder where results go"""
-	
-	con = sqlite3.connect('data/edp_changes.db') #create the db
-	cur = con.cursor()
-
-	#get y from the db
-	cur.execute('select eq_vol from %s'%name)
-	y = cur.fetchall()
-	y = np.array([ safe_float(i[0]) for i in y]).astype(np.float)
-
-	#get regressors from the db
-	cur.execute('select * from %s'%name)
-	regressors = cur.fetchall()
-	regressors = np.array([ np.array([safe_float(j) for j in i]).astype(np.float)
-			 for i in regressors])
-	
-	regressors = np.delete(regressors, omit, axis = 1)
-	
-	#run the regression
-	regressors = sm.add_constant(regressors)
-	model = sm.IV2SLS(y,regressors, instrument = instr, missing = 'drop')
-	fitted_model = model.fit()
-
-	#write results
-	result_doc = open('results/%s/results_%s.txt'%(sql_file,name),'w+')
-	result_doc.write( fitted_model.summary().as_text() )
-	result_doc.close()
-
 def regress(sql_file, name,omit):
 	"""Used for a test regression, will take a database query as an argument, and
 	return what is necessary eventually
@@ -208,6 +175,72 @@ def regress(sql_file, name,omit):
 	#write results
 	result_doc = open('results/%s/results_%s.tex'%(sql_file,name),'w+')
 	result_doc.write( fitted_model.summary().as_latex() )
+	result_doc.close()
+
+
+
+def regressIV(sql_file, view_name, result_name, instr_list, endog_ind, omit):
+	"""Used for a test regression, will take a database query as an argument, and
+	return what is necessary eventually
+
+	name is the name of the table, and omit is the columns to remove from the query
+	because sqlite doesn't support dropping columns
+	sql_file names the file that generates the relevant tables and the folder where results go"""
+	
+	con = sqlite3.connect('data/edp_changes.db')
+	cur = con.cursor()
+
+
+	#get regressors from the db
+	cur.execute('select * from %s'%view_name)
+	regressors = cur.fetchall()
+	regressors = np.array([ np.array([safe_float(j) for j in i]).astype(np.float)
+			 for i in regressors])
+
+	regressors = np.delete(regressors, omit, axis = 1)
+	
+	#delete nan lines
+	regressors = regressors[~np.isnan(regressors).any(axis=1)]
+
+	########stage 1############
+	endog = regressors[:,endog_ind]
+
+	#set up instruments
+	instr = regressors
+	instr = np.delete(instr, [2,endog_ind], axis = 1)
+	instr = sm.add_constant(instr)
+
+	#clean the endogenous explanatory variable of endogeneity
+	stage1 = sm.OLS(endog,instr).fit()
+
+	#write stage 1 results
+	result_doc = open('results/%sIV/result_%s_s1.txt'%(sql_file,result_name),'w+')
+	result_doc.write( stage1.summary().as_text() )
+	result_doc.close()
+
+
+	#########stage 2########
+	#save vol as the explanatory variable
+	y = regressors[:,2]
+
+	#set up exog array for stage 2
+	print(type(stage1))
+	clean = stage1.fittedvalues
+	print( clean )
+	clean = np.reshape(clean,(len(clean),1))
+	print( clean )
+
+	exog = np.delete(regressors, [instr_list], axis = 1)
+	exog = np.append(clean,exog,axis=1)
+	exog = sm.add_constant(exog)
+	print(exog)
+
+	stage2 = sm.OLS(y,exog).fit()
+	
+
+	#write results
+	result_doc = open('results/%sIV/results_%s_s2.txt'%(sql_file,result_name),'w+')
+	result_doc.write( stage2.summary().as_text() )
 	result_doc.close()
 
 
@@ -257,10 +290,15 @@ def run_regf():
 	regress('regf','regf4',[0,1,2,5,6,7,8,10,12,17,21,22,23,26,29,60])
 
 
+def run_regf_IV():
+	regressIV('regf','regf1', 'past', [0,2,12,13], 0, [0,1,2,5,7,8,10,12,17,21,22,23,26])
+	regressIV('regf','regf1', 'edp', [0,1,2,12,13], 0, [0,1,2,5,7,8,10,12,17,21,22,23,26])
+
+
 if __name__ == "__main__":
 	setup_db()
-	set_up_regress('reg')
-	run_reg_good()
+	set_up_regress('regf')
+	run_regf_IV()
 
 
 
