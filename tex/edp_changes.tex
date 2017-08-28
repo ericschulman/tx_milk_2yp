@@ -3,6 +3,18 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 
+
+%TODO - model with log changes include prev vol as variable
+
+%Use EDP as instrument (no past prices)
+%use past prices as instrument (EDP as variable)
+%Change price to Price vs avg price ratio
+
+%CTA dummies
+
+%improve table formating
+%improve text
+
 \title{Modeling Consumer Response to EDP Changes}
 \author{Eric Schulman}
 \date{August 2017}
@@ -11,45 +23,46 @@
 
 \maketitle
 
-\section{Introduction}
+The goal of this project is to quantify the relationship between a consumer product's everyday price (EDP) and its volume. Quantifying this relationship can predict how EDP may influence expected future volumes of certain consumer products. I make these predictions using an econometric model inspired by Winer's 1986 paper \cite{winer}. In this paper, Winer models the probability buying a brand's products as a function of previous quantity sold, consumer price expectations, competitors price and advertising spending. Winer used data directly from the point of sale, so my model is modified to take advantage of syndicated data from Neilson.
 
-In order to predict the effect of EDP changes on consumer choices, I propose an econometric model similar to the model in Winer's 1986 paper \cite{winer}. In this paper, Winer models the probability consumers buy from a brand as a function of previous quantity sold, consumer price expectations, competitors price and advertising spending. Winer used data directly from the point of sale, so my model is modified to take advantage of the syndicated data.
+\section{Introduction}
 
 \subsection{Relevant Literature}
 
-The most relevant areas of research to everyday price changes are research into brand loyalty, reference prices and their relationship with promotions. Reference prices are an expected price. Consumers get a higher utility from purchasing the good below their expected price. Brand loyalty is often represented the statistical odds that consumer will buy the same brand multiple times based on their attitudes. 
+Research into trade promotions often centers around the relationship between reference price, volume and brand loyalty. The most important part of this literature is the expectations consumers form about what prices will be for certain goods. These expectations are called reference prices. Putler gives reference prices theoretical treatment \cite{putler}. These expectations effect consumer decisions by influencing how consumers percieve the products quality.
 
-Many economists have tried to create econometric models to predict consumers reactions to price changes during promotions due to reference prices and brand loyalty. The most notable model, which I will be modifying, is Winer's econometric model which models the probability consumers buy from a brand as a function of previous quantity sold, consumers price expectations, competitors' price and advertising spending.  \cite{winer}.
+In these econometric models implement this idea of past prices effecting future purchasing decisions. In his paper, he modifies the econonomic model of consumer choices to have past prices influence future purchasing decisions. At a high level, these purchasing decisions effect how much people buy because of its relationship with the current price. Past purchasing decisions made because of the price have nothing to do with future purchasing decisions.
 
-Another model worth mentioning is Krishnamurthi and Raj's econometric model which tries to predict the volume of the good purchased. They improve on Winer's model in their 1991 paper using an econometric technique called structural equations \cite{krishnamurthi}. This techniques uses separate econometric equations to model brand loyalty and volume. It produces results that are considered more statistically sound. Also it reflects the intuition that consumers decide on both brand and quantity.
+ They do this by including a variable that represents a comaprsion between past and future price. Many economists have tried to create econometric models to predict consumers reactions to price changes during promotions due to reference prices and brand loyalty. The model I take the most inspiration form is Winer's econometric model from 1986. In this model he predicts probability consumers buy from a brand as a function of previous quantity sold, consumers price expectations, competitors' price and advertising spending.  \cite{winer}. The key difference between my model and his is that I am predicitng volume changes and he is predicting purchase probabilities.
 
+Another model worth mentioning is Krishnamurthi and Raj's econometric model which tries to predict the volume of the good purchased. They improve on Winer's model in their 1991 paper using an econometric technique called structural equations \cite{krishnamurthi}.  In this paper, Krishnamurthi and Raj seperate consumer's decision about which brand to purchase and the quantity of the brand to buy into seperate economic decisions. Each of these decisions is modeled using a separate econometric equations. The fitted values from the model prediciting brand choice are measured and then used as a regressor in the second equation predicting quantity. This model rellies on point of sales data to predict brand loyalties using the method proposed in Winer's paper. As a result, I cannot replicate the brand loyalty calculations. However, many of the variables involved with the volume model are also involved with brand loyalty.
 
 \subsection{Winer's Model}
-My model borrows heavily from Winer's model. Formally, Winer's model describes the probability of purchasing brand $i$ at time $t$ and is given by
+My model takes inspiration from Winer's model. Formally, Winer's model describes the probability of purchasing brand $i$ at time $t$ and is given by
 
-$$ {Pr}_{it} = \alpha_0 + \alpha_1 Vol_{it} + \alpha_2 ADV_{it} +  \alpha_3 (\dfrac{P_{it}} {\sum_j P_{jt}} - \hat{P}_{it})+ \alpha_4 \dfrac {P_{it}}{\sum_j P_{jt}} + \epsilon_{it}$$
+$$ {Pr(B_i)}_{it} = \alpha_0 + \alpha_1 {VOL}_{it} + \alpha_2 {ADV}_{it} +  \alpha_3 (PRICE_REACT_it)+ \alpha_4 {PRICE_it}{AVGPRICE_{t}} + \epsilon_{it}$$
 
 $${Pr}_{it}$$ is a boolean variable representing whether or not the brand was purchased at time $t$ before it is fit using the regression equation. This is a logistic regression. The data comes from the point of sale. If there are $j$ brands then there $j-1$ more data points are generated for all the brands that were not purchased.
 
-$$Vol_{it}$$ represents the volume at of brand $i$ at time $t$.
+$$VOL_{it}$$ represents the volume at of brand $i$ at time $t$.
 
 $$ADV_{it}$$ is a boolean based on the advertising spending of brand $i$ at time $t$. It is an aggregate metric that takes into account various types of promotional spending.
 
-$$\dfrac{P_{it}} {\sum_j P_{jt}} - \hat{P}_{it}$$ is meant to capture a reaction in the reference price.  In the model, $P_{it}$ is the price charged by brand $i$ at time $t$. 
+$$PRICE_REACT_it$$ is meant to capture a reaction in the reference price. It is calculated as $$\dfrac{PRICE_{it}} {\sum_j PRICE_{jt}} - \hat{PRICE}_{it}$$ In the model, $P_{it}$ is the price charged by brand $i$ at time $t$. 
 
-$$\hat{P}_{it}$$ represents the consumers expectation for the price at the current time period period. It involves estimating ${P}_{it}$ as a function of ${P}_{it-1}$. This process is called 2 stage least squares. In 2 stage least squares, you look at the effect of one variable 'through' another variable.  In this case we are looking on how past prices effect the current price 'through' the current price. You do this by running running a regression using a variable called an instrument (in this case, previous price) on another variable (in this case price). You use the predicted values from the first regression in a second regression.  I plan to use this technique as well when estimating my model.
+The most important part of the reaciton is, $$\hat{P}_{it}$$ represents the consumers expectation for the price at the current time period period. It involves estimating ${P}_{it}$ as a function of ${P}_{it-1}$. This process is called 2 stage least squares. In 2 stage least squares, you look at the effect of one variable 'through' another variable.  In this case we are looking on how past prices effect the current price 'through' the current price. You do this by running running a regression using a variable called an instrument (in this case, previous price) on another variable (in this case price). You use the predicted values from the first regression in a second regression.  I plan to use this technique as well when estimating my model.
 
-$$ \alpha_4 \dfrac {P_{it}}{\sum_j P_{jt}}$$ represents the overall pricing environment. It is the current brand price at time $t$ as a fraction of all the prices.
+$$ {PRICE_it}{AVGPRICE_{t}}$$ represents the ratio between the price of brand $i$ at time $t$ against its competitors. It represents the overall pricing environment. It is the current brand price at time $t$ as a fraction of all the prices.
 
 \section{Model Description}
 
 My model emulates Winer's model by including previous quantity sold, consumer price expectations, product description and competitors price. It predicts changes in the volume sold by group $i$ in CTA $j$ at time $t$. Estimates for this model are included in the preliminary results section
 
-$\Delta Vol_{ijt} = \alpha_0 + \alpha_1 {PRICE}_{ijt} + \alpha_2 EDP_{ijt} + \alpha_3 {DAIRY}_{j} + \alpha_4 FLAVOR_{j} \medskip + \alpha_5 CM_{j} + \alpha_6 DD_{j} + \alpha_{7} ID_{j} + \alpha_{8} PL_{j} \medskip + \alpha_{9} SIZE32_{j} +\alpha_{10} SIZE64_{ij}  + \alpha_{11} SIZE48_{ij} \medskip + \alpha_{13} {PRICE}_{ijt-1} + \alpha_{13} {PRICE}_{ijt-2}  \medskip + \alpha_{14}{TOTALVOL}_t  + \alpha_{15} {AVGPRICE}_{t} $
+$\Delta VOL_{ijt} = \alpha_0 + \alpha_1 {PRICE}_{ijt} + \alpha_2 EDP_{ijt} + \alpha_3 {DAIRY}_{j} + \alpha_4 FLAVOR_{j} \medskip + \alpha_5 CM_{j} + \alpha_6 DD_{j} + \alpha_{7} ID_{j} + \alpha_{8} PL_{j} \medskip + \alpha_{9} SIZE32_{j} +\alpha_{10} SIZE64_{ij}  + \alpha_{11} SIZE48_{ij} \medskip + \alpha_{12} {PRICE}_{ijt-1} + \alpha_{13} {PRICE}_{ijt-2}  \medskip + \alpha_{14}{TOTALVOL}_t  + \alpha_{15} {AVGPRICE}_{t} + e_{ijt} $
 
 \subsection{Description of the Variables}
 
-$$\delta Vol_{ijt}$$ 
+$$\delta VOL_{ijt}$$ 
 
 is the weekly change in volume. I chose predict weekly change because previous volume dominates the other variables in terms of its ability to predict volume in the next week. Analyzing volume changes makes it easier to identify which variables have more explanatory power.
 
@@ -93,6 +106,15 @@ $${AVGPRICE}_{t} $$
 
 represents the average price across all of the CTA groups.
 
+Essentially, I replace the dummy variable representing advertising revenues with various dummy variables that represent the product characteristics.
+
+Instead of using pervious volume as a seperate regressor, I include it in the dependent variable.
+
+I include average price as its own variable
+
+I include past prices as variables in the regression. Howver, I modify the model in the same way as winer to take advantage of 2 stage least squares in order to include a term that represents how prices effect the volume changes through their relationship with previous prices forming consumers reference prices.
+
+
 \subsection{CTA and Week Dummy Variables}
 
 I estimated two additional models (included in the appendix). Each one of these includes various dummy variables.
@@ -115,19 +137,20 @@ are 156 boolean variables representing the 156 weeks to detect weekly patterns.
 
 \subsection{2 Stage Least Squares}
 
+Stage 1
+
+${PRICE}_{ijt} = \gamma_0 + \gamma_1 EDP_{ijt} + \gamma_2 {DAIRY}_{j} + \gamma_3 FLAVOR_{j} \medskip + \gamma_4 CM_{j} + \gamma_5 DD_{j} + \gamma_{6} ID_{j} + \gamma_{7} PL_{j} \medskip + \gamma_{8} SIZE32_{j} +\gamma_{9} SIZE64_{ij}  + \gamma_{10} SIZE48_{ij} \medskip + \gamma_{11} {PRICE}_{ijt-1} + \gamma_{12} {PRICE}_{ijt-2}  \medskip + \gamma_{13}{TOTALVOL}_t  + \gamma_{14} {AVGPRICE}_{t} +v $
+
+Stage 2
+
+$\Delta Vol_{ijt} = \alpha_0 + \alpha_1 {PRICE}_{ijt} + \alpha_2 EDP_{ijt} + \alpha_3 {DAIRY}_{j} + \alpha_4 FLAVOR_{j} \medskip + \alpha_5 CM_{j} + \alpha_6 DD_{j} + \alpha_{7} ID_{j} + \alpha_{8} PL_{j} \medskip + \alpha_{9} SIZE32_{j} +\alpha_{10} SIZE64_{ij}  + \alpha_{11} SIZE48_{ij} \medskip + \alpha_{13} {PRICE}_{ijt-1} + \alpha_{13} {PRICE}_{ijt-2}  \medskip + \alpha_{14}{TOTALVOL}_t  + \alpha_{15} {AVGPRICE}_{t} $
+
 Winer uses previous prices in his regression to do 2 stage least squares. This process involves estimating ${P}_{it}$ as a function of ${P}_{it-1}$. In 2 stage least squares, you look at the effect of one variable 'through' another variable.  In this case we are looking on how past prices effect the current price 'through' the current price. 
 
 By using this process we are assuming that the past prices can only relate to future volume changes 'through' consumers the current price. This assumption makes sense through the lense of the reference price literature. In the literature, past prices effect current purchasing decisions because its relationship to current prices. Consumers form expectations about prices and call these expectations reference prices. Theoretical models involving reference prices often involve an explicit assumption that previous prices only affect purchasing decisions through the reference price \cite{putler}.
 
 Using this technique involves running a regression using a variable called an instrument (in this case, previous price) on another variable (in this case price). You use the predicted values from the first regression in a second regression.  I plan to use this technique as well when estimating my model. I plan to use 
 
-(1) Past price
-
-(2) Past 2 prices
-
-(3) EDP
-
-(4) EDP, and Past 2 prices
 
 As my instrumental variables to see which produces the best results.
 
@@ -145,6 +168,10 @@ In the basic model, only the coefficients on ${PRICE}_{ijt}$, ${EDP}_{ijt}$, ${T
 All but 4 of the CTA dummy variables are statistically significant at the 5 percent levels. When using an F-test for join significance of these variables, they are significant at the 5 percent level. This means that these variables are related to volume changes and should not be taken lightly. Additionally, when including the CTA dummies, total regional volume is no longer statistically significant. 
 
 The weekly dummy variables appear to be less important to the overall results. They pass an f-test for joint significant at the 5 percent, but considering the number of data points this is unsurprising. Most of the values do not pass individual t-tests.
+
+\subsection{2 Stage Least Squares}
+
+
 
 
 \bibliography{edp_changes}{}
