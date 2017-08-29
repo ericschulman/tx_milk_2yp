@@ -181,15 +181,17 @@ def regress(sql_file, view_name, omit, log=False):
 
 	#write stage 1 results
 
-	file_path = 'results/%s/result_%s.'%(sql_file,view_name)
+	file_path_tex = 'results/%s/tex/result_%s.'%(sql_file,view_name)
+	file_path_txt = 'results/%s/txt/result_%s.'%(sql_file,view_name)
 	if(log==True):
-		file_path = 'results/%s/result_%s_log.'%(sql_file,view_name)
+		file_path_tex = 'results/%s/tex/result_%s_log.'%(sql_file,view_name)
+		file_path_txt = 'results/%s/txt/result_%s_log.'%(sql_file,view_name)
 
-	result_doc = open(file_path +'txt','w+')
+	result_doc = open(file_path_txt +'txt','w+')
 	result_doc.write( stage1.summary().as_text() )
 	result_doc.close()
 
-	result_doc = open(file_path +'tex','w+')
+	result_doc = open(file_path_tex +'tex','w+')
 	result_doc.write( stage1.summary().as_latex() )
 	result_doc.close()
 
@@ -229,11 +231,11 @@ def regressIV(sql_file, view_name, result_name, instr_list, endog_ind, omit,log=
 	stage1 = sm.OLS(endog,instr).fit()
 
 	#write stage 1 results
-	result_doc = open('results/%s/result_%s_s1.txt'%(sql_file,result_name),'w+')
+	result_doc = open('results/%s/txt/result_%s_s1.txt'%(sql_file,result_name),'w+')
 	result_doc.write( stage1.summary().as_text() )
 	result_doc.close()
 
-	result_doc = open('results/%s/result_%s_s1.tex'%(sql_file,result_name),'w+')
+	result_doc = open('results/%s/tex/result_%s_s1.tex'%(sql_file,result_name),'w+')
 	result_doc.write( stage1.summary().as_latex() )
 	result_doc.close()
 
@@ -255,11 +257,11 @@ def regressIV(sql_file, view_name, result_name, instr_list, endog_ind, omit,log=
 	stage2 = sm.OLS(y,exog).fit()
 
 	#write results
-	result_doc = open('results/%s/results_%s_s2.txt'%(sql_file,result_name),'w+')
+	result_doc = open('results/%s/txt/results_%s_s2.txt'%(sql_file,result_name),'w+')
 	result_doc.write( stage2.summary().as_text() )
 	result_doc.close()
 
-	result_doc = open('results/%s/results_%s_s2.tex'%(sql_file,result_name),'w+')
+	result_doc = open('results/%s/tex/results_%s_s2.tex'%(sql_file,result_name),'w+')
 	result_doc.write( stage2.summary().as_text() )
 	result_doc.close()
 
@@ -317,13 +319,15 @@ def run_regf_IV():
 
 
 def run_reg3():
-	regress('reg3','reg31',[0,1,2,5,7,8,10,12,17,21,22,23,26,29,30,31])
-	regress('reg3','reg31',[0,1,2,5,7,8,10,12,17,21,22,23,26,29,30,31], log=True)
-	regress('reg3','reg32',[0,1,2,5,7,8,10,12,17,21,22,23,26,29,30,31,34], log=True)
-	regress('reg3','reg33',[0,1,2,5,7,8,10,12,17,21,22,23,26,29,30,31,34], log=True)
-	regressIV('reg3','reg31', 'reg31iv1', [0,2,12,13], 0, [0,1,2,5,7,8,10,12,17,21,22,23,26,29,30,31],log=True)
-	regressIV('reg3','reg31', 'reg31iv2', [0,1,2,12,13], 0, [0,1,2,5,7,8,10,12,17,21,22,23,26,29,30,31], log=True)
-
+	# regress('reg3', 'reg31', [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33])
+	# regress('reg3', 'reg31', [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33],    log=True)
+	# regress('reg3', 'reg32', [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33,36], log=True)
+	# regress('reg3', 'reg33', [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33,36], log=True)
+	regress('reg3', 'reg34', [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28])
+	# regressIV('reg3', 'reg31', 'reg31iv1', [0,2,12,13],   0, [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33],    log=True)
+	# regressIV('reg3', 'reg31', 'reg31iv2', [0,1,2,12,13], 0, [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33],    log=True)
+	# regressIV('reg3', 'reg32', 'reg32iv1', [0,2,12,13],   0, [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33,36], log=True)
+	
 
 if __name__ == "__main__":
 	setup_db()

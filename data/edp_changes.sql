@@ -93,6 +93,19 @@ FROM group_edps
 GROUP BY week;
 
 
+/*create price ratio to use instead of weekly ag*/
+CREATE VIEW price_ratio AS
+SELECT
+group_edps.dim_cta_key,
+group_edps.dim_group_key,
+group_edps.week,
+week_ag.total_vol,
+group_edps.price/week_ag.avg_price
+FROM group_edps, week_ag
+WHERE
+group_edps.week = week_ag.week;
+
+
 /*week_ag volumes and average prices by CTA*/
 CREATE VIEW cta_ag AS
 SELECT
@@ -102,6 +115,20 @@ sum(eq_vol) as total_vol,
 avg(price) as avg_price
 FROM group_edps
 GROUP BY week, dim_cta_key;
+
+
+/*create price ratio to use instead of weekly ag*/
+CREATE VIEW price_ratio_cta AS
+SELECT
+group_edps.dim_cta_key,
+group_edps.dim_group_key,
+group_edps.week, 
+cta_ag.total_vol,
+group_edps.price/cta_ag.avg_price
+FROM group_edps, cta_ag
+WHERE
+group_edps.week = cta_ag.week 
+AND group_edps.dim_cta_key = cta_ag.dim_cta_key;
 
 
 /*view designed to show volume change to use as regressors*/
