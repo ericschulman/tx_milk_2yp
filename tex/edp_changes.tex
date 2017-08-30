@@ -4,38 +4,34 @@
 \usepackage{graphicx}
 
 
-%TODO - model with log changes include prev vol as variable
 
-%Use EDP as instrument (no past prices)
-%use past prices as instrument (EDP as variable)
-%Change price to Price vs avg price ratio
-
-%CTA dummies
-
-%improve table formating
 %improve text
 
 \title{Modeling Consumer Response to EDP Changes}
 \author{Eric Schulman}
-\date{August 2017}
+\date{September 2017}
 
 \begin{document}
 
 \maketitle
 
-The goal of this project is to quantify the relationship between a consumer product's everyday price (EDP) and its volume. Quantifying this relationship can predict how EDP may influence expected future volumes of certain consumer products. I make these predictions using an econometric model inspired by Winer's 1986 paper \cite{winer}. In this paper, Winer models the probability buying a brand's products as a function of previous quantity sold, consumer price expectations, competitors price and advertising spending. Winer used data directly from the point of sale, so my model is modified to take advantage of syndicated data from Neilson.
+The goal of this project is to quantify the relationship between a consumer product's everyday price (EDP) and its volume. Quantifying this relationship can help predict how EDP may influence expected future volumes of certain consumer products. I make these predictions using an econometric model inspired by Winer's 1986 paper \cite{winer}. In this paper, Winer models the probability buying a brand's product. His model is a function of previous quantity sold, consumer price expectations, competitors price and advertising spending. Winer used data directly from the point of sale, so my model is modified to take advantage of syndicated data from Nielson.
 
 \section{Introduction}
 
 \subsection{Relevant Literature}
 
-Research into trade promotions often centers around the relationship between reference price, volume and brand loyalty. The most important part of this literature is the expectations consumers form about what prices will be for certain goods. These expectations are called reference prices. Putler gives reference prices theoretical treatment \cite{putler}. These expectations effect consumer decisions by influencing how consumers percieve the products quality.
+Intuitively, a trade promotion tries to leverage the relationship between current and future prices. During a promotion a manufacturer cuts the price of a good because they expect consumers will react by buying more while the price is low. Research into trade promotions often centers the question of how past prices relate to the current purchasing decisions. The channel that past prices use to effect consumers' future decisions involve the relationship between past prices and consumer expectations. When consumers see the past price they form an expectation about what prices should be. These expectations are called reference prices. These expectations effect consumer decisions by influencing how consumers perceive the products quality. Putler's 1991 paper works out a mathematical model of consumer choice that incorporates reference prices \cite{putler}. In the paper, consumers calculate 'savings' during the promotion based on the difference between their expected reference prices and the actual price. These savings then influence purchasing decisions.
 
-In these econometric models implement this idea of past prices effecting future purchasing decisions. In his paper, he modifies the econonomic model of consumer choices to have past prices influence future purchasing decisions. At a high level, these purchasing decisions effect how much people buy because of its relationship with the current price. Past purchasing decisions made because of the price have nothing to do with future purchasing decisions.
 
- They do this by including a variable that represents a comaprsion between past and future price. Many economists have tried to create econometric models to predict consumers reactions to price changes during promotions due to reference prices and brand loyalty. The model I take the most inspiration form is Winer's econometric model from 1986. In this model he predicts probability consumers buy from a brand as a function of previous quantity sold, consumers price expectations, competitors' price and advertising spending.  \cite{winer}. The key difference between my model and his is that I am predicitng volume changes and he is predicting purchase probabilities.
+They do this by including a variable that represents a compression between past and future price. Many economists have tried to create econometric models to predict consumers reactions to price changes during promotions due to reference prices and brand loyalty. The model I take the most inspiration form is Winer's econometric model from 1986. In this model he predicts probability consumers buy from a brand as a function of previous quantity sold, consumers price expectations, competitors' price and advertising spending.  \cite{winer}. The key difference between my model and his is that I am predicting volume changes and he is predicting purchase probabilities.
 
 Another model worth mentioning is Krishnamurthi and Raj's econometric model which tries to predict the volume of the good purchased. They improve on Winer's model in their 1991 paper using an econometric technique called structural equations \cite{krishnamurthi}.  In this paper, Krishnamurthi and Raj seperate consumer's decision about which brand to purchase and the quantity of the brand to buy into seperate economic decisions. Each of these decisions is modeled using a separate econometric equations. The fitted values from the model prediciting brand choice are measured and then used as a regressor in the second equation predicting quantity. This model rellies on point of sales data to predict brand loyalties using the method proposed in Winer's paper. As a result, I cannot replicate the brand loyalty calculations. However, many of the variables involved with the volume model are also involved with brand loyalty.
+
+
+Despite the fact that consumers are forming expectations about how much future prices would be and what they expect to buy in the future.  The literature does less exploring how past prices directly effect future purchasing decisions instead of how past prices effect purchases through current prices. These purchasing decisions effect how much people buy because of its relationship with the current price. Past purchasing decisions do not influence future purchasing decisions directly.  In the reference price literature, demand is isolated between periods. However, Ahn, Gumus and Kaminsky create a model for manufacturers facing demand that carries over between periods \cite{ahn} Their model is focused manufacturing decisions facing residual demand, but their inclusion of residual demand is relevant. In their model, consumers wait until a future period for the price to fall. They only buy when price falls below their reservation price. Eventually they buy in the last period.
+
+
 
 \subsection{Winer's Model}
 My model takes inspiration from Winer's model. Formally, Winer's model describes the probability of purchasing brand $i$ at time $t$ and is given by
@@ -174,6 +170,11 @@ The weekly dummy variables appear to be less important to the overall results. T
 Running the IV regression causes the coefficient on price to fall.
 
 This indicates upward bias. People care less about the price.
+
+
+\section{Future Research}
+
+A model where consumers in each period make their current purchase. In addition they form expectations about their future purchases that depend on their past purchases. In the future they repeat this process. However, their expecations will not be able to match their actual purchases because their expected prices may not match the reality. The way that promotions are profitable are about exploiting consumers not having perfect information about what the price will be before they get information about the promotion.
 
 
 \bibliography{edp_changes}{}
