@@ -31,12 +31,12 @@ Another model worth mentioning is Krishnamurthi and Raj's econometric model whic
 
 Despite the fact that consumers are forming expectations about how much future prices would be and what they expect to buy in the future.  The literature does less exploring how past prices directly effect future purchasing decisions instead of how past prices effect purchases through current prices. These purchasing decisions effect how much people buy because of its relationship with the current price. Past purchasing decisions do not influence future purchasing decisions directly.  In the reference price literature, demand is isolated between periods. However, Ahn, Gumus and Kaminsky create a model for manufacturers facing demand that carries over between periods \cite{ahn} Their model is focused manufacturing decisions facing residual demand, but their inclusion of residual demand is relevant. In their model, consumers wait until a future period for the price to fall. They only buy when price falls below their reservation price. Eventually they buy in the last period.
 
-
-
 \subsection{Winer's Model}
-My model takes inspiration from Winer's model. Formally, Winer's model describes the probability of purchasing brand $i$ at time $t$ and is given by
+My model takes inspiration from the model in Winer's 1986 paper. Formally, Winer's model describes the probability of purchasing brand $i$ at time $t$. It takes into account past volumes,  consumer price expectations, competitors price and advertising spending. Formally it is given by the equation: 
 
 $$ {Pr(B_i)}_{it} = \alpha_0 + \alpha_1 {VOL}_{it} + \alpha_2 {ADV}_{it} +  \alpha_3 (PRICE_REACT_it)+ \alpha_4 {PRICE_it}{AVGPRICE_{t}} + \epsilon_{it}$$
+
+In Winer's model,
 
 $${Pr}_{it}$$ is a boolean variable representing whether or not the brand was purchased at time $t$ before it is fit using the regression equation. This is a logistic regression. The data comes from the point of sale. If there are $j$ brands then there $j-1$ more data points are generated for all the brands that were not purchased.
 
@@ -52,53 +52,53 @@ $$ {PRICE_it}{AVGPRICE_{t}}$$ represents the ratio between the price of brand $i
 
 \section{Model Description}
 
-My model emulates Winer's model by including previous quantity sold, consumer price expectations, product description and competitors price. It predicts changes in the volume sold by group $i$ in CTA $j$ at time $t$. Estimates for this model are included in the preliminary results section
+My model emulates Winer's model by including previous quantity sold, consumer price expectations, product descriptions and competitors price. It predicts changes in the volume sold by group $i$ in consumer trade area (CTA) $j$ at time $t$. Estimates for this model are included in the preliminary results section:
 
-$\Delta VOL_{ijt} = \alpha_0 + \alpha_1 {PRICE}_{ijt} + \alpha_2 EDP_{ijt} + \alpha_3 {DAIRY}_{j} + \alpha_4 FLAVOR_{j} \medskip + \alpha_5 CM_{j} + \alpha_6 DD_{j} + \alpha_{7} ID_{j} + \alpha_{8} PL_{j} \medskip + \alpha_{9} SIZE32_{j} +\alpha_{10} SIZE64_{ij}  + \alpha_{11} SIZE48_{ij} \medskip + \alpha_{12} {PRICE}_{ijt-1} + \alpha_{13} {PRICE}_{ijt-2}  \medskip + \alpha_{14}{TOTALVOL}_t  + \alpha_{15} {AVGPRICE}_{t} + e_{ijt} $
+$\Log(VOL_{ijt}) = \alpha_0 + \alpha_1 {PRICE}_{ijt} + \alpha_2 EDP_{ijt} + \alpha_3 {DAIRY}_{j} + \alpha_4 FLAVOR_{j} \medskip + \alpha_5 CM_{j} + \alpha_6 DD_{j} + \alpha_{7} ID_{j} + \alpha_{8} PL_{j} \medskip + \alpha_{9} SIZE32_{j} +\alpha_{10} SIZE64_{ij}  + \alpha_{11} SIZE48_{ij} \medskip + \alpha_{12} {PRICE}_{ijt-1} + \alpha_{13} {PRICE}_{ijt-2}  \medskip + \alpha_{14}{VOL\_RATIO}_t  + \alpha_{15} {PRICE\_RATIO}_{t} + e_{ijt} $
 
 \subsection{Description of the Variables}
 
-$$\delta VOL_{ijt}$$ 
+$$\Log( VOL_{ijt} )$$ 
 
-is the weekly change in volume. I chose predict weekly change because previous volume dominates the other variables in terms of its ability to predict volume in the next week. Analyzing volume changes makes it easier to identify which variables have more explanatory power.
+This variable can be interpreted as percentage changes in volume. In addition to looking at percentage changes as the main variable of interest, I look at volume $VOL_{ijt}$ and $\Delta Vol_{ijt}$.
 
 $${PRICE}_{ijt}$$ 
 
-is the price for CTA $i$ in Group $j$ at time $t$.
+This is the price for CTA $j$ for product group $i$ at time $t$. The coefficient on price can be interpreted as the expected percentage change in volume corresponding to a 1 dollar increase in price all else equal.
 
 $$EDP_{ijt}$$ 
 
-is the everyday price for CTA $i$ in Group $j$ at time $t$.
+This is the everyday price for CTA $j$ in Group $i$ at time $t$. The coefficient on $EDP_{ijt}$ can be interpreted as the expected percentage change in volume corresponding to a 1 dollar increase in EDP all else equal.
 
 $${DAIRY}_{j}$$ 
 
-is a boolean variable that says whether group $i$ contains dairy
+This is a boolean variable that says whether group $i$ contains dairy. The coefficient on $DAIRY_{j}$ can be interpreted as the fixed effect of being a diary product on volume changes.
 
-$$FLAVOR_{j}$$ 
+$${FLAVOR}_{j}$$ 
 
- is a boolean variable that says whether group $i$ is a flavored creamer
+This is a boolean variable that says whether group $i$ is a flavored creamer. The coefficient on this variable can be interpreted as the fixed effects of brand on volume changes.
 
-$$CM_{j}, DD_{j},ID_{j}, PL_{j} $$ 
+$${CM}_{j}, {DD}_{j},{ID}_{j}, {PL}_{j} $$ 
 
- are boolean variable that represent the brand. If all 4 boolean variables are 0, then the brand is BA. 
+These are boolean variable that represent the brand. If all four boolean variables are zero, then the brand is BA. The coefficient on these variables can be interpreted as the fixed effects of brand on volume changes.
 
-$$SIZE32_{j}, SIZE64_{j}, SIZE48_{j}$$ 
+$${SIZE32}_{j}, {SIZE64}_{j}, {SIZE48}_{j}$$ 
 
-are boolean variables that represent the size of the product. If all 3 boolean variables are 0 then the product is 16 ounce units.
+These are boolean variables that represent the size of the product. If all three boolean variables are zero then the product is 16 ounce units.  The coefficient on these variables can be interpreted as the fixed effects of size on volume changes.
 
 $${PRICE}_{ijt-1} $$
 
- represents the price for group $j$ in CTA $i$ at week $t-1$
+The coefficient on this variable represents the magnitude of a one dollar increase of price for group $j$ in CTA $i$ at week $t-1$ would be expected to effect percentage changes in volume at week $t$
 
 $${PRICE}_{ijt-2} $$ 
 
-represents the price for group $j$ in CTA $i$ at week $t-2$. After experimenting with various models, I've chosen to include the previous price going back 2 weeks. Including previous prices essentially 'divides' the coefficient on prices. However, they repeatedly test for statistical significance beyond the 5 percent level, so it seemed prudent to include them.
+This variable epresents the price for group $j$ in CTA $i$ at week $t-2$. After experimenting with various models, I chose to include the previous price going back two weeks. Including previous prices essentially 'divides' the coefficient on prices. However, the coefficients are both statistically significance beyond the five percent level. It seemed prudent to include them.
 
-$${TOTALVOL}_t $$ 
+$${VOL\_RATIO}_t $$ 
 
-represents aggregate volume across all of the CTA groups (i.e. sum of all volumes).
+This variable represents the volume of group $i$ in CTA $j$ as  fraction of total volume. I ran models that included additional boolean variables to represent the CTA groups. In these models, I used volume as a fraction of CTA volume.
 
-$${AVGPRICE}_{t} $$ 
+$${PRICE\_RATIO}_{t} $$ 
 
 represents the average price across all of the CTA groups.
 

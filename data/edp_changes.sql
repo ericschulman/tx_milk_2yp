@@ -99,7 +99,7 @@ SELECT
 group_edps.dim_cta_key,
 group_edps.dim_group_key,
 group_edps.week,
-week_ag.total_vol,
+group_edps.eq_vol/week_ag.total_vol,
 group_edps.price/week_ag.avg_price
 FROM group_edps, week_ag
 WHERE
@@ -123,7 +123,7 @@ SELECT
 group_edps.dim_cta_key,
 group_edps.dim_group_key,
 group_edps.week, 
-cta_ag.total_vol,
+group_edps.eq_vol/cta_ag.total_vol,
 group_edps.price/cta_ag.avg_price
 FROM group_edps, cta_ag
 WHERE
