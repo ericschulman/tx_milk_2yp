@@ -1,8 +1,8 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.4.17)  25 AUG 2017 12:27
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.4.17)  30 AUG 2017 17:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**edp_changes.tex
+**edp_changes
 (./edp_changes.tex
 LaTeX2e <2016/03/31>
 Babel <3.9r> and hyphenation patterns for 77 language(s) loaded.
@@ -121,18 +121,18 @@ Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
 (./edp_changes.aux)
 \openout1 = `edp_changes.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -196,240 +196,320 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-
-LaTeX Warning: Citation `winer' on page 1 undefined on input line 16.
-
-
-LaTeX Warning: Citation `winer' on page 1 undefined on input line 22.
-
-
-LaTeX Warning: Citation `krishnamurthi' on page 1 undefined on input line 24.
-
 [1
 
 {/usr/share/texlive/texmf-dist/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (3.39333pt too wide) in paragraph at lines 48--49
+Underfull \hbox (badness 10000) in paragraph at lines 33--34
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 35--36
+
+ []
+
+[2]
+Underfull \hbox (badness 10000) in paragraph at lines 55--56
+
+ []
+
+
+Overfull \hbox (0.98732pt too wide) in paragraph at lines 57--58
+[]$\OML/cmm/m/it/10 log\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 VOL[]\OT1/cmr/m/n/10 )
+ = \OML/cmm/m/it/10 [] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 [][][] \OT1/cmr/m/n
+/10 + \OML/cmm/m/it/10 []EDP[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 [][][] \OT1
+/cmr/m/n/10 + \OML/cmm/m/it/10 []FLAVOR[] \OT1/cmr/m/n/10 +
+ []
+
+
+Overfull \hbox (3.39333pt too wide) in paragraph at lines 57--58
 \OML/cmm/m/it/10 []CM[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 []DD[] \OT1/cmr/m/
 n/10 + \OML/cmm/m/it/10 []ID[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 []PL[] \OT1
 /cmr/m/n/10 + \OML/cmm/m/it/10 []SIZE\OT1/cmr/m/n/10 32[] + \OML/cmm/m/it/10 
 []SIZE\OT1/cmr/m/n/10 64[] + \OML/cmm/m/it/10 []SIZE\OT1/cmr/m/n/10 48[] +
  []
 
-[2] [3]
 
-LaTeX Warning: Citation `putler' on page 4 undefined on input line 120.
-
-[4]
-Overfull \hbox (9.39648pt too wide) in paragraph at lines 140--141
-[]\OT1/cmr/m/n/10 In the ba-sic model, only the co-ef-fi-cients on $[][]$, $[][
-]$, $[][]$,
+Overfull \hbox (3.61577pt too wide) in paragraph at lines 57--58
+\OML/cmm/m/it/10 [][][] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 [][][] \OT1/cmr/m/
+n/10 + \OML/cmm/m/it/10 [][][] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 [][][] \OT1
+/cmr/m/n/10 +
  []
 
-[5] (./edp_changes.bbl)
-! Undefined control sequence.
-<argument> \begin {tabular}{lclc} \toprule 
-                                           \textbf {Dep. Variable:} & y & \t...
-l.170 \end{tabular}}
-                    
-? 
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.170 \end{tabular}}
-                    
-? 
-! Undefined control sequence.
-<recently read> \midrule 
-                         
-l.191 \end{tabular}}
-                    
-? 
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.191 \end{tabular}}
-                    
-? 
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.198 \end{tabular}}
-                    
-? 
 
-! LaTeX Error: \caption outside float.
+Underfull \hbox (badness 10000) in paragraph at lines 57--58
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.199 \caption
-              {Regression results in the basic model (with EDP and without d...
+ []
 
-? 
+[3] [4] [5]
+Underfull \hbox (badness 10000) in paragraph at lines 124--125
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 127--128
+
+ []
+
+
+Overfull \hbox (29.85826pt too wide) in paragraph at lines 129--130
+\OML/cmm/m/it/10 ^^M[]DD[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 ^^M[]ID[] \OT1/cm
+r/m/n/10 + \OML/cmm/m/it/10 ^^M[]PL[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 ^^M[]S
+IZE\OT1/cmr/m/n/10 32[] + \OML/cmm/m/it/10 ^^M[]SIZE\OT1/cmr/m/n/10 64[] + \OML
+/cmm/m/it/10 ^^M[]SIZE\OT1/cmr/m/n/10 48[] + \OML/cmm/m/it/10 ^^M[][][] \OT1/cm
+r/m/n/10 +
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 129--130
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 131--132
+
+ []
+
+
+Overfull \hbox (0.98732pt too wide) in paragraph at lines 133--134
+[]$\OML/cmm/m/it/10 log\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 VOL[]\OT1/cmr/m/n/10 )
+ = \OML/cmm/m/it/10 [] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 [][][] \OT1/cmr/m/n
+/10 + \OML/cmm/m/it/10 []EDP[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 [][][] \OT1
+/cmr/m/n/10 + \OML/cmm/m/it/10 []FLAVOR[] \OT1/cmr/m/n/10 +
+ []
+
+
+Overfull \hbox (3.39333pt too wide) in paragraph at lines 133--134
+\OML/cmm/m/it/10 []CM[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 []DD[] \OT1/cmr/m/
+n/10 + \OML/cmm/m/it/10 []ID[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 []PL[] \OT1
+/cmr/m/n/10 + \OML/cmm/m/it/10 []SIZE\OT1/cmr/m/n/10 32[] + \OML/cmm/m/it/10 
+[]SIZE\OT1/cmr/m/n/10 64[] + \OML/cmm/m/it/10 []SIZE\OT1/cmr/m/n/10 48[] +
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 133--134
+
+ []
+
 [6]
 ! Undefined control sequence.
-<argument> \begin {tabular}{lclc} \toprule 
-                                           \textbf {Dep. Variable:} & y & \t...
-l.216 \end{tabular}}
-                    
+l.142 \toprule
+              
 ? 
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.216 \end{tabular}}
-                    
+l.151 \bottomrule
+                 
 ? 
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.236 \end{tabular}}
-                    
+l.155 \midrule
+              
 ? 
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.236 \end{tabular}}
-                    
+l.174 \bottomrule
+                 
 ? 
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.243 \end{tabular}}
-                    
+l.181 \bottomrule
+                 
 ? 
 
-! LaTeX Error: \caption outside float.
+Overfull \hbox (22.98398pt too wide) in paragraph at lines 141--184
+ [] 
+ []
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.244 \caption
-              {Regression results without EDP and without dummy variables. $...
 
-? 
+Overfull \hbox (27.52774pt too wide) in paragraph at lines 141--184
+ [] 
+ []
+
 [7]
 ! Undefined control sequence.
-<argument> \begin {tabular}{lclc} \toprule 
-                                           \textbf {Dep. Variable:} & y & \t...
-l.261 \end{tabular}}
-                    
+l.193 \toprule
+              
 ? 
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.261 \end{tabular}}
-                    
+l.202 \bottomrule
+                 
 ? 
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.313 \end{tabular}}
-                    
+l.206 \midrule
+              
 ? 
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.313 \end{tabular}}
-                    
+l.223 \bottomrule
+                 
 ? 
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.320 \end{tabular}}
-                    
+l.230 \bottomrule
+                 
 ? 
 
-! LaTeX Error: \caption outside float.
-
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.321 \caption
-              {Regression results with the dummy variables for CTA. $x_1$ is...
-
-? 
-[8]
-Overfull \vbox (17.625pt too high) has occurred while \output is active []
+Overfull \hbox (22.98398pt too wide) in paragraph at lines 192--233
+ [] 
+ []
 
 
-[9]
+Overfull \hbox (22.56943pt too wide) in paragraph at lines 192--233
+ [] 
+ []
+
+(./edp_changes.bbl [8])
 ! Undefined control sequence.
-<argument> \begin {tabular}{lclc} \toprule 
-                                           \textbf {Dep. Variable:} & y & \t...
-l.339 \end{tabular}}
-                    
+l.245 \toprule
+              
 ? 
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.339 \end{tabular}}
-                    
+l.254 \bottomrule
+                 
 ? 
 ! Undefined control sequence.
 <recently read> \midrule 
                          
-l.516 \end{tabular}}
-                    
+l.258 \midrule
+              
 ? 
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.516 \end{tabular}}
-                    
+l.277 \bottomrule
+                 
 ? 
 ! Undefined control sequence.
 <recently read> \bottomrule 
                             
-l.523 \end{tabular}}
-                    
+l.284 \bottomrule
+                 
 ? 
 
-! LaTeX Error: \caption outside float.
+Overfull \hbox (22.98398pt too wide) in paragraph at lines 244--287
+ [] 
+ []
 
-See the LaTeX manual or LaTeX Companion for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.524 \caption
-              {Regression results with dummy variables for week. $x_1$ is pr...
 
+Overfull \hbox (55.30562pt too wide) in paragraph at lines 244--287
+ [] 
+ []
+
+! Undefined control sequence.
+l.293 \toprule
+              
 ? 
-[10]
-Overfull \vbox (1508.83594pt too high) has occurred while \output is active []
+! Undefined control sequence.
+<recently read> \bottomrule 
+                            
+l.302 \bottomrule
+                 
+? 
+! Undefined control sequence.
+<recently read> \midrule 
+                         
+l.306 \midrule
+              
+? 
+! Undefined control sequence.
+<recently read> \bottomrule 
+                            
+l.355 \bottomrule
+                 
+? 
+! Undefined control sequence.
+<recently read> \bottomrule 
+                            
+l.362 \bottomrule
+                 
+? 
+
+Overfull \hbox (14.65063pt too wide) in paragraph at lines 292--365
+ [] 
+ []
 
 
-[11] [12] (./edp_changes.aux)
+Overfull \hbox (27.52774pt too wide) in paragraph at lines 292--365
+ [] 
+ []
 
-LaTeX Warning: There were undefined references.
+[9] [10]
+Overfull \vbox (33.0pt too high) has occurred while \output is active []
+
+ [11]
+! Undefined control sequence.
+l.373 \toprule
+              
+? 
+! Undefined control sequence.
+<recently read> \bottomrule 
+                            
+l.382 \bottomrule
+                 
+? 
+! Undefined control sequence.
+<recently read> \midrule 
+                         
+l.386 \midrule
+              
+? 
+! Undefined control sequence.
+<recently read> \bottomrule 
+                            
+l.404 \bottomrule
+                 
+? 
+! Undefined control sequence.
+<recently read> \bottomrule 
+                            
+l.411 \bottomrule
+                 
+? 
+
+Overfull \hbox (17.98396pt too wide) in paragraph at lines 372--414
+ [] 
+ []
 
 
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+Overfull \hbox (30.86107pt too wide) in paragraph at lines 372--414
+ [] 
+ []
 
- ) 
+[12] (./edp_changes.aux) ) 
 Here is how much of TeX's memory you used:
- 2194 strings out of 493069
- 29369 string characters out of 6138222
- 205014 words of memory out of 5000000
- 5711 multiletter control sequences out of 15000+600000
+ 2195 strings out of 493069
+ 29387 string characters out of 6138222
+ 116644 words of memory out of 5000000
+ 5712 multiletter control sequences out of 15000+600000
  9369 words of font info for 34 fonts, out of 8000000 for 9000
  1137 hyphenation exceptions out of 8191
- 38i,8n,23p,724b,189s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
-r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
-e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texl
-ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-sy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pf
-b>
-Output written on edp_changes.pdf (12 pages, 170891 bytes).
+ 38i,7n,23p,1023b,205s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cme
+x10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pf
+b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr
+/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/
+texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive
+/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmti10.pfb>
+Output written on edp_changes.pdf (12 pages, 172841 bytes).
 PDF statistics:
  91 PDF objects out of 1000 (max. 8388607)
  64 compressed objects within 1 object stream

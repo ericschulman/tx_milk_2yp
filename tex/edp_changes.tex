@@ -21,46 +21,46 @@ The goal of this project is to quantify the relationship between a consumer prod
 
 \subsection{Relevant Literature}
 
-Intuitively, a trade promotion tries to leverage the relationship between current and future prices. During a promotion a manufacturer cuts the price of a good because they expect consumers will react by buying more while the price is low. Research into trade promotions often centers the question of how past prices relate to the current purchasing decisions. The channel that past prices use to effect consumers' future decisions involve the relationship between past prices and consumer expectations. When consumers see the past price they form an expectation about what prices should be. These expectations are called reference prices. These expectations effect consumer decisions by influencing how consumers perceive the products quality. Putler's 1991 paper works out a mathematical model of consumer choice that incorporates reference prices \cite{putler}. In the paper, consumers calculate 'savings' during the promotion based on the difference between their expected reference prices and the actual price. These savings then influence purchasing decisions.
+Intuitively, a trade promotion leverages the relationship between current and future prices. During a promotion the manufacturer cuts the price of a good because they expect consumers to buy more while the price is low. Research into trade promotions often centers around the question of how past prices relate to current purchasing decisions. The channel that past prices use to effect consumers' future decisions involves the relationship between past prices and consumer expectations. When consumers see the past price they form an expectation about what prices should be. These expectations are called reference prices. These expectations effect consumer decisions by influencing how consumers perceive the product's quality. Putler's 1991 paper works out a mathematical model of consumer choice that incorporates reference prices \cite{putler}. In the paper, consumers calculate the difference between their reference prices and the actual price. This difference influences purchasing decisions.
 
+Econometricians who try to estimate how promotions will relate to sales often include a variable to capture relationship between past and future price. In this way, the model includes reference prices. The model I take the most inspiration form is Winer's econometric model from 1986. In this model he predicts probability consumers buy from a brand as a function of previous quantity sold, consumers price expectations, competitors' price and advertising spending.  \cite{winer}. The key difference between my model and his is that I am predicting volume changes and he is predicting purchase probabilities.
 
-They do this by including a variable that represents a compression between past and future price. Many economists have tried to create econometric models to predict consumers reactions to price changes during promotions due to reference prices and brand loyalty. The model I take the most inspiration form is Winer's econometric model from 1986. In this model he predicts probability consumers buy from a brand as a function of previous quantity sold, consumers price expectations, competitors' price and advertising spending.  \cite{winer}. The key difference between my model and his is that I am predicting volume changes and he is predicting purchase probabilities.
+Another model worth mentioning is Krishnamurthi and Raj's econometric model which tries to predict the volume of the good purchased. They improve on Winer's model in their 1991 paper using an econometric technique called structural equations \cite{krishnamurthi}.  In this paper, Krishnamurthi and Raj separate consumers' decisions about which brand to purchase and the quantity of the brand to buy into separate economic decisions. Each of these decisions is modeled using a separate econometric equations. The fitted values from the first model are calculated and then used as a regressors in the second equation predicting quantity. This model relies on point of sales data to predict brand loyalties using the method proposed in Winer's paper. As a result, I cannot replicate the brand loyalty calculations. However, many of the variables involved with the volume model are also involved with brand loyalty.
 
-Another model worth mentioning is Krishnamurthi and Raj's econometric model which tries to predict the volume of the good purchased. They improve on Winer's model in their 1991 paper using an econometric technique called structural equations \cite{krishnamurthi}.  In this paper, Krishnamurthi and Raj seperate consumer's decision about which brand to purchase and the quantity of the brand to buy into seperate economic decisions. Each of these decisions is modeled using a separate econometric equations. The fitted values from the model prediciting brand choice are measured and then used as a regressor in the second equation predicting quantity. This model rellies on point of sales data to predict brand loyalties using the method proposed in Winer's paper. As a result, I cannot replicate the brand loyalty calculations. However, many of the variables involved with the volume model are also involved with brand loyalty.
-
-
-Despite the fact that consumers are forming expectations about how much future prices would be and what they expect to buy in the future.  The literature does less exploring how past prices directly effect future purchasing decisions instead of how past prices effect purchases through current prices. These purchasing decisions effect how much people buy because of its relationship with the current price. Past purchasing decisions do not influence future purchasing decisions directly.  In the reference price literature, demand is isolated between periods. However, Ahn, Gumus and Kaminsky create a model for manufacturers facing demand that carries over between periods \cite{ahn} Their model is focused manufacturing decisions facing residual demand, but their inclusion of residual demand is relevant. In their model, consumers wait until a future period for the price to fall. They only buy when price falls below their reservation price. Eventually they buy in the last period.
+The econometric literature does little to explore how consumers expectations about future prices which influence planned purchases. In other words, demand is isolated between periods.  An econometric model is poorly suited to explore how past purchases and future expectations might influence future purchases. One model, Ahn, Gumus and Kaminsky create a model for manufacturers facing demand that carries over between periods \cite{ahn} Their model is focused manufacturing decisions facing residual demand, but their inclusion of residual demand allows demand in past periods to carry over into the future. In their model, consumers wait until a future period for the price to fall. They only buy when price falls below their reservation price. Eventually they buy in the last period.
 
 \subsection{Winer's Model}
-My model takes inspiration from the model in Winer's 1986 paper. Formally, Winer's model describes the probability of purchasing brand $i$ at time $t$. It takes into account past volumes,  consumer price expectations, competitors price and advertising spending. Formally it is given by the equation: 
+My model takes inspiration from the model in Winer's 1986 paper. Formally, Winer's model describes the probability of purchasing brand $i$ at time $t$. It takes into account past volumes,  consumer price expectations, competitors price and advertising spending. Formally it is given by the equation: \\
 
-$$ {Pr(B_i)}_{it} = \alpha_0 + \alpha_1 {VOL}_{it} + \alpha_2 {ADV}_{it} +  \alpha_3 (PRICE_REACT_it)+ \alpha_4 {PRICE_it}{AVGPRICE_{t}} + \epsilon_{it}$$
+$ {Pr(BRAND_i)}_{it} = \alpha_0 + \alpha_1 {VOL}_{it} + \alpha_2 {ADV}_{it} +  \alpha_3 PRICE\_REACT_{it}  \medskip + \alpha_4 \dfrac{PRICE_it}{TOTAL\_PRICE_{t}} + \epsilon_{it}$\\
 
 In Winer's model,
 
-$${Pr}_{it}$$ is a boolean variable representing whether or not the brand was purchased at time $t$ before it is fit using the regression equation. This is a logistic regression. The data comes from the point of sale. If there are $j$ brands then there $j-1$ more data points are generated for all the brands that were not purchased.
+$${Pr(BRAND_i)}_{it} $$ is a boolean variable representing whether or not the brand was purchased at time $t$ before it is fit using the regression equation. This is a logistic regression. The data comes from the point of sale. If there are $j$ brands then there $j-1$ more data points are generated for all the brands that were not purchased.
 
-$$VOL_{it}$$ represents the volume at of brand $i$ at time $t$.
+$$VOL_{it}$$ represents the volume at of brand $i$ at time $t$. Its coefficient represents the relationship between volume and purchase probability.
 
 $$ADV_{it}$$ is a boolean based on the advertising spending of brand $i$ at time $t$. It is an aggregate metric that takes into account various types of promotional spending.
 
-$$PRICE_REACT_it$$ is meant to capture a reaction in the reference price. It is calculated as $$\dfrac{PRICE_{it}} {\sum_j PRICE_{jt}} - \hat{PRICE}_{it}$$ In the model, $P_{it}$ is the price charged by brand $i$ at time $t$. 
+$$PRICE\_REACT_{it}$$ is meant to capture a reaction in the reference price. It is calculated as $$\dfrac{PRICE_{it}} {\sum_j PRICE_{jt}} - \widehat{PRICE}_{it}$$ In the model, ${PRICE}_{it}$ is the price charged by brand $i$ at time $t$. 
 
-The most important part of the reaciton is, $$\hat{P}_{it}$$ represents the consumers expectation for the price at the current time period period. It involves estimating ${P}_{it}$ as a function of ${P}_{it-1}$. This process is called 2 stage least squares. In 2 stage least squares, you look at the effect of one variable 'through' another variable.  In this case we are looking on how past prices effect the current price 'through' the current price. You do this by running running a regression using a variable called an instrument (in this case, previous price) on another variable (in this case price). You use the predicted values from the first regression in a second regression.  I plan to use this technique as well when estimating my model.
+The most important part of the reaction is $$\hat{PRICE}_{it}$$ which represents the consumers expectation for the price at the current time period period. It involves estimating ${PRICE}_{it}$ as a function of ${PRICE}_{it-1}$. This process is called two stage least squares. In two stage least squares, you look at the effect of one variable 'through' another variable.  In this case we are looking on how past prices effect the current price 'through' the current price. You do this by running running a regression using a variable called an instrument (in this case, previous price) on another variable (in this case price). You use the predicted values from the first regression in a second regression.  I plan to use this technique as well when estimating my model.
 
-$$ {PRICE_it}{AVGPRICE_{t}}$$ represents the ratio between the price of brand $i$ at time $t$ against its competitors. It represents the overall pricing environment. It is the current brand price at time $t$ as a fraction of all the prices.
+$$ \dfrac{PRICE_it}{TOTAL\_PRICE_{t}}$$ represents the ratio between the price of brand $i$ at time $t$ against its competitors. It represents the overall pricing environment. It is the current brand price at time $t$ as a fraction of all the prices.
 
 \section{Model Description}
 
-My model emulates Winer's model by including previous quantity sold, consumer price expectations, product descriptions and competitors price. It predicts changes in the volume sold by group $i$ in consumer trade area (CTA) $j$ at time $t$. Estimates for this model are included in the preliminary results section:
+My model emulates Winer's model. Although I do not have data on advertising expenditures I include boolean variables that describe the group to proxy for the fixed effects caused by each groups marketing departments. I include terms for previous volume and terms for the ratio between each products price and its competitors prices. Finally, I include past prices as variables. Like Winer, I estimated models that take advantage of two stage least squares. In these models, I include a term that represents how prices effect the volume changes through their relationship with previous prices. 
 
-$\Log(VOL_{ijt}) = \alpha_0 + \alpha_1 {PRICE}_{ijt} + \alpha_2 EDP_{ijt} + \alpha_3 {DAIRY}_{j} + \alpha_4 FLAVOR_{j} \medskip + \alpha_5 CM_{j} + \alpha_6 DD_{j} + \alpha_{7} ID_{j} + \alpha_{8} PL_{j} \medskip + \alpha_{9} SIZE32_{j} +\alpha_{10} SIZE64_{ij}  + \alpha_{11} SIZE48_{ij} \medskip + \alpha_{12} {PRICE}_{ijt-1} + \alpha_{13} {PRICE}_{ijt-2}  \medskip + \alpha_{14}{VOL\_RATIO}_t  + \alpha_{15} {PRICE\_RATIO}_{t} + e_{ijt} $
+In order to take advantage of syndicated data, my model predicts percentage changes in the volume sold by group $i$ in consumer trade area (CTA) $j$ at time $t$. Estimates for this model are included in the preliminary results section:\\ 
+
+$ log(VOL_{ijt}) = \alpha_0 + \alpha_1 {PRICE}_{ijt} + \alpha_2 EDP_{ijt} + \alpha_3 {DAIRY}_{j} + \alpha_4 FLAVOR_{j} \medskip + \alpha_5 CM_{j} + \alpha_6 DD_{j} + \alpha_{7} ID_{j} + \alpha_{8} PL_{j} \medskip + \alpha_{9} SIZE32_{j} +\alpha_{10} SIZE64_{ij}  + \alpha_{11} SIZE48_{ij} \medskip + \alpha_{12} {PRICE}_{ijt-1} + \alpha_{13} {PRICE}_{ijt-2}  \medskip + \alpha_{14}{VOL\_RATIO}_t  + \alpha_{15} {PRICE\_RATIO}_{t} + \alpha_{16} {VOL}_{ijt-1} + \alpha_{17} {VOL}_{ijt-2}  + e_{ijt}   $\\
 
 \subsection{Description of the Variables}
 
-$$\Log( VOL_{ijt} )$$ 
+$$\log( VOL_{ijt} )$$ 
 
-This variable can be interpreted as percentage changes in volume. In addition to looking at percentage changes as the main variable of interest, I look at volume $VOL_{ijt}$ and $\Delta Vol_{ijt}$.
+This variable can be interpreted as percentage changes in volume. In addition to looking at percentage changes as the main variable of interest, I looked at linear changes ($\delta VOL_{ijt} $)and linear volume $VOL_{ijt}$. Looking at the logarithm of volume was the most tractable in terms of interpreting results.
 
 $${PRICE}_{ijt}$$ 
 
@@ -92,7 +92,7 @@ The coefficient on this variable represents the magnitude of a one dollar increa
 
 $${PRICE}_{ijt-2} $$ 
 
-This variable epresents the price for group $j$ in CTA $i$ at week $t-2$. After experimenting with various models, I chose to include the previous price going back two weeks. Including previous prices essentially 'divides' the coefficient on prices. However, the coefficients are both statistically significance beyond the five percent level. It seemed prudent to include them.
+This variable represents the price for group $j$ in CTA $i$ at week $t-2$. After experimenting with various models, I chose to include the previous price going back two weeks. Including previous prices essentially 'divides' the coefficient on prices. However, the coefficients are both statistically significance beyond the five percent level. It seemed prudent to include them.
 
 $${VOL\_RATIO}_t $$ 
 
@@ -100,81 +100,137 @@ This variable represents the volume of group $i$ in CTA $j$ as  fraction of tota
 
 $${PRICE\_RATIO}_{t} $$ 
 
-represents the average price across all of the CTA groups.
+Represents price as a ratio of average price across all of the CTA groups. The coefficient represents how increasing the ratio is expected to change percentage change in volume.
 
-Essentially, I replace the dummy variable representing advertising revenues with various dummy variables that represent the product characteristics.
+$${VOL}_{ijt-1}, {VOL}_{ijt-2} $$
 
-Instead of using pervious volume as a seperate regressor, I include it in the dependent variable.
-
-I include average price as its own variable
-
-I include past prices as variables in the regression. Howver, I modify the model in the same way as winer to take advantage of 2 stage least squares in order to include a term that represents how prices effect the volume changes through their relationship with previous prices forming consumers reference prices.
+Represent volume of the previous two weeks. The coefficients represent how changing volume from previous weeks is expected to change percentage changes in volume.
 
 
-\subsection{CTA and Week Dummy Variables}
+\subsection{CTA and Week Boolean Variables}
 
-I estimated two additional models (included in the appendix). Each one of these includes various dummy variables.
+I estimated two additional models involving boolean variables and included the results in the appendix. The first model includes boolean variables that represent each of the thirty CTAs.
 
-The first model includes dummy variables that represent each of the CTAs
+$$ CTA_i, WEEK_{i}$$
 
-$$ \sum_{i=1}^{30} \alpha_i CTA_i $$
+Additionally, total volume and average price needed to be adjusted to reflect average price and volume within the CTA. It is particularly important to adjust price to be restricted to the CTA. Without this adjustment, price looses its statistical significance within the model. The second regression includes 156 boolean variable for the weeks.
 
- are 30 boolean variables representing the 31 CTAs.
+\subsection{Two Stage Least Squares}
 
-$$\alpha_{14}{TOTALVOL}_{it}, \alpha_{15} {AVGPRICE}_{it}$$
-
- Additionally, total volume and average price needed to be adjusted to reflect average price and volume within the CTA. It is particularly important to adjust price to be restricted to the CTA. Without this adjustment, price looses its statistical significance within the model.
-
-The second regression includes a boolean variable for the weeks.
-
-$$\sum_{i=0}^{156} \alpha_{i} WEEK_{i} $$ 
-
-are 156 boolean variables representing the 156 weeks to detect weekly patterns.
-
-\subsection{2 Stage Least Squares}
-
-Stage 1
-
-${PRICE}_{ijt} = \gamma_0 + \gamma_1 EDP_{ijt} + \gamma_2 {DAIRY}_{j} + \gamma_3 FLAVOR_{j} \medskip + \gamma_4 CM_{j} + \gamma_5 DD_{j} + \gamma_{6} ID_{j} + \gamma_{7} PL_{j} \medskip + \gamma_{8} SIZE32_{j} +\gamma_{9} SIZE64_{ij}  + \gamma_{10} SIZE48_{ij} \medskip + \gamma_{11} {PRICE}_{ijt-1} + \gamma_{12} {PRICE}_{ijt-2}  \medskip + \gamma_{13}{TOTALVOL}_t  + \gamma_{14} {AVGPRICE}_{t} +v $
-
-Stage 2
-
-$\Delta Vol_{ijt} = \alpha_0 + \alpha_1 {PRICE}_{ijt} + \alpha_2 EDP_{ijt} + \alpha_3 {DAIRY}_{j} + \alpha_4 FLAVOR_{j} \medskip + \alpha_5 CM_{j} + \alpha_6 DD_{j} + \alpha_{7} ID_{j} + \alpha_{8} PL_{j} \medskip + \alpha_{9} SIZE32_{j} +\alpha_{10} SIZE64_{ij}  + \alpha_{11} SIZE48_{ij} \medskip + \alpha_{13} {PRICE}_{ijt-1} + \alpha_{13} {PRICE}_{ijt-2}  \medskip + \alpha_{14}{TOTALVOL}_t  + \alpha_{15} {AVGPRICE}_{t} $
-
-Winer uses previous prices in his regression to do 2 stage least squares. This process involves estimating ${P}_{it}$ as a function of ${P}_{it-1}$. In 2 stage least squares, you look at the effect of one variable 'through' another variable.  In this case we are looking on how past prices effect the current price 'through' the current price. 
+Winer uses previous prices in his regression to do two stage least squares. This process involves estimating ${P}_{it}$ as a function of ${P}_{it-1}$. In two stage least squares, you look at the effect of one variable 'through' another variable.  In this case we are looking on how past prices effect the current price 'through' the current price. 
 
 By using this process we are assuming that the past prices can only relate to future volume changes 'through' consumers the current price. This assumption makes sense through the lense of the reference price literature. In the literature, past prices effect current purchasing decisions because its relationship to current prices. Consumers form expectations about prices and call these expectations reference prices. Theoretical models involving reference prices often involve an explicit assumption that previous prices only affect purchasing decisions through the reference price \cite{putler}.
 
-Using this technique involves running a regression using a variable called an instrument (in this case, previous price) on another variable (in this case price). You use the predicted values from the first regression in a second regression.  I plan to use this technique as well when estimating my model. I plan to use 
+Using this technique involves running a regression using a variable called an instrument (in this case, previous price) on another variable (in this case price). The predicted values from the first regression are used in the second regression.  I include results for the first stage of this process in the Appendix. The second stage results are included in the results section.\\
 
 
-As my instrumental variables to see which produces the best results.
+Stage One\\
+
+$ {PRICE}_{ijt} = \gamma_0 + \gamma_1 EDP_{ijt} + \gamma_2 {DAIRY}_{j} + \gamma_3 FLAVOR_{j} \medskip + \gamma_4 CM_{j} + \gamma_5 DD_{j} + \gamma_{6} ID_{j} + \gamma_{7} PL_{j} \medskip + \gamma_{8} SIZE32_{j} +\gamma_{9} SIZE64_{ij}  + \gamma_{10} SIZE48_{ij} \medskip + \gamma_{11} {PRICE}_{ijt-1} + \gamma_{12} {PRICE}_{ijt-2}  \medskip + \gamma_{13}{VOL\_RATIO}_t  + \gamma_{14} {PRICE\_RATIO}_{t} + \gamma_{15} {VOL}_{ijt-1} + \gamma_{16} {VOL}_{ijt-2}  + v_{ijt}   $\\
+
+Stage Two\\
+
+$ log(VOL_{ijt}) = \alpha_0 + \alpha_1 \hat{PRICE}_{ijt} + \alpha_2 EDP_{ijt} + \alpha_3 {DAIRY}_{j} + \alpha_4 FLAVOR_{j} \medskip + \alpha_5 CM_{j} + \alpha_6 DD_{j} + \alpha_{7} ID_{j} + \alpha_{8} PL_{j} \medskip + \alpha_{9} SIZE32_{j} +\alpha_{10} SIZE64_{ij}  + \alpha_{11} SIZE48_{ij} \medskip + \alpha_{12}{VOL\_RATIO}_t  + \alpha_{13} {PRICE\_RATIO}_{t} + \alpha_{14} {VOL}_{ijt-1} + \alpha_{15} {VOL}_{ijt-2}  + e_{ijt}  $\\
+
 
 \section{Preliminary Results}
 
-\subsection{Basic Model}
+Below are preliminary results from the basic model. In the basic model, all coefficients are statistically significant coefficients at the five percent level. Interestingly enough by removing EDP, the boolean variables regarding dairy, flavor and size become increase in p-value. This suggests that EDP acts as a signal that transmits information about the product category.
 
-Tables with results can be found in the appendix.
+\begin{center}
+\begin{tabular}{lclc}
+\toprule
+\textbf{Dep. Variable:}    &        y         & \textbf{  R-squared:         } &      0.650   \\
+\textbf{Model:}            &       OLS        & \textbf{  Adj. R-squared:    } &      0.650   \\
+\textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } &      6835.   \\
+\textbf{Date:}             & Wed, 30 Aug 2017 & \textbf{  Prob (F-statistic):} &      0.00    \\
+\textbf{Time:}             &     16:32:46     & \textbf{  Log-Likelihood:    } & -1.0449e+05  \\
+\textbf{No. Observations:} &       62567      & \textbf{  AIC:               } &  2.090e+05   \\
+\textbf{Df Residuals:}     &       62549      & \textbf{  BIC:               } &  2.092e+05   \\
+\textbf{Df Model:}         &          17      & \textbf{                     } &              \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lcccccc}
+               & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$>$$|$t$|$} & \textbf{[0.025} & \textbf{0.975]}  \\
+\midrule
+\textbf{CONST} &       9.1761  &        0.066     &   139.597  &         0.000        &        9.047    &        9.305     \\
+\textbf{PRICE}    &      -1.6814  &        0.047     &   -36.009  &         0.000        &       -1.773    &       -1.590     \\
+\textbf{EDP}    &       1.2369  &        0.049     &    25.486  &         0.000        &        1.142    &        1.332     \\
+\textbf{DAIRY}    &       1.0814  &        0.017     &    62.230  &         0.000        &        1.047    &        1.115     \\
+\textbf{FLAVOR}    &       1.6928  &        0.015     &   109.772  &         0.000        &        1.663    &        1.723     \\
+\textbf{CM}    &       1.7129  &        0.029     &    60.098  &         0.000        &        1.657    &        1.769     \\
+\textbf{DD}    &      -0.9284  &        0.027     &   -34.254  &         0.000        &       -0.982    &       -0.875     \\
+\textbf{ID}    &       2.4350  &        0.030     &    81.775  &         0.000        &        2.377    &        2.493     \\
+\textbf{PL}    &       2.2837  &        0.029     &    79.620  &         0.000        &        2.228    &        2.340     \\
+\textbf{SIZE32}    &       0.9108  &        0.025     &    36.283  &         0.000        &        0.862    &        0.960     \\
+\textbf{SIZE64}   &       0.1227  &        0.029     &     4.198  &         0.000        &        0.065    &        0.180     \\
+\textbf{SIZE48}   &      -1.5484  &        0.040     &   -39.006  &         0.000        &       -1.626    &       -1.471     \\
+\textbf{PREV PRICE 1}   &       0.0475  &        0.047     &     1.018  &         0.309        &       -0.044    &        0.139     \\
+\textbf{PREV PRICE 2}   &      -0.3911  &        0.041     &    -9.607  &         0.000        &       -0.471    &       -0.311     \\
+\textbf{VOL RATIO}   &      63.3441  &        2.674     &    23.687  &         0.000        &       58.103    &       68.586     \\
+\textbf{PRICE RATIO}   &      -0.2226  &        0.030     &    -7.406  &         0.000        &       -0.281    &       -0.164     \\
+\textbf{PREV VOL 1}   &    1.796e-07  &     1.03e-08     &    17.351  &         0.000        &     1.59e-07    &        2e-07     \\
+\textbf{PREV VOL 2}   &    1.548e-07  &      9.7e-09     &    15.954  &         0.000        &     1.36e-07    &     1.74e-07     \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lclc}
+\textbf{Omnibus:}       & 12349.164 & \textbf{  Durbin-Watson:     } &     0.063  \\
+\textbf{Prob(Omnibus):} &    0.000  & \textbf{  Jarque-Bera (JB):  } & 32280.257  \\
+\textbf{Skew:}          &   -1.076  & \textbf{  Prob(JB):          } &      0.00  \\
+\textbf{Kurtosis:}      &    5.784  & \textbf{  Cond. No.          } &  1.39e+09  \\
+\bottomrule
+\end{tabular}
+%\caption{OLS Regression Results}
+\end{center}
 
-In the basic model, only the coefficients on ${PRICE}_{ijt}$, ${EDP}_{ijt}$, ${TOTALVOL}_t $, and ${AVGPRICE}_{t}$ are statistically significant coefficients at the 5 percent level. This means that the boolean variables relating to group have little explanatory power. Interestingly enough by removing EDP, the boolean variables regarding dairy, flavor and size become statistically significant the the 5 percent level. This suggests that EDP acts as a signal that transmits information about the product category. All but one of the brand coefficients is statistically significant at the 5 percent level.
+All of the CTA dummy variables are statistically significant at the five percent levels. When using an F-test for join significance of these variables, they are significant at the five percent level. This means that these variables are related to volume changes and should not be taken lightly. Additionally, when including the CTA dummies, total regional volume is no longer statistically significant. The weekly dummy variables appear to be less important to the overall results. They pass an f-test for joint significant at the 5 percent, but considering the number of data points this is unsurprising. Most of the values do not pass individual t-tests. Due to the size of the table, I include the results of the CTA boolean variables in the appendix.
 
 
-\subsection{CTA and Week Dummy Variables}
+Running the regression causes the coefficient on price to fall. Additionally, the product characteristics are statistically significant after running the two stage model. This suggests that price and product characteristics are highly related. After cleaning price of its endogenous relationship with the other variables in the first stage, these characteristics become statistically relevant in the context of predicting volume changes. Below are the results of running the two stage regression.
 
-All but 4 of the CTA dummy variables are statistically significant at the 5 percent levels. When using an F-test for join significance of these variables, they are significant at the 5 percent level. This means that these variables are related to volume changes and should not be taken lightly. Additionally, when including the CTA dummies, total regional volume is no longer statistically significant. 
-
-The weekly dummy variables appear to be less important to the overall results. They pass an f-test for joint significant at the 5 percent, but considering the number of data points this is unsurprising. Most of the values do not pass individual t-tests.
-
-\subsection{2 Stage Least Squares}
-
-Running the IV regression causes the coefficient on price to fall.
-
-This indicates upward bias. People care less about the price.
-
-
-\section{Future Research}
-
-A model where consumers in each period make their current purchase. In addition they form expectations about their future purchases that depend on their past purchases. In the future they repeat this process. However, their expecations will not be able to match their actual purchases because their expected prices may not match the reality. The way that promotions are profitable are about exploiting consumers not having perfect information about what the price will be before they get information about the promotion.
+\begin{center}
+\begin{tabular}{lclc}
+\toprule
+\textbf{Dep. Variable:}    &        y         & \textbf{  R-squared:         } &      0.642   \\
+\textbf{Model:}            &       OLS        & \textbf{  Adj. R-squared:    } &      0.642   \\
+\textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } &      7486.   \\
+\textbf{Date:}             & Wed, 30 Aug 2017 & \textbf{  Prob (F-statistic):} &      0.00    \\
+\textbf{Time:}             &     17:31:18     & \textbf{  Log-Likelihood:    } & -1.0518e+05  \\
+\textbf{No. Observations:} &       62567      & \textbf{  AIC:               } &  2.104e+05   \\
+\textbf{Df Residuals:}     &       62551      & \textbf{  BIC:               } &  2.105e+05   \\
+\textbf{Df Model:}         &          15      & \textbf{                     } &              \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lcccccc}
+               & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$>$$|$t$|$} & \textbf{[0.025} & \textbf{0.975]}  \\
+\midrule
+\textbf{CONST} &       9.1772  &        0.066     &   138.090  &         0.000        &        9.047    &        9.307     \\
+\textbf{FIT PRICE}    &      -2.0288  &        0.086     &   -23.493  &         0.000        &       -2.198    &       -1.860     \\
+\textbf{EDP}    &       1.1568  &        0.063     &    18.293  &         0.000        &        1.033    &        1.281     \\
+\textbf{DAIRY}    &       1.0811  &        0.018     &    61.528  &         0.000        &        1.047    &        1.116     \\
+\textbf{FLAVOR}    &       1.6965  &        0.016     &   108.671  &         0.000        &        1.666    &        1.727     \\
+\textbf{CM}    &       1.7094  &        0.029     &    58.267  &         0.000        &        1.652    &        1.767     \\
+\textbf{DD}    &      -0.9226  &        0.028     &   -33.313  &         0.000        &       -0.977    &       -0.868     \\
+\textbf{ID}    &       2.4333  &        0.030     &    80.123  &         0.000        &        2.374    &        2.493     \\
+\textbf{PL}    &       2.2807  &        0.030     &    76.651  &         0.000        &        2.222    &        2.339     \\
+\textbf{SIZE32}    &       0.9101  &        0.026     &    35.606  &         0.000        &        0.860    &        0.960     \\
+\textbf{SIZE64}   &       0.1199  &        0.030     &     4.048  &         0.000        &        0.062    &        0.178     \\
+\textbf{SIZE48}   &      -1.5486  &        0.040     &   -38.581  &         0.000        &       -1.627    &       -1.470     \\
+\textbf{VOL RATIO}   &      52.2098  &        2.898     &    18.017  &         0.000        &       46.530    &       57.890     \\
+\textbf{PRICE RATIO}   &      -0.1048  &        0.044     &    -2.395  &         0.017        &       -0.191    &       -0.019     \\
+\textbf{PREV VOL 1}   &    1.673e-07  &     9.16e-09     &    18.263  &         0.000        &     1.49e-07    &     1.85e-07     \\
+\textbf{PREV VOL 2}   &    2.042e-07  &     9.19e-09     &    22.220  &         0.000        &     1.86e-07    &     2.22e-07     \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lclc}
+\textbf{Omnibus:}       & 12110.341 & \textbf{  Durbin-Watson:     } &     0.074  \\
+\textbf{Prob(Omnibus):} &    0.000  & \textbf{  Jarque-Bera (JB):  } & 30948.108  \\
+\textbf{Skew:}          &   -1.064  & \textbf{  Prob(JB):          } &      0.00  \\
+\textbf{Kurtosis:}      &    5.709  & \textbf{  Cond. No.          } &  1.49e+09  \\
+\bottomrule
+\end{tabular}
+%\caption{OLS Regression Results}
+\end{center}
 
 
 \bibliography{edp_changes}{}
@@ -182,7 +238,180 @@ A model where consumers in each period make their current purchase. In addition 
 
 \appendix
 
-\section{Appendix Regression Tables}
+\section{Appendix Linear Volume Results}
+
+\begin{center}
+\begin{tabular}{lclc}
+\toprule
+\textbf{Dep. Variable:}    &        y         & \textbf{  R-squared:         } &      0.972    \\
+\textbf{Model:}            &       OLS        & \textbf{  Adj. R-squared:    } &      0.972    \\
+\textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } &  1.270e+05    \\
+\textbf{Date:}             & Wed, 30 Aug 2017 & \textbf{  Prob (F-statistic):} &      0.00     \\
+\textbf{Time:}             &     17:30:49     & \textbf{  Log-Likelihood:    } & -8.7714e+05   \\
+\textbf{No. Observations:} &       62567      & \textbf{  AIC:               } &  1.754e+06    \\
+\textbf{Df Residuals:}     &       62549      & \textbf{  BIC:               } &  1.754e+06    \\
+\textbf{Df Model:}         &          17      & \textbf{                     } &               \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lcccccc}
+               & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$>$$|$t$|$} & \textbf{[0.025} & \textbf{0.975]}  \\
+\midrule
+\textbf{CONST} &   -1.188e+05  &     1.52e+04     &    -7.835  &         0.000        &    -1.49e+05    &    -8.91e+04     \\
+\textbf{PRICE}    &   -2.707e+05  &     1.08e+04     &   -25.121  &         0.000        &    -2.92e+05    &     -2.5e+05     \\
+\textbf{EDP}    &     1.21e+05  &     1.12e+04     &    10.803  &         0.000        &      9.9e+04    &     1.43e+05     \\
+\textbf{DAIRY}    &   -2.024e+04  &     4009.879     &    -5.049  &         0.000        &    -2.81e+04    &    -1.24e+04     \\
+\textbf{FLAVOR}    &    2.377e+04  &     3558.452     &     6.680  &         0.000        &     1.68e+04    &     3.07e+04     \\
+\textbf{CM}    &    4513.4702  &     6576.924     &     0.686  &         0.493        &    -8377.314    &     1.74e+04     \\
+\textbf{DD}    &   -1.657e+04  &     6254.244     &    -2.650  &         0.008        &    -2.88e+04    &    -4315.086     \\
+\textbf{ID}    &   -5294.8228  &     6870.938     &    -0.771  &         0.441        &    -1.88e+04    &     8172.229     \\
+\textbf{PL}    &    7.491e+04  &     6618.551     &    11.318  &         0.000        &     6.19e+04    &     8.79e+04     \\
+\textbf{SIZE32}    &    5.316e+04  &     5792.548     &     9.178  &         0.000        &     4.18e+04    &     6.45e+04     \\
+\textbf{SIZE64}   &    4.562e+04  &     6742.034     &     6.767  &         0.000        &     3.24e+04    &     5.88e+04     \\
+\textbf{SIZE48}   &    3.222e+04  &     9159.842     &     3.517  &         0.000        &     1.43e+04    &     5.02e+04     \\
+\textbf{PREV PRICE 1}   &    3.881e+05  &     1.08e+04     &    36.064  &         0.000        &     3.67e+05    &     4.09e+05     \\
+\textbf{PREV PRICE 2}   &    9.708e+04  &     9393.262     &    10.335  &         0.000        &     7.87e+04    &     1.15e+05     \\
+\textbf{VOL RATIO}   &    2.234e+08  &     6.17e+05     &   362.095  &         0.000        &     2.22e+08    &     2.25e+08     \\
+\textbf{PRICE RATIO}   &   -4.027e+05  &     6934.906     &   -58.065  &         0.000        &    -4.16e+05    &    -3.89e+05     \\
+\textbf{PREV VOL 1}   &       0.1537  &        0.002     &    64.360  &         0.000        &        0.149    &        0.158     \\
+\textbf{PREV VOL 2}   &       0.1028  &        0.002     &    45.893  &         0.000        &        0.098    &        0.107     \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lclc}
+\textbf{Omnibus:}       & 46260.040 & \textbf{  Durbin-Watson:     } &      0.982    \\
+\textbf{Prob(Omnibus):} &    0.000  & \textbf{  Jarque-Bera (JB):  } & 10318654.001  \\
+\textbf{Skew:}          &    2.585  & \textbf{  Prob(JB):          } &       0.00    \\
+\textbf{Kurtosis:}      &   65.701  & \textbf{  Cond. No.          } &   1.39e+09    \\
+\bottomrule
+\end{tabular}
+%\caption{OLS Regression Results}
+\end{center}
+
+\subsection{Appendix CTA Boolean Variables Results}
+
+\begin{center}
+\begin{tabular}{lclc}
+\toprule
+\textbf{Dep. Variable:}    &        y         & \textbf{  R-squared:         } &     0.742   \\
+\textbf{Model:}            &       OLS        & \textbf{  Adj. R-squared:    } &     0.742   \\
+\textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } &     3823.   \\
+\textbf{Date:}             & Wed, 30 Aug 2017 & \textbf{  Prob (F-statistic):} &     0.00    \\
+\textbf{Time:}             &     17:31:09     & \textbf{  Log-Likelihood:    } &   -94973.   \\
+\textbf{No. Observations:} &       62567      & \textbf{  AIC:               } & 1.900e+05   \\
+\textbf{Df Residuals:}     &       62519      & \textbf{  BIC:               } & 1.905e+05   \\
+\textbf{Df Model:}         &          47      & \textbf{                     } &             \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lcccccc}
+               & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$>$$|$t$|$} & \textbf{[0.025} & \textbf{0.975]}  \\
+\midrule
+\textbf{CONST} &       8.7230  &        0.065     &   134.763  &         0.000        &        8.596    &        8.850     \\
+\textbf{PRICE}    &      -0.9790  &        0.036     &   -26.955  &         0.000        &       -1.050    &       -0.908     \\
+\textbf{EDP}    &       0.8578  &        0.043     &    19.828  &         0.000        &        0.773    &        0.943     \\
+\textbf{DAIRY}    &       1.2511  &        0.016     &    79.503  &         0.000        &        1.220    &        1.282     \\
+\textbf{FLAVOR}    &       1.4695  &        0.014     &   104.185  &         0.000        &        1.442    &        1.497     \\
+\textbf{CTA 5}    &       1.5271  &        0.026     &    58.271  &         0.000        &        1.476    &        1.579     \\
+\textbf{CM}    &      -0.9021  &        0.024     &   -38.006  &         0.000        &       -0.949    &       -0.856     \\
+\textbf{DD}    &       2.0167  &        0.027     &    74.198  &         0.000        &        1.963    &        2.070     \\
+\textbf{ID}    &       1.8490  &        0.026     &    71.102  &         0.000        &        1.798    &        1.900     \\
+\textbf{PL}    &       0.7108  &        0.023     &    30.959  &         0.000        &        0.666    &        0.756     \\
+\textbf{SIZE32}   &       0.1031  &        0.027     &     3.883  &         0.000        &        0.051    &        0.155     \\
+\textbf{SIZE64}   &      -1.1738  &        0.036     &   -33.034  &         0.000        &       -1.243    &       -1.104     \\
+\textbf{SIZE48}   &      -0.0677  &        0.039     &    -1.742  &         0.081        &       -0.144    &        0.008     \\
+\textbf{PREV PRICE 1}   &      -0.4059  &        0.035     &   -11.623  &         0.000        &       -0.474    &       -0.337     \\
+\textbf{PREV PRICE 2}   &       6.0870  &        0.055     &   111.150  &         0.000        &        5.980    &        6.194     \\
+\textbf{VOL RATIO}   &      -0.5738  &        0.022     &   -26.309  &         0.000        &       -0.617    &       -0.531     \\
+\textbf{PRICE RATIO}   &    7.056e-08  &        8e-09     &     8.821  &         0.000        &     5.49e-08    &     8.62e-08     \\
+\textbf{PREV VOL 1}   &    1.112e-07  &     7.86e-09     &    14.135  &         0.000        &     9.57e-08    &     1.27e-07     \\
+\textbf{PREV VOL 2}   &       1.0804  &        0.038     &    28.239  &         0.000        &        1.005    &        1.155     \\
+\textbf{CTA 1}   &       0.9538  &        0.036     &    26.746  &         0.000        &        0.884    &        1.024     \\
+\textbf{CTA 2}   &       0.8537  &        0.038     &    22.674  &         0.000        &        0.780    &        0.927     \\
+\textbf{CTA 3}   &       1.0946  &        0.036     &    30.672  &         0.000        &        1.025    &        1.165     \\
+\textbf{CTA 4}   &      -0.5691  &        0.040     &   -14.305  &         0.000        &       -0.647    &       -0.491     \\
+\textbf{CTA 5}   &       1.0351  &        0.036     &    28.825  &         0.000        &        0.965    &        1.105     \\
+\textbf{CTA 6}   &       0.8199  &        0.036     &    23.007  &         0.000        &        0.750    &        0.890     \\
+\textbf{CTA 7}   &       0.8199  &        0.036     &    23.007  &         0.000        &        0.750    &        0.890     \\
+\textbf{CTA 8}   &      -1.1479  &        0.037     &   -30.739  &         0.000        &       -1.221    &       -1.075     \\
+\textbf{CTA 9}   &       0.7188  &        0.039     &    18.566  &         0.000        &        0.643    &        0.795     \\
+\textbf{CTA 10}   &       1.1997  &        0.035     &    33.999  &         0.000        &        1.131    &        1.269     \\
+\textbf{CTA 11}   &       0.8047  &        0.035     &    22.913  &         0.000        &        0.736    &        0.874     \\
+\textbf{CTA 12}   &       0.6434  &        0.035     &    18.613  &         0.000        &        0.576    &        0.711     \\
+\textbf{CTA 13}   &       0.7021  &        0.035     &    20.121  &         0.000        &        0.634    &        0.771     \\
+\textbf{CTA 14}   &       0.4214  &        0.035     &    12.079  &         0.000        &        0.353    &        0.490     \\
+\textbf{CTA 15}   &       0.4001  &        0.035     &    11.473  &         0.000        &        0.332    &        0.468     \\
+\textbf{CTA 16}   &       0.7808  &        0.034     &    22.671  &         0.000        &        0.713    &        0.848     \\
+\textbf{CTA 17}   &       0.8074  &        0.035     &    22.990  &         0.000        &        0.739    &        0.876     \\
+\textbf{CTA 18}   &       0.5809  &        0.035     &    16.634  &         0.000        &        0.512    &        0.649     \\
+\textbf{CTA 19}   &       1.1948  &        0.035     &    34.109  &         0.000        &        1.126    &        1.263     \\
+\textbf{CTA 20}   &       0.5117  &        0.035     &    14.651  &         0.000        &        0.443    &        0.580     \\
+\textbf{CTA 21}   &       0.6243  &        0.035     &    17.828  &         0.000        &        0.556    &        0.693     \\
+\textbf{CTA 22}   &       0.8015  &        0.035     &    23.037  &         0.000        &        0.733    &        0.870     \\
+\textbf{CTA 23}   &      -0.0692  &        0.035     &    -1.974  &         0.048        &       -0.138    &       -0.000     \\
+\textbf{CTA 24}   &       1.2644  &        0.036     &    35.565  &         0.000        &        1.195    &        1.334     \\
+\textbf{CTA 25}   &       1.3575  &        0.036     &    38.136  &         0.000        &        1.288    &        1.427     \\
+\textbf{CTA 26}   &       1.1837  &        0.035     &    33.434  &         0.000        &        1.114    &        1.253     \\
+\textbf{CTA 27}   &       1.4746  &        0.032     &    45.407  &         0.000        &        1.411    &        1.538     \\
+\textbf{CTA 28}   &       1.0682  &        0.032     &    32.930  &         0.000        &        1.005    &        1.132     \\
+\textbf{CTA 29}   &       1.9507  &        0.034     &    57.428  &         0.000        &        1.884    &        2.017     \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lclc}
+\textbf{Omnibus:}       & 17479.756 & \textbf{  Durbin-Watson:     } &     1.885  \\
+\textbf{Prob(Omnibus):} &    0.000  & \textbf{  Jarque-Bera (JB):  } & 77054.962  \\
+\textbf{Skew:}          &   -1.309  & \textbf{  Prob(JB):          } &      0.00  \\
+\textbf{Kurtosis:}      &    7.765  & \textbf{  Cond. No.          } &  8.52e+07  \\
+\bottomrule
+\end{tabular}
+%\caption{OLS Regression Results}
+\end{center}
+
+
+
+\section{Appendix Stage One Results}
+
+\begin{center}
+\begin{tabular}{lclc}
+\toprule
+\textbf{Dep. Variable:}    &        y         & \textbf{  R-squared:         } &     0.946   \\
+\textbf{Model:}            &       OLS        & \textbf{  Adj. R-squared:    } &     0.946   \\
+\textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } & 6.803e+04   \\
+\textbf{Date:}             & Wed, 30 Aug 2017 & \textbf{  Prob (F-statistic):} &     0.00    \\
+\textbf{Time:}             &     17:29:40     & \textbf{  Log-Likelihood:    } &    49278.   \\
+\textbf{No. Observations:} &       62567      & \textbf{  AIC:               } & -9.852e+04  \\
+\textbf{Df Residuals:}     &       62550      & \textbf{  BIC:               } & -9.837e+04  \\
+\textbf{Df Model:}         &          16      & \textbf{                     } &             \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lcccccc}
+               & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$>$$|$t$|$} & \textbf{[0.025} & \textbf{0.975]}  \\
+\midrule
+\textbf{CONST} &       0.0118  &        0.006     &     2.090  &         0.037        &        0.001    &        0.023     \\
+\textbf{EDP}    &       0.3169  &        0.004     &    80.072  &         0.000        &        0.309    &        0.325     \\
+\textbf{DAIRY}    &       0.0019  &        0.001     &     1.280  &         0.200        &       -0.001    &        0.005     \\
+\textbf{FLAVOR}    &       0.0080  &        0.001     &     6.061  &         0.000        &        0.005    &        0.011     \\
+\textbf{CM}    &       0.0454  &        0.002     &    18.665  &         0.000        &        0.041    &        0.050     \\
+\textbf{DD}    &       0.0368  &        0.002     &    15.892  &         0.000        &        0.032    &        0.041     \\
+\textbf{ID}    &       0.0328  &        0.003     &    12.889  &         0.000        &        0.028    &        0.038     \\
+\textbf{PL}    &       0.0526  &        0.002     &    21.493  &         0.000        &        0.048    &        0.057     \\
+\textbf{SIZE32}    &      -0.0287  &        0.002     &   -13.348  &         0.000        &       -0.033    &       -0.024     \\
+\textbf{SIZE64}    &      -0.0212  &        0.003     &    -8.462  &         0.000        &       -0.026    &       -0.016     \\
+\textbf{SIZE48}   &       0.0027  &        0.003     &     0.791  &         0.429        &       -0.004    &        0.009     \\
+\textbf{PREV PRICE 1}   &       0.4339  &        0.004     &   120.639  &         0.000        &        0.427    &        0.441     \\
+\textbf{PREV PRICE 2}   &      -0.0428  &        0.003     &   -12.300  &         0.000        &       -0.050    &       -0.036     \\
+\textbf{VOL RATIO}   &     -23.5398  &        0.209     &  -112.761  &         0.000        &      -23.949    &      -23.131     \\
+\textbf{PRICE RATIO}   &       0.3349  &        0.002     &   152.394  &         0.000        &        0.331    &        0.339     \\
+\textbf{PREV VOL 1}   &    5.657e-08  &     8.57e-10     &    66.024  &         0.000        &     5.49e-08    &     5.82e-08     \\
+\textbf{PREV VOL 2}   &    1.851e-08  &     8.28e-10     &    22.363  &         0.000        &     1.69e-08    &     2.01e-08     \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lclc}
+\textbf{Omnibus:}       & 16672.641 & \textbf{  Durbin-Watson:     } &     1.498   \\
+\textbf{Prob(Omnibus):} &    0.000  & \textbf{  Jarque-Bera (JB):  } & 164979.945  \\
+\textbf{Skew:}          &   -0.999  & \textbf{  Prob(JB):          } &      0.00   \\
+\textbf{Kurtosis:}      &   10.700  & \textbf{  Cond. No.          } &  1.27e+09   \\
+\bottomrule
+\end{tabular}
+%\caption{OLS Regression Results}
+\end{center}
 
 
 \end{document}
