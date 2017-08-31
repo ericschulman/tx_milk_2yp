@@ -2,6 +2,7 @@
 \usepackage{cite}
 \usepackage{amsmath}
 \usepackage{graphicx}
+\usepackage{booktabs}
 
 
 
@@ -44,7 +45,7 @@ $$ADV_{it}$$ is a boolean based on the advertising spending of brand $i$ at time
 
 $$PRICE\_REACT_{it}$$ is meant to capture a reaction in the reference price. It is calculated as $$\dfrac{PRICE_{it}} {\sum_j PRICE_{jt}} - \widehat{PRICE}_{it}$$ In the model, ${PRICE}_{it}$ is the price charged by brand $i$ at time $t$. 
 
-The most important part of the reaction is $$\hat{PRICE}_{it}$$ which represents the consumers expectation for the price at the current time period period. It involves estimating ${PRICE}_{it}$ as a function of ${PRICE}_{it-1}$. This process is called two stage least squares. In two stage least squares, you look at the effect of one variable 'through' another variable.  In this case we are looking on how past prices effect the current price 'through' the current price. You do this by running running a regression using a variable called an instrument (in this case, previous price) on another variable (in this case price). You use the predicted values from the first regression in a second regression.  I plan to use this technique as well when estimating my model.
+The most important part of the reaction is $$\widehat{PRICE}_{it}$$ which represents the consumers expectation for the price at the current time period period. It involves estimating ${PRICE}_{it}$ as a function of ${PRICE}_{it-1}$. This process is called two stage least squares. In two stage least squares, you look at the effect of one variable 'through' another variable.  In this case we are looking on how past prices effect the current price 'through' the current price. You do this by running running a regression using a variable called an instrument (in this case, previous price) on another variable (in this case price). You use the predicted values from the first regression in a second regression.  I plan to use this technique as well when estimating my model.
 
 $$ \dfrac{PRICE_it}{TOTAL\_PRICE_{t}}$$ represents the ratio between the price of brand $i$ at time $t$ against its competitors. It represents the overall pricing environment. It is the current brand price at time $t$ as a fraction of all the prices.
 
@@ -130,17 +131,50 @@ $ {PRICE}_{ijt} = \gamma_0 + \gamma_1 EDP_{ijt} + \gamma_2 {DAIRY}_{j} + \gamma_
 
 Stage Two\\
 
-$ log(VOL_{ijt}) = \alpha_0 + \alpha_1 \hat{PRICE}_{ijt} + \alpha_2 EDP_{ijt} + \alpha_3 {DAIRY}_{j} + \alpha_4 FLAVOR_{j} \medskip + \alpha_5 CM_{j} + \alpha_6 DD_{j} + \alpha_{7} ID_{j} + \alpha_{8} PL_{j} \medskip + \alpha_{9} SIZE32_{j} +\alpha_{10} SIZE64_{ij}  + \alpha_{11} SIZE48_{ij} \medskip + \alpha_{12}{VOL\_RATIO}_t  + \alpha_{13} {PRICE\_RATIO}_{t} + \alpha_{14} {VOL}_{ijt-1} + \alpha_{15} {VOL}_{ijt-2}  + e_{ijt}  $\\
+$ log(VOL_{ijt}) = \alpha_0 + \alpha_1 \widehat{PRICE}_{ijt} + \alpha_2 EDP_{ijt} + \alpha_3 {DAIRY}_{j} + \alpha_4 FLAVOR_{j} \medskip + \alpha_5 CM_{j} + \alpha_6 DD_{j} + \alpha_{7} ID_{j} + \alpha_{8} PL_{j} \medskip + \alpha_{9} SIZE32_{j} +\alpha_{10} SIZE64_{ij}  + \alpha_{11} SIZE48_{ij} \medskip + \alpha_{12}{VOL\_RATIO}_t  + \alpha_{13} {PRICE\_RATIO}_{t} + \alpha_{14} {VOL}_{ijt-1} + \alpha_{15} {VOL}_{ijt-2}  + e_{ijt}  $\\
 
 
 \section{Preliminary Results}
 
+
+I looked at volume changes, linear volume and week to week. In these models previous volume explains too much of the data. Essentially, the entire model is predicted by previous weeks volume. To correct this I included log(VOL) as the regressand term. It makes it so that the model isn't predicted by previous weeks.
+
+If you only include prev volume it predicts almost all of the next weeks volume.
+
+%include table with this regression (reg 10) just previous volume
+
+%include table with delta vol
+
+%include regf1?
+
+%include a model without previous weeks vol linear
+
+%include a model without previous weeks with CTA
+
+
 Below are preliminary results from the basic model. In the basic model, all coefficients are statistically significant coefficients at the five percent level. Interestingly enough by removing EDP, the boolean variables regarding dairy, flavor and size become increase in p-value. This suggests that EDP acts as a signal that transmits information about the product category.
+
+Both dairy product and flavor will see roughly an extra percentage change upward all else equal.
+
+All else equal DD brand has roughly 2 to 3 percent less than the other brands. CA has roguhly 2 percent less than the other brands
+
+Size48 has roughly 3 percent less percentage change
+
+Prev price is not statistically signicant. Prev price 2 switches sign depending on the model. This supports the use of these variables as instrumental variables.
+
+The reason that the coefficients on previous volume are so low is because the volume are usually in the order of magnitudes of 10 millions.
+
+
+EDP is actually positively related to volume. This may be because nicer brands may cause bigger volume changes when on promotion.
+
+
+
+
 
 \begin{center}
 \begin{tabular}{lclc}
 \toprule
-\textbf{Dep. Variable:}    &        y         & \textbf{  R-squared:         } &      0.650   \\
+\textbf{Dep. Variable:}    &        log(VOL)         & \textbf{  R-squared:         } &      0.650   \\
 \textbf{Model:}            &       OLS        & \textbf{  Adj. R-squared:    } &      0.650   \\
 \textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } &      6835.   \\
 \textbf{Date:}             & Wed, 30 Aug 2017 & \textbf{  Prob (F-statistic):} &      0.00    \\
@@ -186,12 +220,14 @@ Below are preliminary results from the basic model. In the basic model, all coef
 All of the CTA dummy variables are statistically significant at the five percent levels. When using an F-test for join significance of these variables, they are significant at the five percent level. This means that these variables are related to volume changes and should not be taken lightly. Additionally, when including the CTA dummies, total regional volume is no longer statistically significant. The weekly dummy variables appear to be less important to the overall results. They pass an f-test for joint significant at the 5 percent, but considering the number of data points this is unsurprising. Most of the values do not pass individual t-tests. Due to the size of the table, I include the results of the CTA boolean variables in the appendix.
 
 
-Running the regression causes the coefficient on price to fall. Additionally, the product characteristics are statistically significant after running the two stage model. This suggests that price and product characteristics are highly related. After cleaning price of its endogenous relationship with the other variables in the first stage, these characteristics become statistically relevant in the context of predicting volume changes. Below are the results of running the two stage regression.
+Running the regression causes the coefficient on price to fall . Additionally, the product characteristics are statistically significant after running the two stage model. This suggests that price and product characteristics are highly related. After cleaning price of its endogenous relationship with the other variables in the first stage, these characteristics become statistically relevant in the context of predicting volume changes. Below are the results of running the two stage regression.
+
+After running the two stage regression  the 
 
 \begin{center}
 \begin{tabular}{lclc}
 \toprule
-\textbf{Dep. Variable:}    &        y         & \textbf{  R-squared:         } &      0.642   \\
+\textbf{Dep. Variable:}    &        log(VOL)         & \textbf{  R-squared:         } &      0.642   \\
 \textbf{Model:}            &       OLS        & \textbf{  Adj. R-squared:    } &      0.642   \\
 \textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } &      7486.   \\
 \textbf{Date:}             & Wed, 30 Aug 2017 & \textbf{  Prob (F-statistic):} &      0.00    \\
@@ -243,7 +279,7 @@ Running the regression causes the coefficient on price to fall. Additionally, th
 \begin{center}
 \begin{tabular}{lclc}
 \toprule
-\textbf{Dep. Variable:}    &        y         & \textbf{  R-squared:         } &      0.972    \\
+\textbf{Dep. Variable:}    &        VOL         & \textbf{  R-squared:         } &      0.972    \\
 \textbf{Model:}            &       OLS        & \textbf{  Adj. R-squared:    } &      0.972    \\
 \textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } &  1.270e+05    \\
 \textbf{Date:}             & Wed, 30 Aug 2017 & \textbf{  Prob (F-statistic):} &      0.00     \\
@@ -291,7 +327,7 @@ Running the regression causes the coefficient on price to fall. Additionally, th
 \begin{center}
 \begin{tabular}{lclc}
 \toprule
-\textbf{Dep. Variable:}    &        y         & \textbf{  R-squared:         } &     0.742   \\
+\textbf{Dep. Variable:}    &        log(VOL)         & \textbf{  R-squared:         } &     0.742   \\
 \textbf{Model:}            &       OLS        & \textbf{  Adj. R-squared:    } &     0.742   \\
 \textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } &     3823.   \\
 \textbf{Date:}             & Wed, 30 Aug 2017 & \textbf{  Prob (F-statistic):} &     0.00    \\
@@ -371,7 +407,7 @@ Running the regression causes the coefficient on price to fall. Additionally, th
 \begin{center}
 \begin{tabular}{lclc}
 \toprule
-\textbf{Dep. Variable:}    &        y         & \textbf{  R-squared:         } &     0.946   \\
+\textbf{Dep. Variable:}    &        PRICE         & \textbf{  R-squared:         } &     0.946   \\
 \textbf{Model:}            &       OLS        & \textbf{  Adj. R-squared:    } &     0.946   \\
 \textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } & 6.803e+04   \\
 \textbf{Date:}             & Wed, 30 Aug 2017 & \textbf{  Prob (F-statistic):} &     0.00    \\
@@ -415,3 +451,4 @@ Running the regression causes the coefficient on price to fall. Additionally, th
 
 
 \end{document}
+

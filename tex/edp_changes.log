@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.4.17)  30 AUG 2017 17:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.3.29)  31 AUG 2017 09:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **edp_changes
 (./edp_changes.tex
 LaTeX2e <2016/03/31>
-Babel <3.9r> and hyphenation patterns for 77 language(s) loaded.
+Babel <3.9r> and hyphenation patterns for 3 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo
@@ -118,34 +118,54 @@ Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
 \Gin@req@height=\dimen112
 \Gin@req@width=\dimen113
 )
+(/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2016/04/27 v1.618033 publication quality tables
+\heavyrulewidth=\dimen114
+\lightrulewidth=\dimen115
+\cmidrulewidth=\dimen116
+\belowrulesep=\dimen117
+\belowbottomsep=\dimen118
+\aboverulesep=\dimen119
+\abovetopsep=\dimen120
+\cmidrulesep=\dimen121
+\cmidrulekern=\dimen122
+\defaultaddspace=\dimen123
+\@cmidla=\count100
+\@cmidlb=\count101
+\@aboverulesep=\dimen124
+\@belowrulesep=\dimen125
+\@thisruleclass=\count102
+\@lastruleclass=\count103
+\@thisrulewidth=\dimen126
+)
 (./edp_changes.aux)
 \openout1 = `edp_changes.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 15.
+LaTeX Font Info:    ... okay on input line 15.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count100
-\scratchdimen=\dimen114
+\scratchcounter=\count104
+\scratchdimen=\dimen127
 \scratchbox=\box28
-\nofMPsegments=\count101
-\nofMParguments=\count102
+\nofMPsegments=\count105
+\nofMParguments=\count106
 \everyMPshowfont=\toks20
-\MPscratchCnt=\count103
-\MPscratchDim=\dimen115
-\MPnumerator=\count104
-\makeMPintoPDFobject=\count105
+\MPscratchCnt=\count107
+\MPscratchDim=\dimen128
+\MPnumerator=\count108
+\makeMPintoPDFobject=\count109
 \everyMPtoPDFconversion=\toks21
 ) (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2016/05/21 v0.22 Utility functions of pdfTeX for LuaTeX (HO
@@ -199,22 +219,22 @@ e
 [1
 
 {/usr/share/texlive/texmf-dist/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 33--34
+Underfull \hbox (badness 10000) in paragraph at lines 34--35
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 35--36
+Underfull \hbox (badness 10000) in paragraph at lines 36--37
 
  []
 
 [2]
-Underfull \hbox (badness 10000) in paragraph at lines 55--56
+Underfull \hbox (badness 10000) in paragraph at lines 56--57
 
  []
 
 
-Overfull \hbox (0.98732pt too wide) in paragraph at lines 57--58
+Overfull \hbox (0.98732pt too wide) in paragraph at lines 58--59
 []$\OML/cmm/m/it/10 log\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 VOL[]\OT1/cmr/m/n/10 )
  = \OML/cmm/m/it/10 [] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 [][][] \OT1/cmr/m/n
 /10 + \OML/cmm/m/it/10 []EDP[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 [][][] \OT1
@@ -222,7 +242,7 @@ Overfull \hbox (0.98732pt too wide) in paragraph at lines 57--58
  []
 
 
-Overfull \hbox (3.39333pt too wide) in paragraph at lines 57--58
+Overfull \hbox (3.39333pt too wide) in paragraph at lines 58--59
 \OML/cmm/m/it/10 []CM[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 []DD[] \OT1/cmr/m/
 n/10 + \OML/cmm/m/it/10 []ID[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 []PL[] \OT1
 /cmr/m/n/10 + \OML/cmm/m/it/10 []SIZE\OT1/cmr/m/n/10 32[] + \OML/cmm/m/it/10 
@@ -230,29 +250,29 @@ n/10 + \OML/cmm/m/it/10 []ID[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 []PL[] \OT1
  []
 
 
-Overfull \hbox (3.61577pt too wide) in paragraph at lines 57--58
+Overfull \hbox (3.61577pt too wide) in paragraph at lines 58--59
 \OML/cmm/m/it/10 [][][] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 [][][] \OT1/cmr/m/
 n/10 + \OML/cmm/m/it/10 [][][] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 [][][] \OT1
 /cmr/m/n/10 +
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 57--58
+Underfull \hbox (badness 10000) in paragraph at lines 58--59
 
  []
 
 [3] [4] [5]
-Underfull \hbox (badness 10000) in paragraph at lines 124--125
+Underfull \hbox (badness 10000) in paragraph at lines 125--126
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 127--128
+Underfull \hbox (badness 10000) in paragraph at lines 128--129
 
  []
 
 
-Overfull \hbox (29.85826pt too wide) in paragraph at lines 129--130
+Overfull \hbox (29.85826pt too wide) in paragraph at lines 130--131
 \OML/cmm/m/it/10 ^^M[]DD[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 ^^M[]ID[] \OT1/cm
 r/m/n/10 + \OML/cmm/m/it/10 ^^M[]PL[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 ^^M[]S
 IZE\OT1/cmr/m/n/10 32[] + \OML/cmm/m/it/10 ^^M[]SIZE\OT1/cmr/m/n/10 64[] + \OML
@@ -261,17 +281,17 @@ r/m/n/10 +
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 129--130
+Underfull \hbox (badness 10000) in paragraph at lines 130--131
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 131--132
+Underfull \hbox (badness 10000) in paragraph at lines 132--133
 
  []
 
 
-Overfull \hbox (0.98732pt too wide) in paragraph at lines 133--134
+Overfull \hbox (0.98732pt too wide) in paragraph at lines 134--135
 []$\OML/cmm/m/it/10 log\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 VOL[]\OT1/cmr/m/n/10 )
  = \OML/cmm/m/it/10 [] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 [][][] \OT1/cmr/m/n
 /10 + \OML/cmm/m/it/10 []EDP[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 [][][] \OT1
@@ -279,7 +299,7 @@ Overfull \hbox (0.98732pt too wide) in paragraph at lines 133--134
  []
 
 
-Overfull \hbox (3.39333pt too wide) in paragraph at lines 133--134
+Overfull \hbox (3.39333pt too wide) in paragraph at lines 134--135
 \OML/cmm/m/it/10 []CM[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 []DD[] \OT1/cmr/m/
 n/10 + \OML/cmm/m/it/10 []ID[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 []PL[] \OT1
 /cmr/m/n/10 + \OML/cmm/m/it/10 []SIZE\OT1/cmr/m/n/10 32[] + \OML/cmm/m/it/10 
@@ -287,216 +307,73 @@ n/10 + \OML/cmm/m/it/10 []ID[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 []PL[] \OT1
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 133--134
+Underfull \hbox (badness 10000) in paragraph at lines 134--135
 
  []
 
 [6]
-! Undefined control sequence.
-l.142 \toprule
-              
-? 
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.151 \bottomrule
-                 
-? 
-! Undefined control sequence.
-<recently read> \midrule 
-                         
-l.155 \midrule
-              
-? 
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.174 \bottomrule
-                 
-? 
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.181 \bottomrule
-                 
-? 
-
-Overfull \hbox (22.98398pt too wide) in paragraph at lines 141--184
+Overfull \hbox (22.98398pt too wide) in paragraph at lines 142--185
  [] 
  []
 
 
-Overfull \hbox (27.52774pt too wide) in paragraph at lines 141--184
+Overfull \hbox (27.52774pt too wide) in paragraph at lines 142--185
  [] 
  []
 
 [7]
-! Undefined control sequence.
-l.193 \toprule
-              
-? 
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.202 \bottomrule
-                 
-? 
-! Undefined control sequence.
-<recently read> \midrule 
-                         
-l.206 \midrule
-              
-? 
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.223 \bottomrule
-                 
-? 
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.230 \bottomrule
-                 
-? 
-
-Overfull \hbox (22.98398pt too wide) in paragraph at lines 192--233
+Overfull \hbox (22.98398pt too wide) in paragraph at lines 193--234
  [] 
  []
 
 
-Overfull \hbox (22.56943pt too wide) in paragraph at lines 192--233
+Overfull \hbox (22.56943pt too wide) in paragraph at lines 193--234
  [] 
  []
 
 (./edp_changes.bbl [8])
-! Undefined control sequence.
-l.245 \toprule
-              
-? 
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.254 \bottomrule
-                 
-? 
-! Undefined control sequence.
-<recently read> \midrule 
-                         
-l.258 \midrule
-              
-? 
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.277 \bottomrule
-                 
-? 
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.284 \bottomrule
-                 
-? 
-
-Overfull \hbox (22.98398pt too wide) in paragraph at lines 244--287
+Overfull \hbox (22.98398pt too wide) in paragraph at lines 245--288
  [] 
  []
 
 
-Overfull \hbox (55.30562pt too wide) in paragraph at lines 244--287
- [] 
- []
-
-! Undefined control sequence.
-l.293 \toprule
-              
-? 
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.302 \bottomrule
-                 
-? 
-! Undefined control sequence.
-<recently read> \midrule 
-                         
-l.306 \midrule
-              
-? 
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.355 \bottomrule
-                 
-? 
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.362 \bottomrule
-                 
-? 
-
-Overfull \hbox (14.65063pt too wide) in paragraph at lines 292--365
+Overfull \hbox (55.30562pt too wide) in paragraph at lines 245--288
  [] 
  []
 
 
-Overfull \hbox (27.52774pt too wide) in paragraph at lines 292--365
+Overfull \hbox (14.65063pt too wide) in paragraph at lines 293--366
+ [] 
+ []
+
+
+Overfull \hbox (27.52774pt too wide) in paragraph at lines 293--366
  [] 
  []
 
 [9] [10]
-Overfull \vbox (33.0pt too high) has occurred while \output is active []
+Overfull \vbox (40.54298pt too high) has occurred while \output is active []
 
- [11]
-! Undefined control sequence.
-l.373 \toprule
-              
-? 
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.382 \bottomrule
-                 
-? 
-! Undefined control sequence.
-<recently read> \midrule 
-                         
-l.386 \midrule
-              
-? 
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.404 \bottomrule
-                 
-? 
-! Undefined control sequence.
-<recently read> \bottomrule 
-                            
-l.411 \bottomrule
-                 
-? 
 
-Overfull \hbox (17.98396pt too wide) in paragraph at lines 372--414
+[11]
+Overfull \hbox (17.98396pt too wide) in paragraph at lines 373--415
  [] 
  []
 
 
-Overfull \hbox (30.86107pt too wide) in paragraph at lines 372--414
+Overfull \hbox (30.86107pt too wide) in paragraph at lines 373--415
  [] 
  []
 
 [12] (./edp_changes.aux) ) 
 Here is how much of TeX's memory you used:
- 2195 strings out of 493069
- 29387 string characters out of 6138222
- 116644 words of memory out of 5000000
- 5712 multiletter control sequences out of 15000+600000
+ 2249 strings out of 494946
+ 30121 string characters out of 6180981
+ 112805 words of memory out of 5000000
+ 5524 multiletter control sequences out of 15000+600000
  9369 words of font info for 34 fonts, out of 8000000 for 9000
- 1137 hyphenation exceptions out of 8191
- 38i,7n,23p,1023b,205s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 14 hyphenation exceptions out of 8191
+ 38i,7n,23p,1023b,207s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/ams
 fonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
 cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cme
@@ -509,7 +386,7 @@ dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fon
 ts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/typ
 e1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
 ic/amsfonts/cm/cmti10.pfb>
-Output written on edp_changes.pdf (12 pages, 172841 bytes).
+Output written on edp_changes.pdf (12 pages, 173604 bytes).
 PDF statistics:
  91 PDF objects out of 1000 (max. 8388607)
  64 compressed objects within 1 object stream
