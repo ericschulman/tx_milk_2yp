@@ -141,15 +141,84 @@ I looked at volume changes, linear volume and week to week. In these models prev
 
 If you only include prev volume it predicts almost all of the next weeks volume.
 
-%include table with this regression (reg 10) just previous volume
+%without EDP
+\begin{center}
+\begin{tabular}{lclc}
+\toprule
+\textbf{Dep. Variable:}    &        y         & \textbf{  R-squared:         } &      0.646   \\
+\textbf{Model:}            &       OLS        & \textbf{  Adj. R-squared:    } &      0.646   \\
+\textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } &      7147.   \\
+\textbf{Date:}             & Thu, 31 Aug 2017 & \textbf{  Prob (F-statistic):} &      0.00    \\
+\textbf{Time:}             &     20:41:50     & \textbf{  Log-Likelihood:    } & -1.0482e+05  \\
+\textbf{No. Observations:} &       62567      & \textbf{  AIC:               } &  2.097e+05   \\
+\textbf{Df Residuals:}     &       62550      & \textbf{  BIC:               } &  2.098e+05   \\
+\textbf{Df Model:}         &          16      & \textbf{                     } &              \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lcccccc}
+               & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$>$$|$t$|$} & \textbf{[0.025} & \textbf{0.975]}  \\
+\midrule
+\textbf{const} &       9.9765  &        0.058     &   171.879  &         0.000        &        9.863    &       10.090     \\
+\textbf{x1}    &      -1.3185  &        0.045     &   -29.497  &         0.000        &       -1.406    &       -1.231     \\
+\textbf{x2}    &       1.1773  &        0.017     &    69.040  &         0.000        &        1.144    &        1.211     \\
+\textbf{x3}    &       1.7980  &        0.015     &   120.385  &         0.000        &        1.769    &        1.827     \\
+\textbf{x4}    &       1.7379  &        0.029     &    60.694  &         0.000        &        1.682    &        1.794     \\
+\textbf{x5}    &      -0.8637  &        0.027     &   -31.843  &         0.000        &       -0.917    &       -0.811     \\
+\textbf{x6}    &       2.4216  &        0.030     &    80.920  &         0.000        &        2.363    &        2.480     \\
+\textbf{x7}    &       2.0709  &        0.028     &    75.081  &         0.000        &        2.017    &        2.125     \\
+\textbf{x8}    &       0.6769  &        0.023     &    28.821  &         0.000        &        0.631    &        0.723     \\
+\textbf{x9}    &      -0.2144  &        0.026     &    -8.187  &         0.000        &       -0.266    &       -0.163     \\
+\textbf{x10}   &      -1.9155  &        0.037     &   -51.518  &         0.000        &       -1.988    &       -1.843     \\
+\textbf{x11}   &       0.1972  &        0.047     &     4.241  &         0.000        &        0.106    &        0.288     \\
+\textbf{x12}   &      -0.0218  &        0.038     &    -0.570  &         0.569        &       -0.097    &        0.053     \\
+\textbf{x13}   &      63.9018  &        2.688     &    23.773  &         0.000        &       58.633    &       69.170     \\
+\textbf{x14}   &      -0.2024  &        0.030     &    -6.702  &         0.000        &       -0.262    &       -0.143     \\
+\textbf{x15}   &    1.745e-07  &     1.04e-08     &    16.779  &         0.000        &     1.54e-07    &     1.95e-07     \\
+\textbf{x16}   &    1.657e-07  &     9.74e-09     &    16.999  &         0.000        &     1.47e-07    &     1.85e-07     \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lclc}
+\textbf{Omnibus:}       & 11885.013 & \textbf{  Durbin-Watson:     } &     0.054  \\
+\textbf{Prob(Omnibus):} &    0.000  & \textbf{  Jarque-Bera (JB):  } & 29726.750  \\
+\textbf{Skew:}          &   -1.054  & \textbf{  Prob(JB):          } &      0.00  \\
+\textbf{Kurtosis:}      &    5.639  & \textbf{  Cond. No.          } &  1.39e+09  \\
+\bottomrule
+\end{tabular}
+%\caption{OLS Regression Results}
+\end{center}
 
-%include table with delta vol
-
-%include regf1?
-
-%include a model without previous weeks vol linear
-
-%include a model without previous weeks with CTA
+%just previous volume
+\begin{center}
+\begin{tabular}{lclc}
+\toprule
+\textbf{Dep. Variable:}    &        y         & \textbf{  R-squared:         } &      0.886    \\
+\textbf{Model:}            &       OLS        & \textbf{  Adj. R-squared:    } &      0.886    \\
+\textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } &  1.626e+05    \\
+\textbf{Date:}             & Thu, 31 Aug 2017 & \textbf{  Prob (F-statistic):} &      0.00     \\
+\textbf{Time:}             &     19:59:20     & \textbf{  Log-Likelihood:    } & -9.2080e+05   \\
+\textbf{No. Observations:} &       62567      & \textbf{  AIC:               } &  1.842e+06    \\
+\textbf{Df Residuals:}     &       62563      & \textbf{  BIC:               } &  1.842e+06    \\
+\textbf{Df Model:}         &           3      & \textbf{                     } &               \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lcccccc}
+               & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$>$$|$t$|$} & \textbf{[0.025} & \textbf{0.975]}  \\
+\midrule
+\textbf{const} &    3.103e+05  &     8792.933     &    35.286  &         0.000        &     2.93e+05    &     3.28e+05     \\
+\textbf{x1}    &   -1.685e+05  &     5117.634     &   -32.926  &         0.000        &    -1.79e+05    &    -1.58e+05     \\
+\textbf{x2}    &       0.5407  &        0.004     &   148.953  &         0.000        &        0.534    &        0.548     \\
+\textbf{x3}    &       0.4112  &        0.004     &   113.149  &         0.000        &        0.404    &        0.418     \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lclc}
+\textbf{Omnibus:}       & 62854.779 & \textbf{  Durbin-Watson:     } &      2.246    \\
+\textbf{Prob(Omnibus):} &    0.000  & \textbf{  Jarque-Bera (JB):  } & 19005091.109  \\
+\textbf{Skew:}          &    4.361  & \textbf{  Prob(JB):          } &       0.00    \\
+\textbf{Kurtosis:}      &   87.936  & \textbf{  Cond. No.          } &   1.13e+07    \\
+\bottomrule
+\end{tabular}
+%\caption{OLS Regression Results}
+\end{center}
 
 
 Below are preliminary results from the basic model. In the basic model, all coefficients are statistically significant coefficients at the five percent level. Interestingly enough by removing EDP, the boolean variables regarding dairy, flavor and size become increase in p-value. This suggests that EDP acts as a signal that transmits information about the product category.

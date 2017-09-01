@@ -77,3 +77,21 @@ AND vol_changes.dim_cta_key = prev_price.dim_cta_key
 AND vol_changes.week = price_ratio.week
 AND vol_changes.dim_cta_key = price_ratio.dim_cta_key
 AND vol_changes.dim_group_key = price_ratio.dim_group_key;
+
+
+/*regression with prev 2 vol edp*/
+CREATE VIEW reg35 AS
+SELECT group_edps.price, group_edps.edp, group_edps.eq_vol, prev_vol.prev_vol1, prev_vol.prev_vol2
+FROM group_edps, prev_vol
+WHERE group_edps.dim_group_key = prev_vol.dim_group_key
+AND group_edps.week = prev_vol.week
+AND group_edps.dim_cta_key = prev_vol.dim_cta_key;
+
+
+/*regression with prev 2 vol*/
+CREATE VIEW reg36 AS
+SELECT group_edps.price, prev_vol.prev_vol1, group_edps.eq_vol, prev_vol.prev_vol2
+FROM group_edps, prev_vol
+WHERE group_edps.dim_group_key = prev_vol.dim_group_key
+AND group_edps.week = prev_vol.week
+AND group_edps.dim_cta_key = prev_vol.dim_cta_key;

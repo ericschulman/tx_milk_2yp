@@ -143,7 +143,7 @@ def set_up_regress(sql_file):
 	con.close()
 
 
-def regress(sql_file, view_name, omit, log=False):
+def regress(sql_file, view_name, omit, log=False, name="",dep=2):
 	"""Used for a test regression, will take a database query as an argument, and
 	return what is necessary eventually
 
@@ -166,14 +166,14 @@ def regress(sql_file, view_name, omit, log=False):
 	#delete nan lines
 	regressors = regressors[~np.isnan(regressors).any(axis=1)]
 
-	y = regressors[:,2]
+	y = regressors[:,dep]
 
 	if (log == True):
 		y = np.log(y)
 
 	#set up instruments
 	X = regressors
-	X = np.delete(X, 2, axis = 1)
+	X = np.delete(X, dep, axis = 1)
 	X = sm.add_constant(X)
 
 	#clean the endogenous explanatory variable of endogeneity
@@ -181,17 +181,14 @@ def regress(sql_file, view_name, omit, log=False):
 
 	#write stage 1 results
 
-	file_path_tex = 'results/%s/tex/result_%s.'%(sql_file,view_name)
-	file_path_txt = 'results/%s/txt/result_%s.'%(sql_file,view_name)
-	if(log==True):
-		file_path_tex = 'results/%s/tex/result_%s_log.'%(sql_file,view_name)
-		file_path_txt = 'results/%s/txt/result_%s_log.'%(sql_file,view_name)
+	file_path_tex = 'results/%s/tex/result'%sql_file + name + '_'+ view_name
+	file_path_txt = 'results/%s/txt/result'%sql_file + name + '_'+ view_name
 
-	result_doc = open(file_path_txt +'txt','w+')
+	result_doc = open(file_path_txt +'.txt','w+')
 	result_doc.write( stage1.summary().as_text() )
 	result_doc.close()
 
-	result_doc = open(file_path_tex +'tex','w+')
+	result_doc = open(file_path_tex +'.tex','w+')
 	result_doc.write( stage1.summary().as_latex() )
 	result_doc.close()
 
@@ -270,6 +267,7 @@ def regressIV(sql_file, view_name, result_name, instr_list, endog_ind, omit,log=
 
 def run_reg():
 	"""code for running the regressions in reg.sql"""
+	set_up_regress('reg')
 	regress('reg','reg1',[0,1,2,4,5,7,8])
 	regress('reg','reg2',[0,1,2,4,5,7,8,10,12,17])
 	regress('reg','reg3',[0,1,2,4,5,7,8,10,12,17,21])
@@ -299,6 +297,7 @@ def run_reg():
 
 
 def run_reg_good():
+	set_up_regress('reg')
 	regress('reg','reg15_vol',[0,1,2,4,5,7,8,10,12,17,21,178,209,210,211,214,215])
 	regress('reg','reg17',[0,1,2,4,5,7,8,10,12,17,21,52,53,54,57,58])
 	regress('reg','reg18_fixed',[0,1,2,4,5,7,8,10,12,17,21,22,23,26])
@@ -307,6 +306,7 @@ def run_reg_good():
 
 def run_regf():
 	"""code for running the regressions in regf.sql"""
+	set_up_regress('regf')
 	regress('regf','regf1',[0,1,2,5,7,8,10,12,17,21,22,23,26])
 	regress('regf','regf2',[0,1,2,5,7,8,10,12,17,21,22,23,26,29])
 	regress('regf','regf3',[0,1,2,5,7,8,10,12,17,21,22,23,26,29])
@@ -314,25 +314,43 @@ def run_regf():
 
 
 def run_regf_IV():
+	set_up_regress('regf')
 	regressIV('regf','regf1', 'past', [0,2,12,13], 0, [0,1,2,5,7,8,10,12,17,21,22,23,26])
 	regressIV('regf','regf1', 'edp', [0,1,2,12,13], 0, [0,1,2,5,7,8,10,12,17,21,22,23,26])
 
 
 def run_reg3():
+	set_up_regress('reg3')
 	regress('reg3', 'reg31', [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33])
-	regress('reg3', 'reg31', [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33],    log=True)
-	#regress('reg3', 'reg32', [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33,36], log=True)
-	regress('reg3', 'reg33', [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33,36], log=True)
-	#regress('reg3', 'reg34', [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28])
-	regressIV('reg3', 'reg31', 'reg31iv1', [0,2,12,13],   0, [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33],    log=True)
-	#regressIV('reg3', 'reg31', 'reg31iv2', [0,1,2,12,13], 0, [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33],    log=True)
-	#regressIV('reg3', 'reg32', 'reg32iv1', [0,2,12,13],   0, [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33,36], log=True)
-	#regressIV('reg3', 'reg33', 'reg33iv1', [0,2,12,13],   0, [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33,36], log=True)
+	regress('reg3', 'reg31', [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33],    log=True, name = 'log')
+	regress('reg3', 'reg32', [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33,36], log=True, name = 'log')
+	regress('reg3', 'reg33', [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33,36], log=True, name = 'log')
+	regress('reg3', 'reg34', [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28])
+	
+	regressIV('reg3', 'reg31', 'reg31iv1', [0,2,12,13],   0, [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33],    log=True, name = 'log')
+	regressIV('reg3', 'reg31', 'reg31iv2', [0,1,2,12,13], 0, [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33],    log=True, name = 'log')
+	regressIV('reg3', 'reg32', 'reg32iv1', [0,2,12,13],   0, [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33,36], log=True, name = 'log')
+	regressIV('reg3', 'reg33', 'reg33iv1', [0,2,12,13],   0, [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33,36], log=True, name = 'log')
+
+
+def run_reg32():
+	set_up_regress('reg3')
+	# regress('reg3','reg35',[])
+	# regress('reg3','reg36',[])
+	# regress('reg3','reg36',[],log=True,name='log')
+	# regress('reg3', 'reg31', [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33,34,35], name = 'novol')
+	#regress('reg3', 'reg31', [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33,34,35], log=True, name = 'novollog')
+	regress('reg3', 'reg31', [0,1,2,4,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33],log=True, name = 'noedp_log',dep=1)
+	#regress('reg3', 'reg31', [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,29,31,32,33,34,35], log=True, name = '_novollogratio')
+	#regress('reg3', 'reg31', [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,29,31,32,33,34,35], name = '_novolratio')
+
+
+
 
 if __name__ == "__main__":
 	setup_db()
-	set_up_regress('reg3')
-	run_reg3()
+	
+	run_reg32()
 
 
 
