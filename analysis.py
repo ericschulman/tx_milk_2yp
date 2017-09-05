@@ -340,7 +340,7 @@ def run_reg32():
 	# regress('reg3','reg36',[],log=True,name='log')
 	# regress('reg3', 'reg31', [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33,34,35], name = 'novol')
 	#regress('reg3', 'reg31', [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33,34,35], log=True, name = 'novollog')
-	regress('reg3', 'reg31', [0,1,2,4,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33],log=True, name = 'noedp_log',dep=1)
+	#regress('reg3', 'reg31', [0,1,2,4,5,7,8,10,12,17,21,22,23,26,27,28,31,32,33],log=True, name = 'noedp_log',dep=1)
 	#regress('reg3', 'reg31', [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,29,31,32,33,34,35], log=True, name = '_novollogratio')
 	#regress('reg3', 'reg31', [0,1,2,5,7,8,10,12,17,21,22,23,26,27,28,29,31,32,33,34,35], name = '_novolratio')
 

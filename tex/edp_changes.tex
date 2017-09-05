@@ -61,7 +61,7 @@ $ log(VOL_{ijt}) = \alpha_0 + \alpha_1 {PRICE}_{ijt} + \alpha_2 EDP_{ijt} + \alp
 
 $$\log( VOL_{ijt} )$$ 
 
-This variable can be interpreted as percentage changes in volume. In addition to looking at percentage changes as the main variable of interest, I looked at linear changes ($\delta VOL_{ijt} $)and linear volume $VOL_{ijt}$. Looking at the logarithm of volume was the most tractable in terms of interpreting results.
+This variable can be interpreted as percentage changes in volume. In addition to looking at percentage changes as the main variable of interest, I looked at linear changes ($\delta VOL_{ijt} $)and linear volume $VOL_{ijt}$. Previous volume is overwhelming the most statistically important factor involved with predicting future volumes. This is the main reason for looking at percentage changes in volume. Additionally, looking at the logarithm of volume makes interpreting results easier.
 
 $${PRICE}_{ijt}$$ 
 
@@ -101,11 +101,11 @@ This variable represents the volume of group $i$ in CTA $j$ as  fraction of tota
 
 $${PRICE\_RATIO}_{t} $$ 
 
-Represents price as a ratio of average price across all of the CTA groups. The coefficient represents how increasing the ratio is expected to change percentage change in volume.
+Represents price as a ratio of average price across all of the CTA groups. The coefficient represents how increasing the ratio is expected to change percentage change in volume between price and volume.  I included this term specifically because Winer includes a similar term in his model to represent the contribution of competitors price.
 
 $${VOL}_{ijt-1}, {VOL}_{ijt-2} $$
 
-Represent volume of the previous two weeks. The coefficients represent how changing volume from previous weeks is expected to change percentage changes in volume.
+Represent volume of the previous two weeks. The coefficients represent how changing volume from previous weeks is expected to change percentage changes in volume. Including a representing volume within a product's given market is an important third variable between price and volume.
 
 
 \subsection{CTA and Week Boolean Variables}
@@ -134,111 +134,13 @@ Stage Two\\
 $ log(VOL_{ijt}) = \alpha_0 + \alpha_1 \widehat{PRICE}_{ijt} + \alpha_2 EDP_{ijt} + \alpha_3 {DAIRY}_{j} + \alpha_4 FLAVOR_{j} \medskip + \alpha_5 CM_{j} + \alpha_6 DD_{j} + \alpha_{7} ID_{j} + \alpha_{8} PL_{j} \medskip + \alpha_{9} SIZE32_{j} +\alpha_{10} SIZE64_{ij}  + \alpha_{11} SIZE48_{ij} \medskip + \alpha_{12}{VOL\_RATIO}_t  + \alpha_{13} {PRICE\_RATIO}_{t} + \alpha_{14} {VOL}_{ijt-1} + \alpha_{15} {VOL}_{ijt-2}  + e_{ijt}  $\\
 
 
-\section{Preliminary Results}
+\section{Results}
 
+\subsection{Predicting Volume}
 
-I looked at volume changes, linear volume and week to week. In these models previous volume explains too much of the data. Essentially, the entire model is predicted by previous weeks volume. To correct this I included log(VOL) as the regressand term. It makes it so that the model isn't predicted by previous weeks.
+I looked at models with volume, volume changes, and percent changes in volume as my dependent variable. In all cases, previous volume has the most statistical weight in predicting next weeks volume. As you can see in the table below, using just price, and the previous two weeks of volume explains 88 percent of the variance in volumes. On the other hand, using group characteristics and previous prices only explains 25 percent of the variance in weekly volumes. Below I include the results of a model predicting volumes without using previous volume as a regressor. Results for these models are included in the Appendix.
 
-If you only include prev volume it predicts almost all of the next weeks volume.
-
-%without EDP
-\begin{center}
-\begin{tabular}{lclc}
-\toprule
-\textbf{Dep. Variable:}    &        y         & \textbf{  R-squared:         } &      0.646   \\
-\textbf{Model:}            &       OLS        & \textbf{  Adj. R-squared:    } &      0.646   \\
-\textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } &      7147.   \\
-\textbf{Date:}             & Thu, 31 Aug 2017 & \textbf{  Prob (F-statistic):} &      0.00    \\
-\textbf{Time:}             &     20:41:50     & \textbf{  Log-Likelihood:    } & -1.0482e+05  \\
-\textbf{No. Observations:} &       62567      & \textbf{  AIC:               } &  2.097e+05   \\
-\textbf{Df Residuals:}     &       62550      & \textbf{  BIC:               } &  2.098e+05   \\
-\textbf{Df Model:}         &          16      & \textbf{                     } &              \\
-\bottomrule
-\end{tabular}
-\begin{tabular}{lcccccc}
-               & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$>$$|$t$|$} & \textbf{[0.025} & \textbf{0.975]}  \\
-\midrule
-\textbf{const} &       9.9765  &        0.058     &   171.879  &         0.000        &        9.863    &       10.090     \\
-\textbf{x1}    &      -1.3185  &        0.045     &   -29.497  &         0.000        &       -1.406    &       -1.231     \\
-\textbf{x2}    &       1.1773  &        0.017     &    69.040  &         0.000        &        1.144    &        1.211     \\
-\textbf{x3}    &       1.7980  &        0.015     &   120.385  &         0.000        &        1.769    &        1.827     \\
-\textbf{x4}    &       1.7379  &        0.029     &    60.694  &         0.000        &        1.682    &        1.794     \\
-\textbf{x5}    &      -0.8637  &        0.027     &   -31.843  &         0.000        &       -0.917    &       -0.811     \\
-\textbf{x6}    &       2.4216  &        0.030     &    80.920  &         0.000        &        2.363    &        2.480     \\
-\textbf{x7}    &       2.0709  &        0.028     &    75.081  &         0.000        &        2.017    &        2.125     \\
-\textbf{x8}    &       0.6769  &        0.023     &    28.821  &         0.000        &        0.631    &        0.723     \\
-\textbf{x9}    &      -0.2144  &        0.026     &    -8.187  &         0.000        &       -0.266    &       -0.163     \\
-\textbf{x10}   &      -1.9155  &        0.037     &   -51.518  &         0.000        &       -1.988    &       -1.843     \\
-\textbf{x11}   &       0.1972  &        0.047     &     4.241  &         0.000        &        0.106    &        0.288     \\
-\textbf{x12}   &      -0.0218  &        0.038     &    -0.570  &         0.569        &       -0.097    &        0.053     \\
-\textbf{x13}   &      63.9018  &        2.688     &    23.773  &         0.000        &       58.633    &       69.170     \\
-\textbf{x14}   &      -0.2024  &        0.030     &    -6.702  &         0.000        &       -0.262    &       -0.143     \\
-\textbf{x15}   &    1.745e-07  &     1.04e-08     &    16.779  &         0.000        &     1.54e-07    &     1.95e-07     \\
-\textbf{x16}   &    1.657e-07  &     9.74e-09     &    16.999  &         0.000        &     1.47e-07    &     1.85e-07     \\
-\bottomrule
-\end{tabular}
-\begin{tabular}{lclc}
-\textbf{Omnibus:}       & 11885.013 & \textbf{  Durbin-Watson:     } &     0.054  \\
-\textbf{Prob(Omnibus):} &    0.000  & \textbf{  Jarque-Bera (JB):  } & 29726.750  \\
-\textbf{Skew:}          &   -1.054  & \textbf{  Prob(JB):          } &      0.00  \\
-\textbf{Kurtosis:}      &    5.639  & \textbf{  Cond. No.          } &  1.39e+09  \\
-\bottomrule
-\end{tabular}
-%\caption{OLS Regression Results}
-\end{center}
-
-%just previous volume
-\begin{center}
-\begin{tabular}{lclc}
-\toprule
-\textbf{Dep. Variable:}    &        y         & \textbf{  R-squared:         } &      0.886    \\
-\textbf{Model:}            &       OLS        & \textbf{  Adj. R-squared:    } &      0.886    \\
-\textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } &  1.626e+05    \\
-\textbf{Date:}             & Thu, 31 Aug 2017 & \textbf{  Prob (F-statistic):} &      0.00     \\
-\textbf{Time:}             &     19:59:20     & \textbf{  Log-Likelihood:    } & -9.2080e+05   \\
-\textbf{No. Observations:} &       62567      & \textbf{  AIC:               } &  1.842e+06    \\
-\textbf{Df Residuals:}     &       62563      & \textbf{  BIC:               } &  1.842e+06    \\
-\textbf{Df Model:}         &           3      & \textbf{                     } &               \\
-\bottomrule
-\end{tabular}
-\begin{tabular}{lcccccc}
-               & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$>$$|$t$|$} & \textbf{[0.025} & \textbf{0.975]}  \\
-\midrule
-\textbf{const} &    3.103e+05  &     8792.933     &    35.286  &         0.000        &     2.93e+05    &     3.28e+05     \\
-\textbf{x1}    &   -1.685e+05  &     5117.634     &   -32.926  &         0.000        &    -1.79e+05    &    -1.58e+05     \\
-\textbf{x2}    &       0.5407  &        0.004     &   148.953  &         0.000        &        0.534    &        0.548     \\
-\textbf{x3}    &       0.4112  &        0.004     &   113.149  &         0.000        &        0.404    &        0.418     \\
-\bottomrule
-\end{tabular}
-\begin{tabular}{lclc}
-\textbf{Omnibus:}       & 62854.779 & \textbf{  Durbin-Watson:     } &      2.246    \\
-\textbf{Prob(Omnibus):} &    0.000  & \textbf{  Jarque-Bera (JB):  } & 19005091.109  \\
-\textbf{Skew:}          &    4.361  & \textbf{  Prob(JB):          } &       0.00    \\
-\textbf{Kurtosis:}      &   87.936  & \textbf{  Cond. No.          } &   1.13e+07    \\
-\bottomrule
-\end{tabular}
-%\caption{OLS Regression Results}
-\end{center}
-
-
-Below are preliminary results from the basic model. In the basic model, all coefficients are statistically significant coefficients at the five percent level. Interestingly enough by removing EDP, the boolean variables regarding dairy, flavor and size become increase in p-value. This suggests that EDP acts as a signal that transmits information about the product category.
-
-Both dairy product and flavor will see roughly an extra percentage change upward all else equal.
-
-All else equal DD brand has roughly 2 to 3 percent less than the other brands. CA has roguhly 2 percent less than the other brands
-
-Size48 has roughly 3 percent less percentage change
-
-Prev price is not statistically signicant. Prev price 2 switches sign depending on the model. This supports the use of these variables as instrumental variables.
-
-The reason that the coefficients on previous volume are so low is because the volume are usually in the order of magnitudes of 10 millions.
-
-
-EDP is actually positively related to volume. This may be because nicer brands may cause bigger volume changes when on promotion.
-
-
-
-
+When looking at changes in volume and linear volume category characteristics do not carry as much weight in predicting volume as previous volumes. The fixed effects generated by product characteristics emerge when estimating the log linear model. Using $log(VOL)$ (i.e. percentage change in volume) as the regressand term helps distinguish how price and product characteristics contribute to volume changes. Below are preliminary results. In the described above, all coefficients are statistically significant coefficients at the five percent level. 
 
 \begin{center}
 \begin{tabular}{lclc}
@@ -284,14 +186,61 @@ EDP is actually positively related to volume. This may be because nicer brands m
 \bottomrule
 \end{tabular}
 %\caption{OLS Regression Results}
+\end{center}  
+
+Below is the table with just EDP as an explanatory variable. Removing the EDP causes most of the coefficients to intensify in magnitude.
+
+%without EDP
+\begin{center}
+\begin{tabular}{lclc}
+\toprule
+\textbf{Dep. Variable:}    &        LOG(VOL)         & \textbf{  R-squared:         } &      0.646   \\
+\textbf{Model:}            &       OLS        & \textbf{  Adj. R-squared:    } &      0.646   \\
+\textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } &      7147.   \\
+\textbf{Date:}             & Thu, 31 Aug 2017 & \textbf{  Prob (F-statistic):} &      0.00    \\
+\textbf{Time:}             &     20:41:50     & \textbf{  Log-Likelihood:    } & -1.0482e+05  \\
+\textbf{No. Observations:} &       62567      & \textbf{  AIC:               } &  2.097e+05   \\
+\textbf{Df Residuals:}     &       62550      & \textbf{  BIC:               } &  2.098e+05   \\
+\textbf{Df Model:}         &          16      & \textbf{                     } &              \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lcccccc}
+               & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$>$$|$t$|$} & \textbf{[0.025} & \textbf{0.975]}  \\
+\midrule
+\textbf{CONST} &       9.9765  &        0.058     &   171.879  &         0.000        &        9.863    &       10.090     \\
+\textbf{PRICE}    &      -1.3185  &        0.045     &   -29.497  &         0.000        &       -1.406    &       -1.231     \\
+\textbf{DAIRY}    &       1.1773  &        0.017     &    69.040  &         0.000        &        1.144    &        1.211     \\
+\textbf{FLAVOR}    &       1.7980  &        0.015     &   120.385  &         0.000        &        1.769    &        1.827     \\
+\textbf{CM}    &       1.7379  &        0.029     &    60.694  &         0.000        &        1.682    &        1.794     \\
+\textbf{DD}    &      -0.8637  &        0.027     &   -31.843  &         0.000        &       -0.917    &       -0.811     \\
+\textbf{ID}    &       2.4216  &        0.030     &    80.920  &         0.000        &        2.363    &        2.480     \\
+\textbf{PL}    &       2.0709  &        0.028     &    75.081  &         0.000        &        2.017    &        2.125     \\
+\textbf{SIZE32}    &       0.6769  &        0.023     &    28.821  &         0.000        &        0.631    &        0.723     \\
+\textbf{SIZE64}    &      -0.2144  &        0.026     &    -8.187  &         0.000        &       -0.266    &       -0.163     \\
+\textbf{SIZE48}   &      -1.9155  &        0.037     &   -51.518  &         0.000        &       -1.988    &       -1.843     \\
+\textbf{PREV PRICE 1}   &       0.1972  &        0.047     &     4.241  &         0.000        &        0.106    &        0.288     \\
+\textbf{PREV PRICE 2}   &      -0.0218  &        0.038     &    -0.570  &         0.569        &       -0.097    &        0.053     \\
+\textbf{VOL RATIO}   &      63.9018  &        2.688     &    23.773  &         0.000        &       58.633    &       69.170     \\
+\textbf{PRICE RATIO}   &      -0.2024  &        0.030     &    -6.702  &         0.000        &       -0.262    &       -0.143     \\
+\textbf{PREV VOL 1}   &    1.745e-07  &     1.04e-08     &    16.779  &         0.000        &     1.54e-07    &     1.95e-07     \\
+\textbf{PREV VOL 2}   &    1.657e-07  &     9.74e-09     &    16.999  &         0.000        &     1.47e-07    &     1.85e-07     \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lclc}
+\textbf{Omnibus:}       & 11885.013 & \textbf{  Durbin-Watson:     } &     0.054  \\
+\textbf{Prob(Omnibus):} &    0.000  & \textbf{  Jarque-Bera (JB):  } & 29726.750  \\
+\textbf{Skew:}          &   -1.054  & \textbf{  Prob(JB):          } &      0.00  \\
+\textbf{Kurtosis:}      &    5.639  & \textbf{  Cond. No.          } &  1.39e+09  \\
+\bottomrule
+\end{tabular}
+%\caption{OLS Regression Results}
 \end{center}
 
-All of the CTA dummy variables are statistically significant at the five percent levels. When using an F-test for join significance of these variables, they are significant at the five percent level. This means that these variables are related to volume changes and should not be taken lightly. Additionally, when including the CTA dummies, total regional volume is no longer statistically significant. The weekly dummy variables appear to be less important to the overall results. They pass an f-test for joint significant at the 5 percent, but considering the number of data points this is unsurprising. Most of the values do not pass individual t-tests. Due to the size of the table, I include the results of the CTA boolean variables in the appendix.
+Additionally, All of the CTA dummy variables are statistically significant at the five percent levels. When using an F-test for join significance of these variables, they are significant at the five percent level. This means that these variables are related to volume changes and should not be taken lightly. Additionally, when including the CTA dummies, total regional volume is no longer statistically significant. The weekly dummy variables appear to be less important to the overall results. They pass an f-test for joint significant at the 5 percent, but considering the number of data points this is unsurprising. Most of the values do not pass individual t-tests. Due to the size of the table, I include the results of the CTA boolean variables in the appendix.
 
+\subsection{Two Stage least squares}
 
-Running the regression causes the coefficient on price to fall . Additionally, the product characteristics are statistically significant after running the two stage model. This suggests that price and product characteristics are highly related. After cleaning price of its endogenous relationship with the other variables in the first stage, these characteristics become statistically relevant in the context of predicting volume changes. Below are the results of running the two stage regression.
-
-After running the two stage regression  the 
+Having higher p-values than the group characteristics and previous volume suggests that previous price may not be directly correlated with percentage changes in volume. This suggests it would make a good instrument for volumes, especially when you consider the economic mechanism proposed in the reference price literature. Running the regression causes the coefficient on price to fall. Additionally, the product characteristics are statistically significant after running the two stage model. This suggests that price and product characteristics are highly related. After cleaning price of its endogenous relationship with the other variables in the first stage, these characteristics become statistically relevant in the context of predicting volume changes. Below are the results of running the two stage regression. Running the two stage regression produces the results in the table below.
 
 \begin{center}
 \begin{tabular}{lclc}
@@ -343,7 +292,90 @@ After running the two stage regression  the
 
 \appendix
 
-\section{Appendix Linear Volume Results}
+\section{Appendix Volume Results}
+
+
+This table below shows how previous volume can be used to predict future volumes.
+%just previous volume
+\begin{center}
+\begin{tabular}{lclc}
+\toprule
+\textbf{Dep. Variable:}    &        VOL         & \textbf{  R-squared:         } &      0.886    \\
+\textbf{Model:}            &       OLS        & \textbf{  Adj. R-squared:    } &      0.886    \\
+\textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } &  1.626e+05    \\
+\textbf{Date:}             & Thu, 31 Aug 2017 & \textbf{  Prob (F-statistic):} &      0.00     \\
+\textbf{Time:}             &     19:59:20     & \textbf{  Log-Likelihood:    } & -9.2080e+05   \\
+\textbf{No. Observations:} &       62567      & \textbf{  AIC:               } &  1.842e+06    \\
+\textbf{Df Residuals:}     &       62563      & \textbf{  BIC:               } &  1.842e+06    \\
+\textbf{Df Model:}         &           3      & \textbf{                     } &               \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lcccccc}
+               & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$>$$|$t$|$} & \textbf{[0.025} & \textbf{0.975]}  \\
+\midrule
+\textbf{const} &    3.103e+05  &     8792.933     &    35.286  &         0.000        &     2.93e+05    &     3.28e+05     \\
+\textbf{PRICE}    &   -1.685e+05  &     5117.634     &   -32.926  &         0.000        &    -1.79e+05    &    -1.58e+05     \\
+\textbf{PREV VOL 1}    &       0.5407  &        0.004     &   148.953  &         0.000        &        0.534    &        0.548     \\
+\textbf{PREV VOL 2}    &       0.4112  &        0.004     &   113.149  &         0.000        &        0.404    &        0.418     \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lclc}
+\textbf{Omnibus:}       & 62854.779 & \textbf{  Durbin-Watson:     } &      2.246    \\
+\textbf{Prob(Omnibus):} &    0.000  & \textbf{  Jarque-Bera (JB):  } & 19005091.109  \\
+\textbf{Skew:}          &    4.361  & \textbf{  Prob(JB):          } &       0.00    \\
+\textbf{Kurtosis:}      &   87.936  & \textbf{  Cond. No.          } &   1.13e+07    \\
+\bottomrule
+\end{tabular}
+%\caption{OLS Regression Results}
+\end{center} 
+
+  The table below shows how group characteristics can predict volumes. Without taking into account percentage changes in volume, they appear to be a poor predictor.
+
+\begin{center}
+\begin{tabular}{lclc}
+\toprule
+\textbf{Dep. Variable:}    &        VOL         & \textbf{  R-squared:         } &      0.257   \\
+\textbf{Model:}            &       OLS        & \textbf{  Adj. R-squared:    } &      0.257   \\
+\textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } &      1546.   \\
+\textbf{Date:}             & Thu, 31 Aug 2017 & \textbf{  Prob (F-statistic):} &      0.00    \\
+\textbf{Time:}             &     20:39:15     & \textbf{  Log-Likelihood:    } & -9.7952e+05  \\
+\textbf{No. Observations:} &       62567      & \textbf{  AIC:               } &  1.959e+06   \\
+\textbf{Df Residuals:}     &       62552      & \textbf{  BIC:               } &  1.959e+06   \\
+\textbf{Df Model:}         &          14      & \textbf{                     } &              \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lcccccc}
+               & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$>$$|$t$|$} & \textbf{[0.025} & \textbf{0.975]}  \\
+\midrule
+\textbf{CONST} &   -3.749e+06  &     7.64e+04     &   -49.063  &         0.000        &     -3.9e+06    &     -3.6e+06     \\
+\textbf{PRICE}    &   -1.624e+06  &     5.03e+04     &   -32.273  &         0.000        &    -1.72e+06    &    -1.53e+06     \\
+\textbf{EDP}    &    1.295e+06  &     5.73e+04     &    22.619  &         0.000        &     1.18e+06    &     1.41e+06     \\
+\textbf{DIARY}    &    1.005e+06  &     2.02e+04     &    49.818  &         0.000        &     9.65e+05    &     1.04e+06     \\
+\textbf{FLAVOR}    &    6.009e+05  &     1.81e+04     &    33.171  &         0.000        &     5.65e+05    &     6.36e+05     \\
+\textbf{CM}    &    2.195e+06  &     3.26e+04     &    67.421  &         0.000        &     2.13e+06    &     2.26e+06     \\
+\textbf{DD}    &     4.15e+05  &     3.21e+04     &    12.939  &         0.000        &     3.52e+05    &     4.78e+05     \\
+\textbf{ID}    &    2.503e+06  &     3.38e+04     &    74.167  &         0.000        &     2.44e+06    &     2.57e+06     \\
+\textbf{PL}    &    3.046e+06  &     3.17e+04     &    96.155  &         0.000        &     2.98e+06    &     3.11e+06     \\
+\textbf{SIZE32}    &    2.045e+06  &     2.86e+04     &    71.614  &         0.000        &     1.99e+06    &      2.1e+06     \\
+\textbf{SIZE64}   &    9.073e+05  &     3.44e+04     &    26.351  &         0.000        &      8.4e+05    &     9.75e+05     \\
+\textbf{SIZE48}   &    4.081e+05  &      4.7e+04     &     8.679  &         0.000        &     3.16e+05    &        5e+05     \\
+\textbf{PRICE RATIO}   &     4.56e+05  &     4.82e+04     &     9.468  &         0.000        &     3.62e+05    &      5.5e+05     \\
+\textbf{PREV PRICE 1}   &    6.346e+04  &     4.28e+04     &     1.482  &         0.138        &    -2.05e+04    &     1.47e+05     \\
+\textbf{PREV PRICE 2}   &    -4.06e+04  &     3.52e+04     &    -1.153  &         0.249        &     -1.1e+05    &     2.84e+04     \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lclc}
+\textbf{Omnibus:}       & 55090.052 & \textbf{  Durbin-Watson:     } &      0.161   \\
+\textbf{Prob(Omnibus):} &    0.000  & \textbf{  Jarque-Bera (JB):  } & 2220030.171  \\
+\textbf{Skew:}          &    4.165  & \textbf{  Prob(JB):          } &       0.00   \\
+\textbf{Kurtosis:}      &   30.968  & \textbf{  Cond. No.          } &       63.5   \\
+\bottomrule
+\end{tabular}
+%\caption{OLS Regression Results}
+\end{center} 
+
+
+ The table below combines previous volumes with product characteristics to predict future volumes.
 
 \begin{center}
 \begin{tabular}{lclc}
@@ -386,6 +418,52 @@ After running the two stage regression  the
 \textbf{Prob(Omnibus):} &    0.000  & \textbf{  Jarque-Bera (JB):  } & 10318654.001  \\
 \textbf{Skew:}          &    2.585  & \textbf{  Prob(JB):          } &       0.00    \\
 \textbf{Kurtosis:}      &   65.701  & \textbf{  Cond. No.          } &   1.39e+09    \\
+\bottomrule
+\end{tabular}
+%\caption{OLS Regression Results}
+\end{center} 
+
+The table below estimates volume changes using the variables from the previous model. It is more successful at predicting volumes, however not as successful as using $LOG(VOL)$ as the dependent variable.
+
+\begin{center}
+\begin{tabular}{lclc}
+\toprule
+\textbf{Dep. Variable:}    &        $\Delta VOL$        & \textbf{  R-squared:         } &      0.282    \\
+\textbf{Model:}            &       OLS        & \textbf{  Adj. R-squared:    } &      0.282    \\
+\textbf{Method:}           &  Least Squares   & \textbf{  F-statistic:       } &      1637.    \\
+\textbf{Date:}             & Thu, 31 Aug 2017 & \textbf{  Prob (F-statistic):} &      0.00     \\
+\textbf{Time:}             &     19:24:17     & \textbf{  Log-Likelihood:    } & -9.1784e+05   \\
+\textbf{No. Observations:} &       62567      & \textbf{  AIC:               } &  1.836e+06    \\
+\textbf{Df Residuals:}     &       62551      & \textbf{  BIC:               } &  1.836e+06    \\
+\textbf{Df Model:}         &          15      & \textbf{                     } &               \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lcccccc}
+               & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$>$$|$t$|$} & \textbf{[0.025} & \textbf{0.975]}  \\
+\midrule
+\textbf{CONST} &    2.188e+05  &      2.9e+04     &     7.542  &         0.000        &     1.62e+05    &     2.76e+05     \\
+\textbf{PRICE}    &   -1.901e+06  &      1.9e+04     &  -100.107  &         0.000        &    -1.94e+06    &    -1.86e+06     \\
+\textbf{EDP}    &    1.051e+05  &     2.14e+04     &     4.904  &         0.000        &     6.31e+04    &     1.47e+05     \\
+\textbf{DAIRY}    &    -6.31e+04  &     7679.756     &    -8.216  &         0.000        &    -7.82e+04    &     -4.8e+04     \\
+\textbf{FLAVOR}    &   -3.198e+04  &     6812.641     &    -4.694  &         0.000        &    -4.53e+04    &    -1.86e+04     \\
+\textbf{CM}    &   -1.141e+05  &     1.26e+04     &    -9.072  &         0.000        &    -1.39e+05    &    -8.95e+04     \\
+\textbf{DD}    &   -1.899e+04  &      1.2e+04     &    -1.585  &         0.113        &    -4.25e+04    &     4500.494     \\
+\textbf{ID}    &   -1.431e+05  &     1.31e+04     &   -10.892  &         0.000        &    -1.69e+05    &    -1.17e+05     \\
+\textbf{PL}    &   -1.532e+05  &     1.26e+04     &   -12.146  &         0.000        &    -1.78e+05    &    -1.29e+05     \\
+\textbf{SIZE32}    &   -1.324e+05  &     1.11e+04     &   -11.974  &         0.000        &    -1.54e+05    &    -1.11e+05     \\
+\textbf{SIZE64}   &   -5.736e+04  &     1.29e+04     &    -4.443  &         0.000        &    -8.27e+04    &    -3.21e+04     \\
+\textbf{SIZE48}   &   -2.194e+04  &     1.76e+04     &    -1.250  &         0.211        &    -5.63e+04    &     1.25e+04     \\
+\textbf{PREV PRICE 1}   &    2.281e+06  &      1.8e+04     &   126.860  &         0.000        &     2.25e+06    &     2.32e+06     \\
+\textbf{PREV PRICE 2}   &   -4.751e+05  &      1.6e+04     &   -29.738  &         0.000        &    -5.06e+05    &    -4.44e+05     \\
+\textbf{VOL RATIO}   &    1.888e+07  &     4.48e+05     &    42.106  &         0.000        &      1.8e+07    &     1.98e+07     \\
+\textbf{PRICE RATIO}   &   -4.587e+04  &     1.32e+04     &    -3.486  &         0.000        &    -7.17e+04    &    -2.01e+04     \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lclc}
+\textbf{Omnibus:}       & 32047.211 & \textbf{  Durbin-Watson:     } &      2.745    \\
+\textbf{Prob(Omnibus):} &    0.000  & \textbf{  Jarque-Bera (JB):  } & 16022654.435  \\
+\textbf{Skew:}          &   -1.135  & \textbf{  Prob(JB):          } &       0.00    \\
+\textbf{Kurtosis:}      &   81.364  & \textbf{  Cond. No.          } &       766.    \\
 \bottomrule
 \end{tabular}
 %\caption{OLS Regression Results}
