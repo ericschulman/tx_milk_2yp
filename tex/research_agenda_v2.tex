@@ -32,11 +32,11 @@
 
 \section{Introduction}
 
-The objective of this research project predicting how consumers react to changes in the every day prices (EDP) of coffee creamers. It is intended to help firms adjust their every day prices to maximize the volume they sell.
+This research project's objective is predicting how consumers react to changes in the every day prices (EDP). Predicting how consumers will respond to EDP changes can help firms adjust their everyday prices to maximize volume sold during promotions.
 
-This project involves two approaches, with unique advantages, to predict how volume will react to EDP changes. I quantifying the statistical relationship between EDP and volume using an econometric model inspired by Winer's 1986 paper \cite{winer}. In this paper, Winer models the probability buying a brand's product. His model is a function of previous quantity sold, consumer price expectations, competitors price and advertising spending. Winer used data directly from the point of sale, so my model is modified to take advantage of syndicated data from Nielson.
+This project takes two approaches towards predicting consumer behavior, each with unique advantages. The first approach involves quantifying the statistical relationship between EDP and volume using an traditional econometric model inspired by Winer's 1986 paper \cite{winer}. In this paper, Winer estimates the probability buying a brand's product. His paper models purchase probabilities as a function of previous quantity sold, consumer price expectations, competitors price and advertising spending. Winer used data directly from the point of sale, so my model is modified to take advantage of syndicated data from Nielson.
 
-Then, I plan to specify a dynamic program. The dynamic program models a consumer choosing a quantity of goods to buy based on their past purchases, and expected future prices. In this model, the consumer minimizes discounted future expenditures and forms expectations about future prices. The approach is modeled after the approach in Gonul and Srinivasan 1996 paper\cite{gonul}. I plan to specify the parameters of this model by iterating between solving to for the consumers expenditures and estimating the model parameters using maximum likelihood estimation. Similarly, to Winer's paper,  the data used is directly from the point of sale, so my model is modified to take advantage of syndicated data from Nielson.
+Then, I specify a dynamic program. The dynamic program models a consumer choosing a quantity of goods to buy based on their past purchases, and expected future prices. In this model, the consumer minimizes discounted future expenditures and forms expectations about future prices. The approach is modeled after the approach in Gonul and Srinivasan 1996 paper\cite{gonul}. I plan to specify the parameters of this model by iterating between solving to for the consumers expenditures and estimating the model parameters using maximum likelihood estimation. Similarly, to Winer's paper,  the data used is directly from the point of sale, so my model is modified to take advantage of syndicated data from Nielson.
 
 Dynamic program makes it easier to isolate a causal relationship between consumer behavior and EDP changes within the context of the model. It is designed to model consumer behavior. However, it is less statistically sound and less in tune with reality based on assumptions and the not well understood statistical properties of dynamic programming.
 
@@ -142,11 +142,12 @@ Using this technique involves running a regression using a variable called an in
 
 \section{Dynamic Program}
 
-The issues with the dynamic program are that its statisical properties are less well known. Choosing a distribution to fit the data and the parameters are not necessarily statisical sound.
-
 On the other hand the model is designed to reflect a consumer reacting to EDP changes. Although the statistical properties are less sound, it is easier to conclude that changes are consumer behavior within the model can be attributed to changes in EDP.
 
+The issues with the dynamic program are that its statistical properties are less well known. Choosing a distribution to fit the data and the parameters are not necessarily statistically sound.
+
 Essentially consists of a cost minimization problem over multiple periods.
+
 
 
 \section{Gonul and Srinivasan's Model}
@@ -176,44 +177,42 @@ They initialized values in the cost function and then iterated between the likel
 
 \subsection{Model Specification}
 
-I have specified a dynamic programming model where consumers buy more because they expect higher prices in the future. In this model, consumers do not buy more during the promotion because they derive utility from seeing a price decrease. They buy more because they expect future prices to go up the next time the visit the store. You can use the model to see how consumers will react to a change in everyday price.
+Like Gonul and Srinivasan, this project involves a dynamic programming model. This model also builds on the premise that consumers anticipate future promotions and adjust their purchase behavior accordingly.
 
-It is required to do this bliss point because the consumer may have more in stock or less in stock than the required amount. if you minimize cost subject to the constraint that they must have enough goods on hand, then it will not work out. They just end up always purchasing during the promotion the required amount. they need to be uncertain when the promotion will be and if it worth waiting.
+You need to minimize costs. Need to have a target, and get a penalty for not hitting it. They should be allowed to miss the target, otherwise, they will stockpile getting a reward for having more than enough.
 
 
-I started my model with the standard economic model of consumer decisions where consumers try to maximize utility subject to a budget constraint. I use a special type of utility function called quasi-linear utility function. By choosing quasi-linear utility function, we can re-write our problem as an unconstrained problem (assuming $m$ is large enough) avoiding the need to calculate $m$ (the budget) empirically. 
+In this model the consumer decides on a purchase plan each time the go to the store based on their current stockpiles, prices, and their expectations for future prices. As a by product of this plan, make a purchase at their current time in the store. As a result, the consumer would solve the problem for one period as:
 
-$$\text{Maximize}_{x,y} U(x) -px $$
+$$ \text{Minimize}_{x}  \alpha_1 (x_1 +x_0 - \bar{x})^2 + p_1 x_1 $$
 
-I then modify the model in 2 ways
+Essentially the consumer has a target consumption of \bar{x}, and they incur a penalty for consuming more or less. They also incur the cost of the amount they buy and the price. In order to accurately analyze the problem. The consumer chooses his consumption by setting an optimal plan for future consumption. However, the consumer doesn't have access to future prices. As a result, the must form expectations for these prices and calculate their plan accordingly. This plan may or may not be actualized depending upon the price expectations. The decide on a current purchase as well as their expectations for future purchases on each trip to the store.
+
+$$ \text{Minimize}_{x} \sum_t \alpha_t (x_t + x_{t-1} - \bar{x})^2 + p x $$
+
+There are two key ways this is important.
 
 (1) Consumers are maximizing over a finite horizon. They can store goods and carry them over to the next periods. More over, they can carry over goods from period to period, so they can 'stuck up' on good during a promotion. Their left over consumption is given by a function: $$x^{res}_t(x_{t-1},x^{res}_{t-1})$$
 
 (2) They only have access to expected prices. Consumers must visit a store and consume over multiple periods. They try to maximize utility over multiple periods and form expectations about what prices will be in future periods. Expectations are formed using a rule: $$p^{exp}_t(p_{t-1})$$. The reason is because, consumers would not need to plan ahead if they knew the actual prices. They would set a consumption plan and just follow it.
 
-The new problem is given by:
 
-$$ \text{Maximize}_{x^{exp}_t,x_0} \alpha_0 U_0(x_t +x^{res}_0) + \sum_1^T \alpha_t U_t(x^{exp}_t+x^{res}_{t}) - px_0 - \sum_1^T p^{exp}_t x^{exp}_t $$
-
-In each period, the consumer uses this rule to choose a consumption plan. As a by product of this plan, they choose $x_0$ to purchase. They also set a co$x^{exp}_t$ as a by-product reflecting the fact that the consumer is planning for the future. The $\alpha$ terms are weights that represent the importance of future periods.
-
-The expected prices $p^{exp}_t$ may not match $p_t$ which means the consumer cannot plan perfectly for the future in each period. In each period the consumer needs to decide on a new amount to consume based on their expected prices $p_t^{exp}$  and residual $x^{res}_0$ to calculate $x_0$. Hence, the dynamic nature of the problem.
-
-
-Currently my model doesn't actually include multiple brands, but it can be extended. To have multiple brands.
-
-\section{Price expectations}
-
-Gonul and Srinivasan has consumers guess prices using a markov process.
-
-This model places importance on consumers' expectations about future prices in relation to their current purchasing decisions. I was hoping to try several rules to dictate how consumers form expectations and compare the results.
-
+current purchasing decisions. I was hoping to try several rules to dictate how consumers form expectations and compare the results.
+Gonul and Srinivasan has consumers guess prices using a markov process. This model places importance on consumers' expectations about future prices in relation to their 
 One such rule, I had in mind was:
 
 $p^{exp}_t = \dfrac {(2^t-1)p_{t-2}} {2^t} + \dfrac {(2^t+1)p_{t-1}} {2^t}$ 
 
 It has the property that consumers expectations fluctuate between high and low, but converge to and average between the promoted and non-promoted price.
 
+
+
+
+This is consistent with an economic model of utility maximization for a consumer with quasi-linear utility, and a bliss point. It is required to do this bliss point because the consumer may have more in stock or less in stock than the required amount. if you minimize cost subject to the constraint that they must have enough goods on hand, then it will not work out. They just end up always purchasing during the promotion the required amount. they need to be uncertain when the promotion will be and if it worth waiting.
+
+
+This problem actually fits into economic theory. I started my model with and economic model of consumer decisions where consumers try to maximize utility subject to a budget constraint. I use a special type of utility function called quasi-linear utility function. By choosing quasi-linear utility function, we can re-write our problem as an unconstrained problem (assuming $m$ is large enough) avoiding the need to calculate $m$ (the budget) empirically. 
+Currently my model doesn't actually include multiple brands, but it can be extended. To have multiple brands.
 
 \section{Preliminary Results}
 
@@ -247,6 +246,8 @@ Previous price has higher p-values than the group characteristics and previous v
 Running the two stage regression causes the coefficient on price to fall. Additionally, the product characteristics are statistically significant after running the two stage model. This suggests that price and product characteristics are highly related. After cleaning price of its endogenous relationship with the other variables in the first stage, these characteristics become statistically relevant in the context of predicting volume changes. Below are the results of running the two stage regression. I included the results from the first stage in the appendix.
 
 \section{Conclusion}
+In this model differs from the econometric models built around reference prices because consumers buy more because they expect higher prices in the future. They buy more because they expect future prices to go up the next time the visit the store and want to save money. They derive no extra utility from seeing a price decrease like in the reference price literature.
+
 Past Volumes highly correlated with Future Volumes in the statistical model. I worked to isolate the statistical impact of EDP along with brand characteristics on Volume changes.
 
 Additionally it turns out that EDP is highly correlated with volume changes.
