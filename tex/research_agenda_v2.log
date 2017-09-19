@@ -1,8 +1,8 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.4.17)  15 SEP 2017 11:57
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2017.4.17)  18 SEP 2017 21:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**research_agenda_v2.tex
+**research_agenda_v2
 (./research_agenda_v2.tex
 LaTeX2e <2016/03/31>
 Babel <3.9r> and hyphenation patterns for 77 language(s) loaded.
@@ -223,7 +223,8 @@ Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
 \f@ncyO@olf=\skip58
 \f@ncyO@orf=\skip59
 )
-(./research_agenda_v2.aux (./tables/log_vol.aux))
+(./research_agenda_v2.aux (./tables/just_vol.aux) (./tables/log_vol.aux)
+(./tables/2SLS.aux) (./tables/cta_boolean.aux))
 \openout1 = `research_agenda_v2.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 29.
@@ -334,13 +335,13 @@ e
 
 [1
 
-{/usr/share/texlive/texmf-dist/fonts/map/pdftex/updmap/pdftex.map}] [2]
-Underfull \hbox (badness 10000) in paragraph at lines 63--64
+{/usr/share/texlive/texmf-dist/fonts/map/pdftex/updmap/pdftex.map}]
+Underfull \hbox (badness 10000) in paragraph at lines 51--52
 
  []
 
 
-Overfull \hbox (19.81596pt too wide) in paragraph at lines 65--66
+Overfull \hbox (19.81596pt too wide) in paragraph at lines 53--54
 []$[][] \OT1/cmr/m/n/10 = \OML/cmm/m/it/10 [] \OT1/cmr/m/n/10 + \OML/cmm/m/it/
 10 [][][] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 [][][] \OT1/cmr/m/n/10 + \OML/cm
 m/m/it/10 []PRICE[]REACT[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 [][] \OT1/cmr/m
@@ -348,63 +349,85 @@ m/m/it/10 []PRICE[]REACT[] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 [][] \OT1/cmr/m
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 65--66
+Underfull \hbox (badness 10000) in paragraph at lines 53--54
 
  []
 
-[3]
-Underfull \hbox (badness 10000) in paragraph at lines 86--87
+[2] [3]
+Underfull \hbox (badness 10000) in paragraph at lines 74--75
 
  []
 
 
-Overfull \hbox (3.13051pt too wide) in paragraph at lines 88--89
+Overfull \hbox (3.13051pt too wide) in paragraph at lines 76--77
 \OML/cmm/m/it/10 [][][] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 [][][] \OT1/cmr/m/
 n/10 + \OML/cmm/m/it/10 [][][] \OT1/cmr/m/n/10 + \OML/cmm/m/it/10 [][][] \OT1
 /cmr/m/n/10 + \OML/cmm/m/it/10 [][][] \OT1/cmr/m/n/10 +
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 88--89
+Underfull \hbox (badness 10000) in paragraph at lines 76--77
 
  []
 
-[4] [5]
-Underfull \hbox (badness 10000) in paragraph at lines 136--137
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 115--116
 
  []
 
-[6] [7] (./research_agenda_v2.bbl) [8] [9]
-\openout2 = `tables/log_vol.aux'.
+[5] [6] [7] [8] [9] (./research_agenda_v2.bbl) [10] [11]
+\openout2 = `tables/just_vol.aux'.
 
- (./tables/log_vol.tex) [10
+ (./tables/just_vol.tex) [12
+
+] [13
 
 ]
-(./research_agenda_v2.aux (./tables/log_vol.aux)) ) 
+\openout2 = `tables/log_vol.aux'.
+
+ (./tables/log_vol.tex) [14
+
+] [15
+
+]
+\openout2 = `tables/2SLS.aux'.
+
+ (./tables/2SLS.tex) [16
+
+] [17
+
+]
+\openout2 = `tables/cta_boolean.aux'.
+
+
+No file tables/cta_boolean.tex.
+(./research_agenda_v2.aux (./tables/just_vol.aux) (./tables/log_vol.aux)
+(./tables/2SLS.aux) (./tables/cta_boolean.aux)) ) 
 Here is how much of TeX's memory you used:
- 3780 strings out of 493069
- 54257 string characters out of 6138222
- 135114 words of memory out of 5000000
- 7252 multiletter control sequences out of 15000+600000
+ 3802 strings out of 493069
+ 54641 string characters out of 6138222
+ 136020 words of memory out of 5000000
+ 7255 multiletter control sequences out of 15000+600000
  9975 words of font info for 36 fonts, out of 8000000 for 9000
  1137 hyphenation exceptions out of 8191
- 38i,11n,43p,952b,244s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/typ
-e1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
-lic/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr1
-2.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><
-/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/sha
-re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/tex
-live/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on research_agenda_v2.pdf (10 pages, 171324 bytes).
+ 38i,11n,43p,1587b,244s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmmi5.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.
+pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on research_agenda_v2.pdf (17 pages, 189670 bytes).
 PDF statistics:
- 85 PDF objects out of 1000 (max. 8388607)
- 60 compressed objects within 1 object stream
+ 111 PDF objects out of 1000 (max. 8388607)
+ 78 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
