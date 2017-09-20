@@ -32,43 +32,53 @@
 
 \section{Introduction}
 
-This objective of this research project is predicting the consumer reaction to changes in the every day prices (EDP). Predicting how consumers will respond to EDP changes can help firms adjust their everyday prices to maximize sales volume, and revenue before and after promotions. The point of this project is to utilize multiple approaches to get as full a picture of consumer behavior as possible. In particular, this study involves two approaches. The first involves a traditional econometric model. This leverages well understood statistical techniques to describe the relationship between EDP and consumer behavior. However, it does not identify causal relationships between the EDP and consumer behavior. The second is a dynamic program, a recursive maximization problem that models consumer purchasing decisions. The dynamic program better identifies a causal relationship between consumer behavior and EDP changes, however the results are highly related to the assumption of the model.
+The objective of this research project is predicting the consumer reaction to changes in every day prices (EDP). Predicting how consumers will respond to EDP changes can help firms adjust their everyday prices to maximize sales volume, and revenue before and after promotions. The point of this project is to utilize multiple approaches to get as full a picture of consumer behavior as possible. In particular, this study involves two approaches. The first involves a traditional econometric model. This leverages well understood statistical techniques to describe the relationship between EDP and consumer behavior. However, it does not identify causal relationships between the EDP and consumer behavior. The second is a dynamic program, a recursive maximization problem that models consumer purchasing decisions. The dynamic program better isolates the causal relationship between consumer behavior and EDP changes, however the results are influenced by the assumption of the model.
 
 \subsection{Relevant Literature}
 
-Intuitively, manufacturers run trade promotions because they expect consumers to buy more while the price is low. The amount sold during the promotion is related to the way consumers perceive past and current prices. As a result, research into trade promotions centers around the question of how past prices relate to current purchasing decisions. Essentially, this project examines two mechanisms from the literature that describe how consumers consider past prices when making purchasing decisions.
+Manufacturers run trade promotions because they expect consumers to buy more when price are low. The way consumers perceive past and current prices are what make a promotion effective. As a result, research into trade promotions asks about how past prices relate to current purchasing decisions.  This project examines two mechanisms from the literature that describe how consumers consider past prices when making purchasing decisions.
 
-The first way, involves consumer using past prices as reference as to whether or not the will reduce costs by buying the product. Essentially the past prices form heuristic for consumers trying to minimize their expenditures. Putler's 1991 paper works out theoretical treatment of reference prices \cite{putler}. More importantly, including the of effects of using past prices as a hueristic for savings lends itself well to an econometric model. The most cited paper including these effects is Winer's econometric model from 1986. His model he predicts probability consumers buy from a brand as a function of previous quantity sold, consumers price expectations, competitors' price and advertising spending.  \cite{winer}. Another model worth mentioning is Krishnamurthi and Raj's econometric model separate consumers' decisions about which brand to purchase and the quantity of the brand to buy into separate economic decisions \cite{krishnamurthi}. Each of these decisions is modeled using a separate econometric equations. 
+In the first way, consumer use past prices as reference when deciding whether or not to buy the product during the promotion. In this way, the past prices serve as a heuristic for consumers trying to minimize their expenditures. Putler's 1991 paper works out theoretical treatment of this mechanism \cite{putler}. More importantly, including the of effects of using past prices as a reference lends itself well to an econometric model. The most cited paper including these effects is Winer's econometric model from 1986. His model he predicts the probability consumers buy from a brand as a function of previous quantity sold, consumers price expectations, competitors' price and advertising spending.  \cite{winer}. Krishnamurthi and Raj's econometric model improves on Winer's model by separating consumers' decisions about which brand to purchase and the quantity of the brand to buy into separate economic decisions \cite{krishnamurthi}.
 
-The second way involves a more complex relationship between consumer behavior and past prices. In this approach, consumers use the past prices to form expectations about future prices. When they go to the supermarket, they devise a plan about when to make purchases based on their expectations for prices. In other words, when the price is relatively low the consumer may buy more. However, buy more than usual because they have the intention of buying less than usual the next time they come to the store because they think the price will go up. An econometric model is poorly suited to measure the effect of future price expectations on purchase because of the intertwined nature of prices and purchases. However, dynamic programming models are well suited toward modeling this scenario.  One model, Ahn, Gumus and Kaminsky create a model for manufacturers facing demand that carries over between periods \cite{ahn} Their model is focused manufacturing decisions facing residual demand, but their treatment consumers will wait until a future period for the price to fall. Another paper focused on how consumers make decisions using their expectations for future prices is modeled in Gonul and Srinivasan 1996 paper\cite{gonul}. They specify the parameters of a dynamic programming model where consumers make purchasing decisions by forming expectations about future prices dynamically. The model parameters are specified by iterating between solving to for the consumers expenditures and estimating the model parameters using maximum likelihood estimation.
+In the second mechanism where past price affects purchases consumers use the past prices to form expectations about future prices. When they go to the supermarket, they devise a plan about when to make purchases based on their expectations for prices. For example, when prices are low the consumer may buy more. This is because they intend to buy less because they expect prices to go up. An econometric model is poorly suited to capture the effect of future price expectations because of the intertwined nature of prices and purchases. However, dynamic programming models can handle this scenario.   Ahn, Gumus and Kaminsky create a model for manufacturers facing demand that carries over between periods \cite{ahn}  In their model, consumers will wait until a future period for the price to fall. Gonul and Srinivasan specify a dynamic programming model where consumers make purchasing decisions by forming expectations about future prices dynamically \cite{gonul}. They estimate their model parameters by iterating between solving the model and estimating the model parameters using maximum likelihood estimation.
 
 \section{Econometric Model}
 
-The first approach to understanding consumer responses to EDP involves quantifying the statistical relationship between EDP and volume using an traditional econometric model.  Econometric models are a well established technique. The statistical properties these models are well established. However, econometric models poorly identify causal relationships. Still, establishing a correlational relationship between product characteristics and volume can reveal factors relevant to volume changes.
+The first approach to understanding consumer responses to EDP involves quantifying the statistical relationship between EDP and volume using a traditional econometric model. The statistical properties these models are well established. Even though econometric models poorly identify causality, understanding the correlation between product characteristics and volume can be informative.
 
 \subsection{Winer's Model}
 
-Winer's 1986 paper inspired the model used in this project \cite{winer}. Krishnamurthi and Raj's econometric model, provides a more nuanced model by breaking consumer decisions about brand and purchase quantity into sepperate econometric equations. Like Winer, their model relies on point of sales data, as opposed to the cleaned syndicated data. However, the syndicated data cannot be used to emulate their approach. On the other hand, Winer's model can be adapted to use the syndicated data.
+Winer's 1986 paper inspired the model used in this project \cite{winer}. Krishnamurthi and Raj's econometric model is more nuanced because it breaks consumer decisions about brand and purchase quantity into separate econometric equations. Like Winer, their model relies on point of sales data. However, the syndicated data cannot be used to emulate their approach. 
 
-Winer estimates the probability of buying a brands' product as a function of previous quantity sold, consumer price expectations, competitors' prices and advertising spending. Formally, Winer's model describes the probability of purchasing brand $i$ at time $t$. It takes into account past volumes, consumer price expectations, competitors price and advertising spending. It is given by the equation: \\
+On the other hand, Winer's model can be adapted to the syndicated data. Winer estimates the probability of buying a brands' product as a function of previous quantity sold, consumer price expectations, competitors' prices and advertising spending. Formally, Winer's model describes the probability of purchasing brand $i$ at time $t$. It takes into account past volumes, consumer price expectations, competitors price and advertising spending. It is given by the equation: \\
 
 $ {Pr(BRAND_i)}_{it} = \alpha_0 + \alpha_1 {VOL}_{it} + \alpha_2 {ADV}_{it} +  \alpha_3 PRICE\_REACT_{it}  \medskip + \alpha_4 \dfrac{PRICE_it}{TOTAL\_PRICE_{t}} + \epsilon_{it}$\\
 
-$${Pr(BRAND_i)}_{it} $$ Winer's model is a logistic regression. The dependent variable is fit as a probability. Before fitting it a boolean variable representing whether or not the brand was purchased at time $t$. The data comes from the point of sale, so when the consumer makes a purchase, the consumer implicitly did not buy the other brands were not purchased. In other words, if there are $j$ brands then there $j-1$ more data points are generated for all the brands that were not purchased. 
+$${Pr(BRAND_i)}_{it} $$
 
-$$VOL_{it}$$ represents the volume at of brand $i$ at time $t$. Its coefficient represents the relationship between volume and purchase probability.
+Winer's model is a logistic regression. Before fitting the dependent variable is a boolean variable representing whether or not the brand was purchased at time $t$. The data comes from the point of sale, so when the consumer makes a purchase, the consumer implicitly did not buy the other brands were not purchased. In other words, if there are $j$ brands then there $j-1$ more data points are generated for all the brands that were not purchased. 
 
-$$ADV_{it}$$ is a boolean based on the advertising spending of brand $i$ at time $t$. It is an aggregate metric that takes into account various types of promotional spending.
+$$VOL_{it}$$ 
 
-$$PRICE\_REACT_{it}$$ is meant to capture a reaction in the reference price. It is calculated as $$\dfrac{PRICE_{it}} {\sum_j PRICE_{jt}} - \widehat{PRICE}_{it}$$ In the model, ${PRICE}_{it}$ is the price charged by brand $i$ at time $t$. 
+This variable represents the volume at of brand $i$ at time $t$. Its coefficient represents the relationship between volume and purchase probability.
 
-The most important part of the reaction is $$\widehat{PRICE}_{it}$$ which represents the consumers expectation for the price at the current time period period. It involves estimating ${PRICE}_{it}$ as a function of ${PRICE}_{it-1}$. This process is called two stage least squares. In two stage least squares, you look at the effect of one variable 'through' another variable.  In this case we are looking on how past prices effect the current price 'through' the current price. You do this by running running a regression using a variable called an instrument (in this case, previous price) on another variable (in this case price). You use the predicted values from the first regression in a second regression. This project uses this technique as well when estimating the model.
+$$ADV_{it}$$ 
 
-$$ \dfrac{PRICE_{it}}{TOTAL\_PRICE_{t}}$$ represents the ratio between the price of brand $i$ at time $t$ against its competitors. It represents the overall pricing environment. It is the current brand price at time $t$ as a fraction of all the prices.
+This variable is a boolean based on the advertising spending of brand $i$ at time $t$. It is an aggregate metric that takes into account various types of promotional spending.
+
+$$PRICE\_REACT_{it}$$ 
+
+This variable is meant to capture a reaction in the reference price. It is calculated as $$\dfrac{PRICE_{it}} {\sum_j PRICE_{jt}} - \widehat{PRICE}_{it}$$ In the model, ${PRICE}_{it}$ is the price charged by brand $i$ at time $t$. 
+
+The most important part of the reaction is $$\widehat{PRICE}_{it}$$ which represents the consumers expectation for the price at the current time period period. It involves estimating ${PRICE}_{it}$ as a function of ${PRICE}_{it-1}$. This process is called two stage least squares. In two stage least squares, we look at the effect of one variable 'through' another variable.  In this case we are looking on how past prices effect the current price 'through' the current price. We do this by running running a regression using a variable called an instrument (in this case, previous price) on another variable (in this case price). We use the predicted values from the first regression in a second regression. This project uses this technique as well when estimating the model.
+
+$$ \dfrac{PRICE_{it}}{TOTAL\_PRICE_{t}}$$ 
+
+This variable represents the ratio between the price of brand $i$ at time $t$ against its competitors to capture the over all pricing environment.
 
 \subsection{Model Description}
 
-The model in this study emulates Winer's model with several modifications to suit our data set. Instead of advertising expenditures we include group characteristic boolean variables to proxy for fixed effects caused by each groups marketing departments. Our model also include the ratio between each products volume and group volume. Like Winer, we estimated models using two stage least squares. These models include terms to represents how prices effect the volume changes through their relationship with previous prices.  This model, along with several variations have already been estimated as of the writing of this document. The results are included in the appendix.
+The model in this study emulates Winer's model with several modifications to suit our data set. Instead of advertising expenditures we include group characteristic boolean variables to proxy for fixed effects caused by each groups marketing departments. Our model also includes the ratio between each products volume and group volume. Like Winer, we estimated models using two stage least squares. These models include terms to represents how prices affect volume changes through their relationship with previous prices.  This model, along with several variations have already been estimated as of the writing of this document. The results are included in the appendix.
 
 In order to take advantage of syndicated data, the model predicts percentage changes in the volume sold by group $i$ in consumer trade area (CTA) $j$ at time $t$. The estimated equations for this model are included in the appendix section:\\ 
 
@@ -86,96 +96,92 @@ The variable ${PRICE}_{ijt}$ is the price for CTA $j$ for product group $i$ at t
 
 $$ \sum_{k=3}^{11} \alpha_k {GROUP}_{ijt} $$ 
 
-Are boolean variables describing the group characteristics. Their coefficients represented the fixed effects of these variables The characteristics looked at are whether or not the creamer was flavored, dairy-free, which of the five brands it belonged too. If all four brand boolean variables are zero, then the brand is BA. The coefficient on these variables can be interpreted as the fixed effects of brand on volume changes. Finally, there are variables that represent the size of the product. If all three boolean variables are zero then the product is 16 ounce units.
+These are boolean variables describing the group characteristics. Their coefficients represent the fixed effects of these variables. The characteristics are whether or not the creamer was flavored, dairy-free, and which of the five brands it belonged too.  The coefficient on these variables can be interpreted as the fixed effects of brand on volume changes. Finally, there are variables that represent the size of the product.
 
 $${PRICE}_{ijt-1}, {PRICE}_{ijt-2} $$
 
-The coefficient on this variable represents the magnitude of a one dollar increase of price for group $j$ in CTA $i$ at week $t-1$ and $t-2$ respectively would be expected to effect percentage changes in volume at week $t$.After experimenting with various models, we chose to include the previous price going back two weeks. Including previous prices essentially 'divides' the coefficient on prices. However, the coefficients are both statistically significance beyond the five percent level. It seemed prudent to include them.
+The coefficient on this variable represents the magnitude of a one dollar increase of price for group $j$ in CTA $i$ at week $t-1$ and $t-2$ respectively would be expected to effect percentage changes in volume at week $t$. After experimenting with various models, we chose to include the previous price going back two weeks.
 
 $${VOL\_RATIO}_t, {PRICE\_RATIO}_{t} $$ 
 
-The variable $ {VOL\_RATIO}_t $ represents the volume of group $i$ in CTA $j$ as  fraction of total volume. We ran models that included additional boolean variables to represent the CTA groups. 
-Represents price as a ratio of average price across all of the CTA groups. The coefficient represents how increasing the ratio is expected to change percentage change in volume between price and volume. We included the term ${PRICE\_RATIO}_{t}$  specifically because Winer includes a similar term in his model to represent the contribution of competitors price.
+The variable $ {VOL\_RATIO}_t $ represents the volume of group $i$ in CTA $j$ as fraction of total volume. We include it because it represents brand penetration.  ${PRICE\_RATIO}_{t} $ represents price as a ratio of average price across all of the CTA groups. The coefficient represents how increasing the ratio is expected to change percentage change in volume between price and volume. We included the term ${PRICE\_RATIO}_{t}$  specifically because Winer includes a similar term in his model to represent the contribution of competitors price.
 
 $${VOL}_{ijt-1}, {VOL}_{ijt-2} $$
 
-Represent volume of the previous two weeks. The coefficients represent how changing volume from previous weeks is expected to change percentage changes in volume. Including a representing volume within a product's given market is an important third variable between price and volume.
+These variables represent volume of the previous two weeks. The coefficients represent how changing volume from previous weeks is expected to change percentage changes in volume.
 
 $$ CTA_i, WEEK_{i}$$
 
-We estimated additional models involving boolean variables. The first model includes boolean variables that represent each of the thirty CTAs. Additionally, total volume and average price needed to be adjusted to reflect average price and volume within the CTA. It is particularly important to adjust price to be restricted to the CTA. Without this adjustment, price looses its statistical significance within the model. The second regression includes 156 boolean variable for the 157 weeks.
+We estimated additional models involving boolean variables. The first model includes boolean variables that represent each of the thirty CTAs. In these models, total volume and average price needed to be adjusted to reflect average price and volume within the CTA. It is particularly important to adjust price to be restricted to the CTA. Without this adjustment, prices loose its statistical significance within the model. The second regression includes 156 boolean variable for the 157 weeks.
 
 \subsection{Two Stage Least Squares}
 
-Winer uses previous prices in his regression to do two stage least squares. This process involves estimating ${P}_{it}$ as a function of ${P}_{it-1}$. In two stage least squares, you look at the effect of one variable 'through' another variable.  In this case we are looking on how past prices effect the current price 'through' the current price. 
+Winer uses previous prices in his regression to do two stage least squares. This process involves estimating ${P}_{it}$ as a function of ${P}_{it-1}$. Two stage least squares looks at the effect of one variable 'through' another variable.  In this case we are looking on how past prices effect the current price 'through' the current price. 
 
-By using this process we are assuming that the past prices can only relate to future volume changes 'through' consumers the current price. This assumption makes sense through the lenses of the reference price literature. In the literature, past prices effect current purchasing decisions because its relationship to current prices. Consumers form expectations about prices and call these expectations reference prices. Theoretical models involving reference prices often involve an explicit assumption that previous prices only affect purchasing decisions through the reference price.
-
-Using this technique involves running a regression using a variable called an instrument (in this case, previous price) on another variable (in this case price). The predicted values from the first regression are used in the second regression. We include results for the second stage results are included in the appendix section.\\
+Using this process assumes that the past prices only relate to future volume changes 'through' consumers the current price. This assumption makes sense through the lenses of the reference price literature. In the literature, past prices effect current purchasing decisions because their relationship to current prices. Papers often invoke an explicit assumption that previous prices only affect purchasing decisions through the reference price \cite{putler}.
 
 \section{Dynamic Program}
 
 
-The second approach involves a dynamic program to model how a consumer chooses a quantity of goods to buy. This model essentially consists of a cost minimization problem over multiple periods. 
-The parameters of this model are estimated by iterating between solving the consumers' problem and estimating model parameters using maximum likelihood estimation. Similarly to Winer, Gonul and Srinivasan use data from the point of sale, so the model in this project is modified use Nielson data. The consumer considers past purchases, and expectations of future prices to simultaneously decide on a quantity to purchase and to form a plan for future purchases. Two things happen.
+The second approach to predicting consumer reactions to EDP involves using a dynamic program to model how a consumer chooses a quantity of goods to buy. This model is designed to reflect a consumer reacting to EDP changes. Although the statistical properties are not as documented, changes in consumer behavior within the model can be attributed to changes in EDP changes.
 
-
-On the other hand the model is designed to reflect a consumer reacting to EDP changes. Although the statistical properties are less sound, it is easier to conclude that changes are consumer behavior within the model can be attributed to changes in EDP. The issues with the dynamic program are that its statistical properties are less well known. Choosing a distribution to fit the data and the parameters are not necessarily statistically sound.
-
+At its core, this problem involves minimizing the cost faced by consumers over multiple periods. The consumer considers past purchases, and expectations for future prices to simultaneously decide on a quantity to purchase and a plan for future purchases. The model parameters are estimated by iterating between solving the consumers' problem and a maximum likelihood estimation routine. 
 
 \section{Gonul and Srinivasan's Model}
 
+The consumer problem in this project is modeled after Gonul and Srinivasan model\cite{gonul}. Similar to Winer, they use data from the point of sale. They know which brand each household purchased and implicitly the brands that were not purchased. They seek to predict these purchases buy trying estimating associated costs of buying the product, and not buying the product. Their model is built on the premise that consumers anticipate future promotions and adjust their purchase behavior accordingly. Each time the consumer visits the store, they dynamically plan their future expenditures. By making these plans, they predict the total future costs of buying in future periods.
 
-The approach is modeled after Gonul and Srinivasan 1996 paper\cite{gonul}. It works of a similar data set to Winer's. They have data from the point of sale. As a result, they know if something was purchased and implicitly that the other brands where not purchased for each household. They way the accomplish these goals a cost function based on a buying decision. Basically, they have consumer that incurs costs based on a function $C(B_t) + \epsilon_{it}$. $B_t$ is boolean variable that represents whether a brand was purchased. The $C(B_t)$ is costs try to estimate the costs of buying vs not buying and incurring a 'stock out' cost of not having the product easily on hand. $\epsilon_{it}$ is the stochastic component of the cost of buying (or not buying)
-at time $t$.
+In their model, the consumer predicts these future costs based on a recursive cost function $C(B_t) + \epsilon_{it}$. The argument to the cost function, $B_t$ is boolean variable that represents whether a brand was purchased at this visit. The $C(B_t)$ estimate the costs of buying or not buying and incurring a 'stock out' cost by not having the product on hand when it was need. Calculating $C(B_t)$ implicitly, plans the consumers future expenditures.
+
+Gonul and Srinivasan assume there is a stochastic component $\epsilon_{it}$ to the cost of buying. Their model is built on the premise that consumers anticipate future promotions and adjust their purchase behavior accordingly. The goal of the dynamic program is to predict all the values of $C(B_t)$ using the objective function below. Consumers try to minimize costs, which are discounted by $\delta$ in each period:
+
+$$\text{Minimize } E( \sum_t \delta^{t} C(B_t) + \epsilon_{it} )$$
+
+They estimate the parameters of their cost function $C(B_t)$ by estimating the probabilities of buying and not buying in a certain period using maximum likelihood estimation. Maximum likelihood estimation chooses parameters that maximize the probability of a the likelihood function. The construct this likelihood function of observing a set of purchases by calculating the probability of making the purchase in each period using $C(B_t)$. 
 
 $$Pr(B_t=1) = Pr(C(B_t = 1) + \epsilon_{1t} < C(B_t = 0) + \epsilon_{0t} )$$ 
 
 $$=  Pr(  \epsilon_{0t} + \epsilon_{1t} < C(B_t = 0) - C(B_t = 1) )   $$
 
-Then $Pr(C(B_t = 0) - C(B_t = 1) ) )$ gets calculated as $\Phi(C(B_t = 0) - C(B_t = 1) ) )$ where $\Phi$ is the cumulative distribution function for the standard normal distribution.
+The likelihood function is given as
 
-The goal of the dynamic program is to predict all the values of $C(B_t)$ using the following objective function:
+$$\text{Maximize} \prod_{t} Pr({B_t= 1})^{B_t} Pr(B_t=0)^{1-B_t} $$
 
-$$\text{Minimize} E( \sum_t \delta^{t} C(B_t) + \epsilon_{it} )$$
-
-Then the goal of the maximum likelihood estimation is to choose parameters to the cost function that maximize the likelihood of seeing the purchase schedule predicted by the dynamic program. 
-
-$\text{Maximize} \prod_{t} Pr({B_t= 1})^{B_t} Pr(B_t=0)^{1-B_t} $
-
-The paper initialized values in the cost function and then iterated between the likelihood function and the dynamic program until the parameters in the cost function converged.
+In the likelihood function $ Pr(B_t=1)$ gets calculated as $\Phi(C(B_t = 0) - C(B_t = 1) ) )$ where $\Phi$ is the cumulative distribution function for the standard normal distribution.
+Gonul and Srinivasan initialized values for parameters in cost function and then iterated between the likelihood function and the dynamic program until the parameters in the cost function converged.
 
 \subsection{Model Specification}
 
-The model in this project also builds on the premise that consumers anticipate future promotions and adjust their purchase behavior accordingly. It minimizes costs. Need to have a target, and get a penalty for not hitting it. They should be allowed to miss the target, otherwise, they will stockpile getting a reward for having more than enough.It is required to do this bliss point because the consumer may have more in stock or less in stock than the required amount. if you minimize cost subject to the constraint that they must have enough goods on hand, then it will not work out. They just end up always purchasing during the promotion the required amount. they need to be uncertain when the promotion will be and if it worth waiting. In this model the consumer decides on a purchase plan each time the go to the store based on their current stockpiles, prices, and their expectations for future prices. As a by product of this plan, make a purchase at their current time in the store. As a result, the consumer would solve the problem for one period as:
+The model in this paper modifies Gonul and Srinivasan's model to use the syndicated data. Instead of modeling purchases as a binary decision, they are based on volumes. In the cost function, essentially the consumer has a target consumption of $\bar{x}$. They incur a penalty for consuming more or less. Having a consumption target allows the consumer to deviate from this target based on prices and consume more during promotions, as expected. The consumer's cost function is given as:
 
-$$ \text{Minimize }_{x}  \alpha_1 (x_1 +x_0 - \bar{x})^2 + p_1 x_1 $$
+$$ C(x_0) = \alpha_1 (x_1 +x_0 - \bar{x})^2 + p_1 x_1 $$
 
-Essentially the consumer has a target consumption of $\bar{x}$, and they incur a penalty for consuming more or less. They also incur the cost of the amount they buy and the price. In order to accurately analyze the problem. The consumer chooses his consumption by setting an optimal plan for future consumption. However, the consumer does not have access to future prices. As a result, the must form expectations for these prices and calculate their plan accordingly. This plan may or may not be actualized depending upon the price expectations. The decide on a current purchase as well as their expectations for future purchases on each trip to the store.
+Like Gonul and Srinivasan's model, the consumer makes a purchase and plans future purchases each time they go to the store based on their current stockpiles, prices, and their expectations for future prices. This leads to the recursive formulation below. Consumers try to minimize costs, which are discounted by $\delta$ in each period:
 
-$$ \text{Minimize }_{x} \sum_t \alpha_t (x_t + x_{t-1} - \bar{x})^2 + p x $$
+$$ \text{Minimize }_{x} \sum_t \delta^t (x_t + x_{t-1} - \bar{x})^2 + p x $$
 
-There are two key take aways are (1) Consumers are maximizing over a finite horizon. They can store goods and carry them over to the next periods. More over, they can carry over goods from period to period, so they can 'stock up' on good during a promotion. (2) They only have access to expected prices. Consumers must visit a store and consume over multiple periods. They try to maximize utility over multiple periods and form expectations about what prices will be in future periods. Expectations are formed using a Markov process. If consumers new the actual future prices, then they would not need to recalculate their consumption plan in each period. They would decide on an optimal consumption plan in the first period and follow it.
+The two key take aways are (1) Consumers are maximizing over a finite horizon. They can store goods and carry them over to the next periods. More over, they can carry over goods from period to period, so they can 'stock up' on good during a promotion. (2) Consumers do not have perfect access to future prices. If consumers knew the actual future prices, then they would not need to recalculate their consumption plan in each period. They would decide on an optimal consumption plan in the first period and follow it. As a result, the must form expectations for these prices and calculate their plan accordingly. The way consumers form expectations will influence the model's results. Gonul and Srinivasan has consumers guess prices using a Markov process.
 
-This is consistent with an economic model of utility maximization. It can be shown this is an equivalent problem for a consumer consumer with a special utility function called quasi-linear utility, and a bliss point. We started the model with and economic model of consumer decisions where consumers try to maximize utility subject to a budget constraint.weuse a special type of utility function called quasi-linear utility function. By choosing quasi-linear utility function, we can re-write our problem as an unconstrained problem (assuming $m$ is large enough) avoiding the need to calculate $m$ (the budget) empirically. 
 
-\section{Preliminary Results}
+\section{Preliminary Regression Results}
 
-At this stage, the work on the econometric model is complete. Essentially the biggest predictor of future volumes is past volumes. The statistical model would make it clear that past volume is a huge indicator of future volume.  Previous volume has the most statistical weight in predicting next weeks volume. As you can see in the appendix, using just price, and the previous two weeks of volume explains 88 percent of the variance in volumes. We include the results of a model predicting volumes without using previous volume as a regressors. When looking volume category characteristics do not seem to carry as much weight. The the appendix combines previous volumes with product characteristics to predict future volumes. It's predictive power seems high, but it is misleading considering how highly correlated previous volumes are with future volumes.Using group characteristics and previous prices only explain 25 percent of the variance in weekly volumes as you can see in the the appendix. The fixed effects due to product characteristics emerge when estimating a log linear model (i.e. $log(VOL)$).  This variable can be interpreted as percentage change in volume. It helps distinguish how price and product characteristics contribute to volume changes. 
+At this stage, the econometric model has been estimated. The biggest predictor of future volumes is past volumes. As we can see in the appendix, using just price, and the previous two weeks of volume explains 88 percent of the variance in volumes. This is not very informative about what firms can do to increase volumes. 
 
-The coefficient on EDP is persistently positive through out all of the models we estimated. Perhaps having a higher EDP signals that a brand is producing a higher quality product.weestimated a model without EDP as an explanatory variable. Removing the EDP causes most of the coefficients on the group characteristics to slightly increase in magnitude. This supports the theory that EDP carries some information about the quality of the product. It also causes the coefficient on price to decrease in magnitude.
+Estimating a log linear model (i.e. $log(VOL)$) reveals more about the relationship between the other characteristics and volume.The the appendix combines previous volumes with product characteristics to predict future volumes. Its predictive power seems high, but it is misleading considering how highly correlated previous volumes are with future volumes. Using group characteristics and previous prices only explains 25 percent of the variance when viewed by themselves.   This variable can be interpreted as percentage change in volume. It helps distinguish how price and product characteristics contribute to volume changes. 
 
-In addition to these models, we estimated a model including boolean variables for each of the CTAs. These variables are statistically significant at the five percent levels. When using an F-test for join significance of these variables, they are significant at the five percent level. This means that these variables are related to volume changes and should not be taken lightly. Due to the size of the table,we include the results of the CTA boolean variables in the appendix.
+The coefficient on EDP is persistently positive through all of the models we estimated. Perhaps having a higher EDP signals that a brand is producing a higher quality product. We estimated a model without EDP as an explanatory variable. Removing this variable causes most of the coefficients on the group characteristics to slightly increase in magnitude. This supports the theory that EDP carries some information about the quality of the product. If EDP contained information about the product characteristics, the group characteristics would exhibit upward bias without it. Removing this variable also causes the coefficient on price to decrease in magnitude.
 
-Previous price has higher p-values than the group characteristics and previous volume. In some models, it is not statistically significant at the five percent level. This suggests that previous price may not be directly correlated with percentage changes in volume, supporting its use as an exogenous variable. When you consider the economic mechanism proposed in the reference price literature, using previous price in two stage least squares makes sense. Running the two stage regression causes the coefficient on price to fall. Additionally, the product characteristics are statistically significant after running the two stage model. This suggests that price and product characteristics are highly related. After cleaning price of its endogenous relationship with the other variables in the first stage, these characteristics become statistically relevant in the context of predicting volume changes. Below are the results of running the two stage regression. We included the results from the first stage in the appendix.
+In addition to these models, we estimated a model including boolean variables for each of the CTAs. These variables are statistically significant at the five percent levels. When using an F-test for join significance of these variables, they are significant at the five percent level. This means that these variables are related to volume changes and should not be taken lightly. 
+
+The mechanism proposed in the literature regarding reference prices may be correct. Previous prices may only be correlated with purchase 'through' their relationship with present prices Previous price has higher p-values than the group characteristics and previous volume. Depending on the model, previous prices may not statistically significant at the five percent level. Running the two stage regression causes the coefficient on price to fall. Additionally, the p-values on the product characteristics increase after running the two stage model.
 
 \section{Conclusion}
 
-The point of this project is to utilize multiple approaches to get as full a picture of consumer behavior in response to EDP changes. The econometric model is good at describing the relationship between various factors and volumes. The reason to use the econometric model is because econometric techniques are well established. There is a large literature of econometric models that try to predict how price changes internalized by consumers effect product outcomes. Past volumes are highly correlated with Future Volumes in the statistical model. We isolate the statistical impact of EDP along with brand characteristics on Volume changes. Additionally it turns out that EDP is highly correlated with volume changes.
+This project utilizes multiple approaches to paint a full a picture of consumer behavior in response to EDP changes. The econometric model describes the relationship between various factors and volumes using well established statistical techniques. It is built on the intuition of consumers using prices decreases in the present relative to the past as a psychological heuristic for making purchases. It also builds on the large literature of econometric models trying to predict how price changes internalized by consumers effect product outcomes. In the model, past volumes are the most important statistical factor in explaining future volumes. We isolate the statistical impact of EDP along with brand characteristics on volume changes using a log linear model. Counter-intuitively, EDP is consistently correlated with a positive increase in volume.
 
-The dynamic programming model differs from the econometric models built around reference prices because consumers buy more because they expect higher prices in the future. They buy more because they expect future prices to go up the next time the visit the store and want to save money. They derive no extra utility from seeing a price decrease like in the reference price literature. The reason to use the dynamic program is the tenuous link between causality in the econometric model. It would establish the relationship between past prices and future prices, however. Just because previous volume is statistically related to future volumes does not mean there is anything to be changed. The dynamic program essentially simulates a consumer trying to make optimal choices facing the firm. Any change in their behavior would be caused by varying EDP in the model. That is how the model is built to have a consumer make a choice in response to EDP changes. However, it abstracts away parts of reality for computational convenience.
+The dynamic programming model involves a more nuanced approach toward predicting consumer behavior. The model captures the intuition that consumers buy more because they expect future prices to increase next time the visit the store. The reason to use the dynamic program is the tenuous link between causality in the econometric model. It would establish the relationship between past prices and future price. Changes in consumer behavior would be caused by varying EDP in the model. However, the dynamic program makes more assumptions and uses less established techniques to make predictions.
 
-The next steps are building the dynamic programming model. Also currently, the dynamic programming model does not actually include multiple brands, but it can be extended. To have multiple brands. Ultimately, the function that determines consumers' expectations will make a big difference in the model's results which is why it is important to try several rules to dictate how consumers form expectations and compare the results. Gonul and Srinivasan has consumers guess prices using a Markov process. Additionally, exploring if there are possibly other mathematical tools like high dimensional model representation that can be leveraged to understand things in this research project. 
+The next steps for this project are building the dynamic programming model and extending it to include multiple brands. Additionally, exploring other mathematical tools like high dimensional model representation can aid this research project. 
 
 \pagebreak
 
@@ -185,17 +191,41 @@ The next steps are building the dynamic programming model. Also currently, the d
 \pagebreak
 
 \begin{appendices}
+
 \section{Past Volumes Regression Results}
-\include{tables/just_vol}
+\input{tables/just_vol}
+
+\pagebreak
+
+\section{Volumes Regression Results}
+\input{tables/linear_vol}
+
+\pagebreak
 
 \section{Log(VOL) Regression Results}
-\include{tables/log_vol}
+\input{tables/log_vol}
+
+\pagebreak
+
+\section{No EDP Regression Results}
+\input{tables/log_vol_no_EDP}
+
+\pagebreak
 
 \section{2 Stage Least Squares Regression Results}
-\include{tables/2SLS}
+
+\subsection{Stage 1}
+\input{tables/1SLS}
+
+\pagebreak
+
+\subsection{Stage 2}
+\input{tables/2SLS}
+
+\pagebreak
 
 \section{CTA Boolean Variables Regression Results}
-\include{tables/cta_boolean}
+\input{tables/CTA_boolean}
 
 
 \end{appendices}
