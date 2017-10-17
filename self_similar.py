@@ -104,20 +104,30 @@ def safe_divide(x,y):
 	except:
 		return 0
 
-def create_plot():
+def create_plot(brand, size, flavor, dairy):
 	con = sqlite3.connect('data/edp_changes.db')
 	cur = con.cursor()
 
-	q = create_query('DD','32',0,1)
+	q = create_query(brand, size, flavor, dairy)
 	x =[]
 	y = []
 	cur.execute(q)
 	for row in cur:
 		y.append( safe_divide(safe_float(row[2]),row[1]) )
-		x.append ( safe_float(row[3]) -row[0], )
+		x.append ( safe_float(row[3]) -row[0] )
 		plt.plot(x, y, 'ro')
 
-	plt.show()
+	plt.savefig('plots/%s_%s_%s_%s.png'%(brand, size, flavor, dairy))
+	plt.close()
+
+def create_all_plots():
+	for brand in ('DD','CM','ID','PL','BA'):
+		for size in ('32','64','16','48'):
+			for flavor in (0,1):
+				for dairy in (0,1):
+					 create_plot(brand, size, flavor, dairy)
+
+
 
 if __name__ == "__main__":
-	create_plot()
+	create_all_plots()
