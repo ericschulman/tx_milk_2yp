@@ -57,7 +57,6 @@ def create_query(brand, size, flavor, dairy):
 	'group_edps, dairy, flavor, prod_size ' +
 	'WHERE dairy.dim_group_key = group_edps.dim_group_key ' +
 	'AND flavor.dim_group_key = group_edps.dim_group_key  ' +
-	'AND brand.dim_group_key = group_edps.dim_group_key  ' +
 	'AND prod_size.dim_group_key = group_edps.dim_group_key ' +
 	"AND group_edps.price <> '' " +
 	"AND group_edps.eq_vol  <> '' " +
@@ -69,22 +68,20 @@ def create_query(brand, size, flavor, dairy):
 	'GROUP BY group_edps.week, dairy.dairy, flavor.flavor, '+
 	'prod_size.s32, prod_size.s48, prod_size.s64) ' +
     
-    'SELECT averages.avg_price/averages.total_vol, ' +
-    'group_edps.eq_vol - group_edps.price,' + 
-
+    'SELECT averages.avg_price -group_edps.price, ' +
+    'group_edps.eq_vol/averages.total_vol, ' +
     'group_edps.week, dairy.dairy, flavor.flavor, prod_size.s32, ' +
     'prod_size.s48, prod_size.s64 ' +
 
 	'FROM group_edps, dairy, flavor, brand, prod_size, averages ' +
 
-	'WHERE group_edps.week =	averages.week ' +
+	'WHERE group_edps.week = averages.week ' +
 	'AND dairy.dairy = 	averages.dairy ' +
 	'AND flavor.flavor = averages.flavor ' +
 	'AND prod_size.s32 = averages.s32 ' +
 	'AND prod_size.s48 = averages.s48 ' +
 	'AND prod_size.s64 = averages.s64 ' +
 
-	'AND group_edps.dim_cta_key ' +
 	'AND dairy.dim_group_key = group_edps.dim_group_key ' +
 	'AND flavor.dim_group_key = group_edps.dim_group_key  ' +
 	'AND brand.dim_group_key = group_edps.dim_group_key  ' +
@@ -129,8 +126,8 @@ def create_plot(brand, size, flavor, dairy):
 	y = []
 	cur.execute(q)
 	for row in cur:
-		y.append( safe_float(row[0]) )
-		x.append ( safe_float(row[1]) )
+		x.append( safe_float(row[0]) )
+		y.append ( safe_float(row[1]) )
 		plt.plot(x, y, 'ro')
 
 	plt.savefig('plots/%s_%s_%s_%s.png'%(brand, size, flavor, dairy))
@@ -146,5 +143,5 @@ def create_all_plots():
 
 
 if __name__ == "__main__":
-	#create_plot('DD', '32', 1, 0)
-	create_all_plots()
+	create_plot('DD', '32', 0, 1)
+	#create_all_plots()

@@ -1,4 +1,5 @@
-WITH category AS (SELECT group_edps.dim_group_key, group_edps.week, 
+WITH category AS (SELECT group_edps.dim_group_key, group_edps.week,
+	group_edps.dim_cta_key
 	dairy.dairy, flavor.flavor,
 	prod_size.s32, prod_size.s48, prod_size.s64, 
 	group_edps.price, group_edps.eq_vol
@@ -14,7 +15,7 @@ WITH category AS (SELECT group_edps.dim_group_key, group_edps.week,
 	AND prod_size.s64 = 0 
 	AND prod_size.s48 = 0 ),
 
-	category_averages AS  (SELECT category.dim_group_key, category.week, 
+	category_averages AS  (SELECT category.week, 
 	category.dairy, category.flavor,
 	category.s32,category.s48, category.s64, 
 	avg(category.price) as avg_price, 
@@ -31,6 +32,7 @@ WITH category AS (SELECT group_edps.dim_group_key, group_edps.week,
 	FROM category AS a, category AS b
 	WHERE a.week = (b.week+1) 
 	AND a.dim_group_key = b.dim_group_key
+	AND a.dim_cta_key = b.dim_cta_key
 	AND a.price <>  ''
 	AND b.price  <> '' )
 
@@ -45,8 +47,7 @@ SELECT categoryp.price - category_averages.avg_price, categoryp.price - category
 	AND brand.CM = 0
 	AND brand.DD = 0
 	AND brand.ID = 0 
-	AND brand.PL = 1 
-	AND categoryp.dim_group_key = category_averages.dim_group_key
+	AND brand.PL = 1
 	AND categoryp.week = category_averages.week
 	AND categoryp.dairy = category_averages.dairy
 	AND categoryp.flavor = category_averages.flavor

@@ -9,6 +9,7 @@ def create_query(brand, size, flavor, dairy):
 	"""helper function designed to engineer query for each of the tables"""
 
 	query = ('WITH category AS (SELECT group_edps.dim_group_key, group_edps.week, '+
+	'group_edps.dim_cta_key, ' +
 	'dairy.dairy, flavor.flavor, '+
 	'prod_size.s32, prod_size.s48, prod_size.s64, '+
 	'group_edps.price, group_edps.eq_vol '+
@@ -18,13 +19,13 @@ def create_query(brand, size, flavor, dairy):
 	'AND prod_size.dim_group_key = group_edps.dim_group_key '+  
 	"AND group_edps.price <>  '' "+
 	"AND group_edps.eq_vol  <> '' "+
-	'AND dairy.dairy = 1 '+
-	'AND flavor.flavor = 0 '+
-	'AND prod_size.s32 = 1 '+
-	'AND prod_size.s64 = 0 '+
-	'AND prod_size.s48 = 0 ), '+
+	('AND dairy.dairy = %s '%dairy)+
+	('AND flavor.flavor = %s '%flavor)+
+	('AND prod_size.s32 = %s '%size[0])+
+	('AND prod_size.s64 = %s '%size[1])+
+	('AND prod_size.s48 = %s ), '%size[2])+
 
-	'category_averages AS  (SELECT category.dim_group_key, category.week,  '+
+	'category_averages AS  (SELECT category.week,  '+
 	'category.dairy, category.flavor, '+
 	'category.s32,category.s48, category.s64,  '+
 	'avg(category.price) as avg_price,  '+
@@ -41,8 +42,11 @@ def create_query(brand, size, flavor, dairy):
 	'FROM category AS a, category AS b '+
 	'WHERE a.week = (b.week+1)  '+
 	'AND a.dim_group_key = b.dim_group_key '+
+	'AND b.dim_cta_key = a.dim_cta_key ' +
 	"AND a.price <>  '' "+
-	"AND b.price  <> '' ) "+
+	"AND a.eq_vol <>  '' " + 
+	"AND b.price  <> ''  "+
+	"AND b.eq_vol <>  '') " + 
 
     'SELECT categoryp.price - category_averages.avg_price,  '+
     'categoryp.price - categoryp.prev_price,  '+
@@ -52,11 +56,10 @@ def create_query(brand, size, flavor, dairy):
 	'categoryp.s32, categoryp.s48, categoryp.s64 '+
 	'FROM category_averages, categoryp, brand '+
 	'WHERE brand.dim_group_key = categoryp.dim_group_key '+
-	'AND brand.CM = 0 '+
-	'AND brand.DD = 0 '+
-	'AND brand.ID = 0  '+
-	'AND brand.PL = 1  '+
-	'AND categoryp.dim_group_key = category_averages.dim_group_key '+
+	('AND brand.CM = %s '%brand[0])+
+	('AND brand.DD = %s '%brand[1])+
+	('AND brand.ID = %s '%brand[2])+
+	('AND brand.PL = %s '%brand[3])+
 	'AND categoryp.week = category_averages.week '+
 	'AND categoryp.dairy = category_averages.dairy '+
 	'AND categoryp.flavor = category_averages.flavor '+
@@ -67,6 +70,7 @@ def create_query(brand, size, flavor, dairy):
 
 	return query
 
+
 def safe_float(x):
 	"""convert to float or return nan"""
 	try:
@@ -74,10 +78,11 @@ def safe_float(x):
 	except:
 		return 0
 
-def create_plot( (brand, size, flavor, dairy) ):
+
+def create_3dplot(group ):
 	con = sqlite3.connect('data/edp_changes.db')
 	cur = con.cursor()
-
+	brand, size, flavor, dairy = group_decoder(group)
 	q = create_query(brand, size, flavor, dairy)
 	x =[]
 	y = []
@@ -97,51 +102,80 @@ def create_plot( (brand, size, flavor, dairy) ):
 	ax.set_ylabel('P_{i,t}-P_{i,t-1}')
 	ax.set_zlabel('V_{i,t}/V_{tot,t}')
 
-	plt.savefig('plots/%s_%s_%s_%s.png'%(brand, size, flavor, dairy))
-	plt.show()
+	plt.savefig('plots/3d/%s.png'%group)
 	plt.close()
 
-def create_arguments():
 
- groups = ["BA_16_D_F","BA_32_D_F","CM_16_D_F","CM_16_N_F",
-"CM_32_N_F","CM_32_N_U","CM_64_N_F","CM_64_N_U","DD_32_D_U","DD_32_N_F",
-"ID_16_D_F","ID_16_N_F","ID_32_N_F","ID_48_N_F","ID_64_D_F","PL_16_D_U",
-"PL_16_N_F","PL_16_N_U","PL_32_D_F","PL_32_D_U","PL_32_N_F","PL_32_N_U","PL_64_D_U"]
+def create_plot(group):
+	con = sqlite3.connect('data/edp_changes.db')
+	cur = con.cursor()
+	brand, size, flavor, dairy = group_decoder(group)
+	q = create_query(brand, size, flavor, dairy)
+	x =[]
+	y = []
+	z= []
+	cur.execute(q)
 
- fixed_groups = []
+	fig = plt.figure()
+	
+	for row in cur:
+		x.append( safe_float(row[0]) )
+		y.append ( safe_float(row[1]) )
+		z.append ( safe_float(row[2]) )
 
- for group in groups:
+	plt.plot(x,z,'ro')
+	plt.savefig('plots/p_avg/%s.png'%group)
+	plt.close()
+
+	plt.plot(y,z,'ro')
+	plt.savefig('plots/p_t/%s.png'%group)
+	plt.close()
+
+	plt.plot(x,y,'ro')
+	plt.savefig('plots/t_avg/%s.png'%group)
+	plt.close()
+
+
+def group_decoder(group):
 	brand_bool = (0,0,0,0)
 	size_bool = (0,0,0)
 	flavor_bool = 0
 	dairy_bool = 0
 
-	if group.index('CM_') > -1:
+	if 'CM_' in group:
 		brand_bool = (1,0,0,0)
-	if group.index('DD_') > -1:
+	if 'DD_' in group:
 		brand_bool = (0,1,0,0)
-	if group.index('ID_') > -1 :
+	if 'ID_' in group:
 		brand_bool = (0,0,1,0)
-	if group.index('PL_') > -1:
+	if 'PL_' in group:
 		brand_bool = (0,0,0,1)
 
-	if group.index('_32') > -1:
+	if '_32_' in group:
 		size_bool = (1,0,0)
-	if group.index('_64'):
+	if '_64_' in group:
 		size_bool = (0,1,0)
-	if group.index('_48') > -1:
+	if '_48_' in group:
 		size_bool = (0,0,1)
 
-	if group.index('_F') > -1:
-		flavor_bool = 1
-	if group.index('_D_'):
+	if '_D_' in group:
 		dairy_bool = 1
-	fixed_groups.append((brand_bool,size_bool,flavor_bool,dairy_bool))
-
+	if '_F' in group:
+		flavor_bool = 1
+	
+	return brand_bool,size_bool,flavor_bool,dairy_bool
+	
 
 def create_all_plots():
-	for group in create_arguments():
+
+	groups = ["BA_16_D_F","BA_32_D_F","CM_16_D_F","CM_16_N_F",
+	"CM_32_N_F","CM_32_N_U","CM_64_N_F","CM_64_N_U","DD_32_N_F",
+	"ID_16_D_F","ID_16_N_F","ID_32_N_F","ID_48_N_F","ID_64_D_F","PL_16_D_U",
+	"PL_16_N_F","PL_16_N_U","PL_32_D_F","PL_32_D_U","PL_32_N_F","PL_32_N_U","PL_64_D_U"]
+
+	for group in groups:
 		create_plot(group)
+		create_3dplot(group)
 
 if __name__ == "__main__":
-	create_plot(('DD', '32', 1, 0))
+	create_all_plots()
