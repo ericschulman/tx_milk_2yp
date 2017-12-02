@@ -149,6 +149,7 @@ def create_all_plots():
 			for group in groups:
 				make_folder('plots3/t%s_%s/'%(time,filtered))
 				create_plot(group, time, filtered)
+				create_3dplot(group, time, filtered)
 
 if __name__ == "__main__":
 	create_all_plots()
