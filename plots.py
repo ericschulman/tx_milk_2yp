@@ -6,8 +6,10 @@ import sqlite3
 import numpy as np
 import os
 
-FNAME = 'plots'
+
 TIME = 2
+DIFF = .25
+FNAME = 'plots_%s_t%s'%( str(int(100*DIFF)) ,TIME )
 
 def create_query(group):
 	"""helper function designed to engineer query for each of the tables"""
@@ -38,7 +40,7 @@ def create_query(group):
 	("AND a.dim_group_key = '%s' "%group)+
 	"AND a.price <>  '' "+
 	"AND b.price  <> '' " +
-	"AND ((a.price-a.edp > .02) OR (a.edp - a.price > .02)) ) "+
+	"AND ((a.price-a.edp > %s) OR (a.edp - a.price > %s)) ) "%(DIFF,DIFF)+
 
 	"SELECT categoryp.price - category_averages.avg_price, "+
 	"categoryp.price - categoryp.prev_price, "+
@@ -89,7 +91,7 @@ def create_3dplot(group):
 	ax.set_ylabel('P_{i,t}-P_{i,t-1}')
 	ax.set_zlabel('V_{i,t}/V_{tot,t}')
 
-	plt.savefig('results/%s_t%s/3d/%s.png'%(FNAME,TIME, group))
+	plt.savefig('results/%s/3d/%s.png'%(FNAME, group))
 	plt.close()
 
 
@@ -110,24 +112,24 @@ def create_plot(group):
 		z.append ( safe_float(row[2]) )
 
 	plt.plot(x,z,'ro')
-	plt.savefig('results/%s_t%s/p_avg/%s.png'%(FNAME,TIME, group))
+	plt.savefig('results/%s/p_avg/%s.png'%(FNAME, group))
 	plt.close()
 
 	plt.plot(y,z,'ro')
-	plt.savefig('results/%s_t%s/p_t/%s.png'%(FNAME,TIME, group))
+	plt.savefig('results/%s/p_t/%s.png'%(FNAME, group))
 	plt.close()
 
 	plt.plot(x,y,'ro')
-	plt.savefig('results/%s_t%s/t_avg/%s.png'%(FNAME,TIME, group))
+	plt.savefig('results/%s/t_avg/%s.png'%(FNAME, group))
 	plt.close()
 
 
 def make_all_folders():
-	make_folder('results/%s_t%s/'%(FNAME,TIME))
-	make_folder('results/%s_t%s/3d/'%(FNAME,TIME))
-	make_folder('results/%s_t%s/t_avg/'%(FNAME,TIME))
-	make_folder('results/%s_t%s/p_t/'%(FNAME,TIME))
-	make_folder('results/%s_t%s/p_avg/'%(FNAME,TIME))
+	make_folder('results/%s/'%(FNAME))
+	make_folder('results/%s/3d/'%(FNAME))
+	make_folder('results/%s/t_avg/'%(FNAME))
+	make_folder('results/%s/p_t/'%(FNAME))
+	make_folder('results/%s/p_avg/'%(FNAME))
 
 def create_all_plots():
 
@@ -137,8 +139,11 @@ def create_all_plots():
 
 	groups = cur.fetchall()
 	for group in groups:
-		create_plot(str(group[0]))
-		create_3dplot(str(group[0]))
+		if (('PL' not in str(group[0])) 
+		and ('64' not in  str(group[0]))
+		and ('48' not in  str(group[0]))) :
+			create_plot(str(group[0]))
+			create_3dplot(str(group[0]))
 
 if __name__ == "__main__":
 	make_all_folders()
