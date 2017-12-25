@@ -6,20 +6,19 @@ import sqlite3
 import numpy as np
 import os
 
-
+CTA = 4
 TIME = 2
-DIFF = .25
-FNAME = 'plots_%s_t%s'%( str(int(100*DIFF)) ,TIME )
+DIFF = .02
+FNAME = 'plots_%s_t%s_cta%s'%( str(int(100*DIFF)) ,TIME, CTA)
 
 def create_query(group):
 	"""helper function designed to engineer query for each of the tables"""
 
 	query =  ("WITH category AS (SELECT group_edps.dim_group_key, group_edps.dim_cta_key, "+
-	"group_edps.week, group_edps.price,group_edps.edp, group_edps.eq_vol "+
-	"FROM group_edps, prod_size, brand "+
+	"group_edps.week, group_edps.price, group_edps.edp, group_edps.eq_vol "+
+	"FROM group_edps, prod_size "+
 	"WHERE prod_size.dim_group_key = group_edps.dim_group_key "+
-	"AND brand.dim_group_key = group_edps.dim_group_key " +
-	"AND brand.PL <> 1 "+
+	("AND group_edps.dim_cta_key = %s "%CTA) +
 
 	"AND group_edps.price <>  '' "+
 	"AND group_edps.eq_vol  <> '' "+
@@ -135,12 +134,12 @@ def create_all_plots():
 
 	con = sqlite3.connect('data/edp_changes.db')
 	cur = con.cursor()
-	cur.execute('select * from dim_group_key_view')
+	cur.execute(( "select * from group_edps "+
+		" where group_edps.dim_cta_key = %s group by dim_group_key"%CTA) )
 
 	groups = cur.fetchall()
 	for group in groups:
-		if (('PL' not in str(group[0])) 
-		and ('64' not in  str(group[0]))
+		if  (('64' not in  str(group[0]))
 		and ('48' not in  str(group[0]))) :
 			create_plot(str(group[0]))
 			create_3dplot(str(group[0]))

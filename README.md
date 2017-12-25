@@ -1,14 +1,18 @@
 # MD
 Code and documentation to predict consumer response to EDP changes
 
-The code for the regression models is in `analysis.py`. The dependencies for the models are
-`numpy` `statsmodels` and `sqlite3`
+TODO:
 
+Modify plots to include CTAs and include PL
 
-The files `regf.sql`,`reg3.sql` and `reg.sql` contain various database configurations for regressions.
+Rank CTAs by volume (and # of groups) 
+-chose top 2 and median
+Rank CTAs by Revenue (and # of groups)
+-chose top 2 and median
 
-The folder `data` contains the necessary information to set up the database.
-
-The folder `tex` contains a latex write up of the project.
+-Run linear regressions for each group
+-construct plot
+-order CTAs by size
+-plot alpha, plus confidence interval around alpha
 
 
