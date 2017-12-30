@@ -1,24 +1,30 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+import statsmodels.api as sm
 import math
 import sqlite3
 import numpy as np
 import os
 
-CTA = 4
+CTAS = [6,166,128,5]
 TIME = 2
 DIFF = .02
-FNAME = 'plots_%s_t%s_cta%s'%( str(int(100*DIFF)) ,TIME, CTA)
 
-def create_query(group):
+
+def create_fname(cta):
+	""" ensures all the file names are the same"""
+	return 'plots_%s_t%s_cta%s'%( str(int(100*DIFF)) ,TIME, cta)
+
+
+def create_query(group,cta):
 	"""helper function designed to engineer query for each of the tables"""
 
 	query =  ("WITH category AS (SELECT group_edps.dim_group_key, group_edps.dim_cta_key, "+
 	"group_edps.week, group_edps.price, group_edps.edp, group_edps.eq_vol "+
 	"FROM group_edps, prod_size "+
 	"WHERE prod_size.dim_group_key = group_edps.dim_group_key "+
-	("AND group_edps.dim_cta_key = %s "%CTA) +
+	("AND group_edps.dim_cta_key = %s "%cta) +
 
 	"AND group_edps.price <>  '' "+
 	"AND group_edps.eq_vol  <> '' "+
@@ -68,10 +74,10 @@ def make_folder(folder):
 	return folder
 
 
-def create_3dplot(group):
+def create_3dplot(group,cta):
 	con = sqlite3.connect('data/edp_changes.db')
 	cur = con.cursor()
-	q = create_query(group)
+	q = create_query(group,cta)
 	x =[]
 	y = []
 	z= []
@@ -90,14 +96,14 @@ def create_3dplot(group):
 	ax.set_ylabel('P_{i,t}-P_{i,t-1}')
 	ax.set_zlabel('V_{i,t}/V_{tot,t}')
 
-	plt.savefig('results/%s/3d/%s.png'%(FNAME, group))
+	plt.savefig('results/%s/3d/%s.png'%(create_fname(cta), group))
 	plt.close()
 
 
-def create_plot(group):
+def create_plot(group,cta):
 	con = sqlite3.connect('data/edp_changes.db')
 	cur = con.cursor()
-	q = create_query(group)
+	q = create_query(group,cta)
 	x =[]
 	y = []
 	z= []
@@ -111,39 +117,49 @@ def create_plot(group):
 		z.append ( safe_float(row[2]) )
 
 	plt.plot(x,z,'ro')
-	plt.savefig('results/%s/p_avg/%s.png'%(FNAME, group))
+	plt.savefig('results/%s/p_avg/%s.png'%(create_fname(cta), group))
 	plt.close()
 
 	plt.plot(y,z,'ro')
-	plt.savefig('results/%s/p_t/%s.png'%(FNAME, group))
+	plt.savefig('results/%s/p_t/%s.png'%(create_fname(cta), group))
 	plt.close()
 
 	plt.plot(x,y,'ro')
-	plt.savefig('results/%s/t_avg/%s.png'%(FNAME, group))
+	plt.savefig('results/%s/t_avg/%s.png'%(create_fname(cta), group))
 	plt.close()
 
 
-def make_all_folders():
-	make_folder('results/%s/'%(FNAME))
-	make_folder('results/%s/3d/'%(FNAME))
-	make_folder('results/%s/t_avg/'%(FNAME))
-	make_folder('results/%s/p_t/'%(FNAME))
-	make_folder('results/%s/p_avg/'%(FNAME))
+def make_all_folders(cta):
+	"""set up the required folder structure"""
+	make_folder('results/%s/'%(create_fname(cta)))
+	make_folder('results/%s/3d/'%(create_fname(cta)))
+	make_folder('results/%s/t_avg/'%(create_fname(cta)))
+	make_folder('results/%s/p_t/'%(create_fname(cta)))
+	make_folder('results/%s/p_avg/'%(create_fname(cta)))
+	make_folder('results/%s/reg/'%(create_fname(cta)))
 
-def create_all_plots():
 
+def create_all_plots(cta):
+	"""combines all the functions to make all the plots"""
 	con = sqlite3.connect('data/edp_changes.db')
 	cur = con.cursor()
 	cur.execute(( "select * from group_edps "+
-		" where group_edps.dim_cta_key = %s group by dim_group_key"%CTA) )
+		" where group_edps.dim_cta_key = %s group by dim_group_key"%cta) )
 
 	groups = cur.fetchall()
 	for group in groups:
 		if  (('64' not in  str(group[0]))
 		and ('48' not in  str(group[0]))) :
-			create_plot(str(group[0]))
-			create_3dplot(str(group[0]))
+			create_plot(str(group[0]),cta)
+			create_3dplot(str(group[0]),cta)
+
+
+def make_all_plots_all_ctas():
+	for cta in CTAS:
+		make_all_folders(cta)
+		create_all_plots(cta)
+
+
 
 if __name__ == "__main__":
-	make_all_folders()
-	create_all_plots()
+	make_all_plots_all_ctas()

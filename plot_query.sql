@@ -48,3 +48,4 @@ WITH category AS (SELECT group_edps.dim_group_key, group_edps.dim_cta_key,
 	FROM category GROUP BY dim_cta_key )
 
 SELECT * FROM cta_view
+ORDER BY total_vol
