@@ -13,9 +13,6 @@ def regress(group,cta):
 	X =[]
 	y= []
 	cur.execute(q)
-
-	fig = plt.figure()
-	ax = fig.add_subplot(111, projection='3d')
 	
 	for row in cur:
 		X.append (np.array([ safe_float(row[0]), safe_float(row[1]) ] )) 
@@ -58,8 +55,7 @@ def run_regs(cta):
 
 def plot_coefficients(cta):
 
-	final_list = []
-	#fig = plt.figure()
+	fig = plt.figure()
 	
 	con = sqlite3.connect('data/edp_changes.db')
 	cur = con.cursor()
@@ -67,11 +63,16 @@ def plot_coefficients(cta):
 		" where group_edps.dim_cta_key = %s group by dim_group_key"%cta) )
 
 	groups = cur.fetchall()
+	
+	vols =[]
+	lb = [[],[],[]]
+	ub = [[],[],[]]
+	mean = [[],[],[]]
 
 	for group in groups:
 		group = str(group[0])
 		if  (('64' not in  group)
-		and ('48' not in  group)) :
+		and  ('48' not in  group)) :
 			model_result = regress(group,cta)
 			conf_int = model_result.conf_int()
 
@@ -80,23 +81,35 @@ def plot_coefficients(cta):
 			" group by dim_group_key")
 			cur.execute(query )
 			vol = cur.fetchall()
-			vol = float(vol[0][0])
 			
-			reg_info = (group, vol, conf_int)
-			final_list.append(reg_info)
+			vol = float(vol[0][0])
 
-			#plt.scatter(vol, conf_int[0][0])
-			#plt.scatter(vol, conf_int[0][1])
-			#plt.show()
-	print final_list
+			vols.append(vol)
+			for coef in range(3):
+				lb[coef].append(conf_int[coef][0])
+				ub[coef].append(conf_int[coef][1])
+				mean[coef].append( (lb[coef][-1] + ub[coef][-1])/2.0 )
+
+
+	for coef in range(3):
+		plt.plot(vols, mean[coef], 'ro', vols, lb[coef], 'b^', vols, ub[coef], 'g^')
+		plt.savefig('results/%s/coef_%s.png'%(create_fname(cta), coef))
+		plt.close()
+
 
 
 def run_all_regs():
 	for cta in CTAS:
 		make_reg_folders(cta)
+		run_regs(cta)
+
+
+def make_all_reg_plots():
+	for cta in CTAS:
+		make_reg_folders(cta)
 		plot_coefficients(cta)
 
 
+
 if __name__ == "__main__":
-	#run_regs(6)
-	plot_coefficients(6)
+	 make_all_reg_plots()
