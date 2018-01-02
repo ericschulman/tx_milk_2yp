@@ -20,7 +20,7 @@ def create_matrix(group,cta):
 	for row in cur:
 		x_row =	np.array( [safe_float(row[0]), safe_float(row[1])] )	
 		X.append (x_row) 
-		y.append ( x_row[1] )
+		y.append ( safe_float(row[2]) )
 
 	y = np.array(y)
 	X = np.array(X)
@@ -58,9 +58,10 @@ def run_all_regs(cta):
 
 	groups = cur.fetchall()
 	for group in groups:
-		if  (('64' not in  str(group[0]))
-		and ('48' not in  str(group[0]))) :
-			run_reg(str(group[0]),cta)
+		group =  str(group[0])
+		if  (('64' not in group)
+		and ('48' not in  group)) :
+			run_reg(group,cta)
 
 
 def plot_coefficients(cta):
@@ -76,8 +77,7 @@ def plot_coefficients(cta):
 	groups = cur.fetchall()
 	
 	vols =[]
-	lb = [[],[],[]]
-	ub = [[],[],[]]
+	err = [[],[],[]]
 	mean = [[],[],[]]
 
 
@@ -104,12 +104,15 @@ def plot_coefficients(cta):
 				vols.append(vol)
 				
 				for coef in range(3):
-					lb[coef].append(conf_int[coef][0])
-					ub[coef].append(conf_int[coef][1])
-					mean[coef].append( (lb[coef][-1] + ub[coef][-1])/2.0 )
+					current_mean = (conf_int[coef][1] + conf_int[coef][0])/2.0
+					current_err = conf_int[coef][1] - current_mean
+					
+					mean[coef].append(current_mean)
+					err[coef].append(current_err)
+
 
 		for coef in range(3):
-			plt.plot(vols, mean[coef], 'ro', vols, lb[coef], 'b^', vols, ub[coef], 'g^')
+			plt.errorbar(vols, mean[coef], yerr = err[coef], fmt='s', capsize=5, markersize=3 )
 			plt.savefig('results/%s/coef_%s.png'%(create_fname(cta), coef))
 			plt.close()
 
@@ -129,5 +132,5 @@ def plot_coef_all_ctas():
 
 
 if __name__ == "__main__":
-	#run_all_regs_all_ctas()
+	run_all_regs_all_ctas()
 	plot_coef_all_ctas()
