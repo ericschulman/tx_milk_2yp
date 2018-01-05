@@ -77,6 +77,7 @@ def plot_coefficients(cta):
 	groups = cur.fetchall()
 	
 	vols =[]
+	labels = []
 	err = [[],[],[]]
 	mean = [[],[],[]]
 
@@ -102,6 +103,7 @@ def plot_coefficients(cta):
 				vol = cur.fetchall()
 				vol = float(vol[0][0])
 				vols.append(vol)
+				labels.append(group)
 				
 				for coef in range(3):
 					current_mean = (conf_int[coef][1] + conf_int[coef][0])/2.0
@@ -113,7 +115,10 @@ def plot_coefficients(cta):
 
 		for coef in range(3):
 			plt.errorbar(vols, mean[coef], yerr = err[coef], fmt='s', capsize=5, markersize=3 )
+			for i in range(len(vols)):
+				plt.annotate(labels[i], (vols[i], mean[coef][i] - err[coef][i]), fontsize = 4 )
 			plt.savefig('results/%s/coef_%s.png'%(create_fname(cta), coef))
+						
 			plt.close()
 
 
@@ -132,5 +137,4 @@ def plot_coef_all_ctas():
 
 
 if __name__ == "__main__":
-	run_all_regs_all_ctas()
 	plot_coef_all_ctas()
