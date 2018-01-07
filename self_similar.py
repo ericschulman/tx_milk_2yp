@@ -32,6 +32,7 @@ def make_reg_folders(cta):
 	to save the results"""
 	make_all_folders(cta)
 	make_folder('results/%s/reg/'%(create_fname(cta)))
+	make_folder('results/%s/resid/'%(create_fname(cta)))
 
 
 def run_reg(group,cta):
@@ -62,6 +63,40 @@ def run_all_regs(cta):
 		if  (('64' not in group)
 		and ('48' not in  group)) :
 			run_reg(group,cta)
+
+
+def plot_residuals(group,cta):
+	"""make a scatter plot with the regression residuals"""
+	y,X=create_matrix(group,cta)
+
+	if len(X) == 0:
+		print 'no data %s %s'%(group,cta)
+	else:
+		X = sm.add_constant(X)
+		model_result = sm.OLS(y,X).fit()
+		residuals = model_result.resid
+		fitted_values = model_result.fittedvalues
+		vols = map( lambda x, y: x + y, residuals, fitted_values)
+
+		plt.plot(vols,residuals,'ro')
+		plt.savefig('results/%s/resid/%s.png'%(create_fname(cta), group))
+		plt.close()
+
+
+def plot_all_resids(cta):
+	"""combines all the functions to make all the plots of
+	residuals"""
+	con = sqlite3.connect('data/edp_changes.db')
+	cur = con.cursor()
+	cur.execute( ( "select * from group_edps "+
+		" where group_edps.dim_cta_key = %s group by dim_group_key"%cta) )
+
+	groups = cur.fetchall()
+	for group in groups:
+		group =  str(group[0])
+		if  (('64' not in group)
+		and ('48' not in  group)) :
+			plot_residuals(group,cta)
 
 
 def plot_coefficients(cta):
@@ -122,19 +157,28 @@ def plot_coefficients(cta):
 			plt.close()
 
 
-def run_all_regs_all_ctas():
+def run_regs_all_ctas():
 	"""wrapper function for running all regressions"""
 	for cta in CTAS:
 		make_reg_folders(cta)
 		run_all_regs(cta)
 
 
+def plot_resid_all_ctas():
+	"""wrapper function for making all the residual plots"""
+	for cta in CTAS:
+		make_reg_folders(cta)
+		plot_coefficients(cta)
+
+
 def plot_coef_all_ctas():
-	"""wrapper function for making all the plots"""
+	"""wrapper function for making all the coefficient plots"""
 	for cta in CTAS:
 		make_reg_folders(cta)
 		plot_coefficients(cta)
 
 
 if __name__ == "__main__":
+	run_regs_all_ctas()
+	plot_resid_all_ctas()
 	plot_coef_all_ctas()

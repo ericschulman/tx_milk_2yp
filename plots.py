@@ -37,7 +37,8 @@ def create_query(group,cta):
 	"GROUP BY category.week), "+
 
 	"categoryp AS (SELECT a.dim_group_key, a.week,  "+
-	"b.price as prev_price, a.price, a.eq_vol "+
+	"b.price as prev_price, b.eq_vol as prev_vol, "+
+	"a.price, a.eq_vol "+
 	"FROM category AS a, category AS b "+
 	"WHERE a.week = (b.week+%s) "%TIME +
 	"AND a.dim_cta_key = b.dim_cta_key "+
@@ -49,7 +50,7 @@ def create_query(group,cta):
 
 	"SELECT categoryp.price - category_averages.avg_price, "+
 	"categoryp.price - categoryp.prev_price, "+
-	"categoryp.eq_vol/category_averages.total_vol,"+
+	"(categoryp.eq_vol - categoryp.prev_vol)/category_averages.total_vol,"+
 	"categoryp.dim_group_key, categoryp.week "+
 	"FROM category_averages, categoryp "+
 	"WHERE categoryp.week = category_averages.week; ")
@@ -136,7 +137,6 @@ def make_all_folders(cta):
 	make_folder('results/%s/t_avg/'%(create_fname(cta)))
 	make_folder('results/%s/p_t/'%(create_fname(cta)))
 	make_folder('results/%s/p_avg/'%(create_fname(cta)))
-	make_folder('results/%s/reg/'%(create_fname(cta)))
 
 
 def create_all_plots(cta):
