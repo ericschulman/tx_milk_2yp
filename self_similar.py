@@ -1,5 +1,7 @@
 from plots import *
 
+MIN = -.2
+MAX = .1
 
 def create_matrix(group,cta):
 	"""helper function tocreate matrix for regression, 
@@ -151,7 +153,9 @@ def plot_coefficients(cta):
 		for coef in range(3):
 			plt.errorbar(vols, mean[coef], yerr = err[coef], fmt='s', capsize=5, markersize=3 )
 			for i in range(len(vols)):
-				plt.annotate(labels[i], (vols[i], mean[coef][i] - err[coef][i]), fontsize = 4 )
+				plt.annotate(labels[i], (vols[i], mean[coef][i] - err[coef][i]), fontsize = 5 )
+			axes = plt.gca()
+			axes.set_ylim([MIN,MAX])
 			plt.savefig('results/%s/coef_%s.png'%(create_fname(cta), coef))
 						
 			plt.close()
@@ -168,7 +172,7 @@ def plot_resid_all_ctas():
 	"""wrapper function for making all the residual plots"""
 	for cta in CTAS:
 		make_reg_folders(cta)
-		plot_coefficients(cta)
+		plot_all_resids(cta)
 
 
 def plot_coef_all_ctas():
@@ -179,6 +183,6 @@ def plot_coef_all_ctas():
 
 
 if __name__ == "__main__":
-	run_regs_all_ctas()
-	plot_resid_all_ctas()
+	#run_regs_all_ctas()
+	#plot_resid_all_ctas()
 	plot_coef_all_ctas()
