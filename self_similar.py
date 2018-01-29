@@ -1,7 +1,7 @@
 from plots import *
 
-MIN = -.2
-MAX = .1
+MIN = -1.5
+MAX = 1.5
 
 def create_matrix(group,cta):
 	"""helper function tocreate matrix for regression, 
@@ -21,8 +21,9 @@ def create_matrix(group,cta):
 
 	for row in cur:
 		x_row =	np.array( [safe_float(row[0]), safe_float(row[1])] )	
-		X.append (x_row) 
-		y.append ( safe_float(row[2]) )
+		X.append (x_row)
+		q = calc_q(safe_float(row[2]),safe_float(row[3]),safe_float(row[4]),safe_float(row[5]))
+		y.append ( q )
 
 	y = np.array(y)
 	X = np.array(X)
@@ -155,7 +156,7 @@ def plot_coefficients(cta):
 			for i in range(len(vols)):
 				plt.annotate(labels[i], (vols[i], mean[coef][i] - err[coef][i]), fontsize = 5 )
 			axes = plt.gca()
-			axes.set_ylim([MIN,MAX])
+			#axes.set_ylim([MIN,MAX])
 			plt.savefig('results/%s/coef_%s.png'%(create_fname(cta), coef))
 						
 			plt.close()

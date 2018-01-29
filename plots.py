@@ -48,12 +48,14 @@ def create_query(group,cta):
 	"AND b.price  <> '' " +
 	"AND ((a.price-a.edp > %s) OR (a.edp - a.price > %s)) ) "%(DIFF,DIFF)+
 
-	"SELECT categoryp.price - category_averages.avg_price, "+
+	"SELECT categoryp.price - A.avg_price, "+
 	"categoryp.price - categoryp.prev_price, "+
-	"(categoryp.eq_vol - categoryp.prev_vol)/category_averages.total_vol,"+
+	"categoryp.eq_vol, categoryp.prev_vol, A.total_vol, B.total_vol, "+
 	"categoryp.dim_group_key, categoryp.week "+
-	"FROM category_averages, categoryp "+
-	"WHERE categoryp.week = category_averages.week; ")
+	"FROM category_averages as A, category_averages as B, " +
+	"categoryp "+
+	"WHERE categoryp.week = A.week " +
+	("AND categoryp.week = (B.week + %s); "%TIME))
 
 	return query
 
@@ -75,6 +77,10 @@ def make_folder(folder):
 	return folder
 
 
+def calc_q(qi,qt,Q,Qt):
+	return math.log(qi*(Qt-qt)/(qt*(Q-qi)))
+
+
 def create_3dplot(group,cta):
 	con = sqlite3.connect('data/edp_changes.db')
 	cur = con.cursor()
@@ -90,7 +96,8 @@ def create_3dplot(group,cta):
 	for row in cur:
 		x.append ( safe_float(row[0]) )
 		y.append ( safe_float(row[1]) )
-		z.append ( safe_float(row[2]) )
+		q = calc_q(safe_float(row[2]),safe_float(row[3]),safe_float(row[4]),safe_float(row[5])) 
+		z.append ( q )
 
 	ax.scatter(x, y, z)
 	ax.set_xlabel('P_{i,t} - P_{avg,t}')
@@ -115,7 +122,8 @@ def create_plot(group,cta):
 	for row in cur:
 		x.append( safe_float(row[0]) )
 		y.append ( safe_float(row[1]) )
-		z.append ( safe_float(row[2]) )
+		q = calc_q(safe_float(row[2]),safe_float(row[3]),safe_float(row[4]),safe_float(row[5]))
+		z.append ( q )
 
 	plt.plot(x,z,'ro')
 	plt.savefig('results/%s/p_avg/%s.png'%(create_fname(cta), group))
