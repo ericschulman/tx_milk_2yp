@@ -1,0 +1,78 @@
+\documentclass{article}
+
+%math stuff
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{mathtools}
+\usepackage{listings}
+
+%bibliography/appendix
+\usepackage{cite}
+\usepackage[toc,page]{appendix}
+
+%figures
+\usepackage{graphicx}
+\usepackage{booktabs}
+
+%General Formating
+\renewcommand*\familydefault{\sfdefault}
+\usepackage{cmbright}
+\usepackage[letterpaper, portrait, margin=1.5in]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+%Header
+\lhead{Schulman}
+\rhead{Page \thepage}
+
+\title{Predicting Volume Changes Using Price Data}
+\author{Eric Schulman}
+\date{\today}
+
+\begin{document}
+
+
+
+
+\maketitle
+
+\section{Introduction}
+
+Estimating the effect of price changes on volume is a difficult economic problem. Of course, consumers adjust their spending practices to prices changes.  However, there firms also adjust their pricing to effect consumers spending habits.
+
+Permanent income hypothesis and similar literature. Provides theoretical justification for smoothing over consumption. Consumers want to buy roughly the same amount every period. That is what you would expect from data.
+More over you would expect firms to coordinate their pricing activity around this desire for consumers to smooth their consumption.
+Firms cut their prices to compensate for when consumers are consuming less, bringing volume back to the average level. More, over firms raise the price when consumers are consuming bring price back to an average level.
+Literature estimating in truly random settings it is possible to identify how consumers change their spending practices in response to increased income and decreased prices.
+
+More over, firms competition with each other is highly coordinated. Firms would expect to have a set share of the market or alternate based on their competition.
+
+
+The key is to identify times when price fluctuated and volume fluctuated but not they did not do so in a planned way.
+However, these truly random unanticipated settings are hard to isolate. We do not have the luxury of running a truly randomized experiment.
+
+Promotions are planned by the manufacture but must be run by the retailer. Use the randomness miscommunication between the manufacturer and retailer to estimate this effect.
+
+\section{Model}
+
+Another approach would be to, use the price set by the manufacture at date $t$ and the price set by the retailer:
+
+$\Delta p_{it} = \alpha_0 + \alpha_1 q_{it} + v_i$
+
+$\Delta \hat{p_{it}} = \hat{\alpha_0} + \hat{\alpha_1} s_{it} $
+
+Then run 
+
+$\Q_{it}/Q_{\text{tot}} = \beta_0 + \beta_1 \hat{p_{it}}$
+
+To predict share of volume.
+
+
+
+
+
+\section{conclusion}
+
+
+\end{document}\grid
+\grid
