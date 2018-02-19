@@ -78,7 +78,7 @@ def make_folder(folder):
 
 
 def calc_q(qi,qt,Q,Qt):
-	return math.log(qi*(Qt-qt)/(qt*(Q-qi)))
+	return math.log(qi/Q) - math.log(qt/Qt)
 
 
 def create_3dplot(group,cta):

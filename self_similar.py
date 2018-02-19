@@ -184,6 +184,6 @@ def plot_coef_all_ctas():
 
 
 if __name__ == "__main__":
-	#run_regs_all_ctas()
-	#plot_resid_all_ctas()
+	run_regs_all_ctas()
+	plot_resid_all_ctas()
 	plot_coef_all_ctas()

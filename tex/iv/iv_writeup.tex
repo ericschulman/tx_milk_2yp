@@ -38,41 +38,29 @@
 
 \section{Introduction}
 
-Estimating the effect of price changes on volume is a difficult economic problem. Of course, consumers adjust their spending practices to prices changes.  However, there firms also adjust their pricing to effect consumers spending habits.
+Estimating the effect of price changes on volume is a difficult. Consumers adjust their spending practices to prices changes.  However, firms also adjust their pricing based on consumers spending habits. Firms compensate when volume is lower than average levels by cutting prices. More over, firms raise prices when consumers when volume is high bringing price back to average levels.
 
-Permanent income hypothesis and similar literature. Provides theoretical justification for smoothing over consumption. Consumers want to buy roughly the same amount every period. That is what you would expect from data.
-More over you would expect firms to coordinate their pricing activity around this desire for consumers to smooth their consumption.
-Firms cut their prices to compensate for when consumers are consuming less, bringing volume back to the average level. More, over firms raise the price when consumers are consuming bring price back to an average level.
-Literature estimating in truly random settings it is possible to identify how consumers change their spending practices in response to increased income and decreased prices.
+The literature on consumption suggests consumers smooth their consumptions. In other words, consumers want roughly the same amount every period; you would expect volume to be constant from week to week -- even if prices are changing. In fact, firms can coordinate their pricing activity around consumption smoothing.
 
-More over, firms competition with each other is highly coordinated. Firms would expect to have a set share of the market or alternate based on their competition.
-
-
-The key is to identify times when price fluctuated and volume fluctuated but not they did not do so in a planned way.
-However, these truly random unanticipated settings are hard to isolate. We do not have the luxury of running a truly randomized experiment.
-
-Promotions are planned by the manufacture but must be run by the retailer. Use the randomness miscommunication between the manufacturer and retailer to estimate this effect.
+If price changes where truly random, you could estimate how quantity responds to price changes. In lieu of that, you can estimate how quantity responds to prices by isolating 'random' price changes from 'non-random' ones. You can isolate 'random' price changes by comparing prices at retailers with the manufacturers' planned schedule. Then you can use the 'random' aspect of price changes to explain changes in quantity. This approach is called 'instrumental variables' or 'structural equations'.
 
 \section{Model}
 
-Another approach would be to, use the price set by the manufacture at date $t$ and the price set by the retailer:
+Formally, you can isolate the random aspect of price changes using the regression model.
 
-$\Delta p_{it} = \alpha_0 + \alpha_1 q_{it} + v_i$
+$$\Delta p^{\text{retailer}}_{it} = \alpha_0 + \alpha_1 \Delta p^{\text{manufactuer}}_{it} + v_i$$
 
-$\Delta \hat{p_{it}} = \hat{\alpha_0} + \hat{\alpha_1} s_{it} $
+By fitting the model, you decompose $\Delta p^{\text{retailer}}_{it}$ into two parts. One is random, the other is a function of $\Delta p^{\text{manufactuer}}_{it}$.
 
-Then run 
+$$\Delta  p^{\text{retailer}}_{it} = (\hat{\alpha_0} + \hat{\alpha_1} \Delta p^{\text{manufactuer}}_{it}) + (\hat{v_{it}}) $$
 
-$\Q_{it}/Q_{\text{tot}} = \beta_0 + \beta_1 \hat{p_{it}}$
+Isolating the 'random' part gives us:
 
-To predict share of volume.
+$$\hat{v_{it}} = \Delta  p^{\text{retailer}}_{it}  - (\hat{\alpha_0} + \hat{\alpha_1} \Delta p^{\text{manufactuer}}_{it})  $$
 
+We use the 'random' part of $p^{\text{retailer}}_{it}$ to estimate quantity changes with respect to price.
 
-
-
-
-\section{conclusion}
+$$Q_{it} = \beta_0 + \beta_1 \hat{v_{it}} + \epsilon$$
 
 
-\end{document}\grid
-\grid
+\end{document}
