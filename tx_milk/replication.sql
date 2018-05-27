@@ -2,8 +2,8 @@
 CREATE VIEW incumbents AS
 WITH
 outcomes as (select COUNTY, SYSTEM, VENDOR, YEAR, NUMWIN, WIN is not '' as WIN from tx_milk),
-sum_wins as (select COUNTY, SYSTEM, sum(WIN) as SUM_WINS, count(YEAR) as NUMYEAR from outcomes group by SYSTEM),
-ind_wins as (select COUNTY, SYSTEM, VENDOR, sum(WIN) as IND_WINS from outcomes group by SYSTEM, VENDOR)
+sum_wins as (select COUNTY, SYSTEM, sum(WIN) as SUM_WINS, count(YEAR) as NUMYEAR from outcomes group by COUNTY, SYSTEM),
+ind_wins as (select COUNTY, SYSTEM, VENDOR, sum(WIN) as IND_WINS from outcomes group by SYSTEM, COUNTY, VENDOR)
 
 SELECT A.COUNTY, A.SYSTEM, VENDOR, SUM_WINS, 
 IND_WINS, ind_wins/((sum_wins*1.0)) AS WIN_PERCENT, 
@@ -12,43 +12,69 @@ FROM ind_wins as A, sum_wins as B
 WHERE A.SYSTEM = B.SYSTEM
 AND NUMYEAR>=5;
 
-/*Querey for listing school districts with incumbent vendors*/
-SELECT * FROM incumbents WHERE I>=1 ORDER BY county;
+/*Simplified table with all the important data and CORRECT let dates*/
+CREATE VIEW milk as select rowid, SYSTEM, COUNTY, MRKTCODE, VENDOR, 
+cast (substr(LETDATE,0,instr(LETDATE,'/')) as integer) AS MONTH,
+cast(substr(LETDATE, instr(LETDATE,'/')+1 , instr(substr(LETDATE,instr(LETDATE,'/')+1),'/')-1) as integer) AS DAY,
+1900 + YEAR as YEAR,
+LFC, LFW, WW, WC, QLFC, QLFW, QWW, QWC, ESTQTY, QUANTITY, FMOZONE,
+instr(ESC,'E') > 0 as ESC,
+WIN is not '' as WIN
+from tx_milk;
 
-/*Baby query to format date correctly*/
-SELECT 
+
+/*query to calculate the BACKLOG*/
+CREATE VIEW backlog AS
+
+WITH passed as (SELECT A.*, SUM(B.ESTQTY*B.WIN) as PASSED
+FROM milk as A, milk as B
+WHERE A.YEAR = B.YEAR
+AND ( (A.MONTH <= B.MONTH) OR (A.MONTH = B.MONTH AND A.DAY <= B.DAY) )
+GROUP BY A.rowid),
+
+contracts as (SELECT A.*, SUM(B.ESTQTY*B.WIN) as CONTRACTS
+FROM milk as A, milk as B
+WHERE A.YEAR = B.YEAR
+GROUP BY A.rowid),
+
+commitments as (SELECT A.*, SUM(B.ESTQTY*B.WIN) as COMMITMENTS
+FROM milk as A, milk as B
+WHERE A.VENDOR = B.VENDOR
+AND A.YEAR = B.YEAR
+AND ( (A.MONTH >= B.MONTH) OR (A.MONTH = B.MONTH AND A.DAY >= B.DAY) )
+GROUP BY A.rowid),
+
+capacity as (SELECT VENDOR, max(contracts) as CAPACITY
+FROM
+(SELECT VENDOR, YEAR, SUM(ESTQTY*WIN) as contracts
+from milk
+GROUP BY VENDOR, YEAR)
+GROUP BY VENDOR)
+
+SELECT passed.*, CONTRACTS, COMMITMENTS, CAPACITY, (COMMITMENTS/CAPACITY - PASSED/CONTRACTS) AS BACKLOG
+FROM passed, contracts, commitments, capacity
+WHERE passed.rowid = contracts.rowid
+AND passed.rowid = commitments.rowid
+AND passed.vendor = capacity.vendor;
+
+
+/*Work in Progress*/
+
+/*View with correct dates*/
+CREATE VIEW letdates as SELECT 
+rowid, SYSTEM, LETDATE, MRKTCODE, VENDOR,
 cast (substr(LETDATE,0,instr(LETDATE,'/')) as integer) AS MONTH,
 cast(substr(LETDATE, instr(LETDATE,'/')+1 , instr(substr(LETDATE,instr(LETDATE,'/')+1),'/')-1) as integer) AS DAY,
 cast (substr(LETDATE, instr(LETDATE,'/')+ instr(substr(LETDATE,instr(LETDATE,'/')+1),'/') + 1 ) as integer)+60 AS YEAR
 FROM tx_milk;
 
-/*Trying to generate previous wins that year, needs work...*/
-WITH
-dated_bids as (select VENDOR, WIN is not '' as WIN,
-cast (substr(LETDATE,0,instr(LETDATE,'/')) as integer) AS MONTH,
-cast(substr(LETDATE, instr(LETDATE,'/')+1 , instr(substr(LETDATE,instr(LETDATE,'/')+1),'/')-1) as integer) AS DAY,
-1900 + YEAR as YEAR,
-QLFC, QLFW, QWW, QWC, ESTQTY, 
-LFC from tx_milk)
-
-select A.YEAR, A.VENDOR, A.LFC,
-SUM(B.QLFC),
-MAX(A.ESTQTY)
-from dated_bids as A, dated_bids as B
-WHERE A.WIN >= 1 and
-B.WIN >= 1 and
-(A.YEAR = B.YEAR)
-AND ( (A.MONTH > B.MONTH) OR (A.MONTH = B.MONTH AND A.DAY >= B.DAY) )
-GROUP BY A.YEAR, A.VENDOR, A.LFC
+/*Querey for listing school districts with incumbent vendors*/
+SELECT * FROM incumbents WHERE I>=1 ORDER BY county;
 
 /*Generate the Data involved with Table 5*/
-select A.SYSTEM as SYSTEM, A.VENDOR as VENDOR,
-cast (substr(LETDATE,0,instr(LETDATE,'/')) as integer) AS MONTH,
-cast(substr(LETDATE, instr(LETDATE,'/')+1 , instr(substr(LETDATE,instr(LETDATE,'/')+1),'/')-1) as integer) AS DAY,
-1900 + YEAR as YEAR,
-LFC as BID, I, 1 as LFC, 0 as LFW, 0 as WC,
-instr(ESC,'E') > 0 as ESC,
-1-I as NI
-from tx_milk as A, incumbents as B 
-where A.SYSTEM = B.SYSTEM and A.VENDOR = B.VENDOR;
+create view milk_i as 
+select A.*, I
+from backlog as A, incumbents as B
+where A.SYSTEM = B.SYSTEM and A.VENDOR = B.VENDOR
+group by rowid;
 
