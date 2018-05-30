@@ -5,7 +5,7 @@ outcomes as (select COUNTY, SYSTEM, VENDOR, YEAR, NUMWIN, WIN is not '' as WIN f
 sum_wins as (select COUNTY, SYSTEM, sum(WIN) as SUM_WINS, count(YEAR) as NUMYEAR from outcomes group by COUNTY, SYSTEM),
 ind_wins as (select COUNTY, SYSTEM, VENDOR, sum(WIN) as IND_WINS from outcomes group by SYSTEM, COUNTY, VENDOR)
 
-SELECT A.COUNTY, A.SYSTEM, VENDOR, SUM_WINS, 
+SELECT A.COUNTY AS COUNTY, A.SYSTEM AS SYSTEM, VENDOR, SUM_WINS, 
 IND_WINS, ind_wins/((sum_wins*1.0)) AS WIN_PERCENT, 
 ((ind_wins/(sum_wins*1.0))>=.8) AS I
 FROM ind_wins as A, sum_wins as B
@@ -72,9 +72,10 @@ FROM tx_milk;
 SELECT * FROM incumbents WHERE I>=1 ORDER BY county;
 
 /*Generate the Data involved with Table 5*/
-create view milk_i as 
-select A.*, I
-from backlog as A, incumbents as B
-where A.SYSTEM = B.SYSTEM and A.VENDOR = B.VENDOR
-group by rowid;
-
+select A.*, B.I as I, C.diff*.01 + D.price as FMO 
+from milk as A
+LEFT JOIN incumbents as B ON A.SYSTEM = B.SYSTEM
+AND A.COUNTY = B.COUNTY
+AND A.VENDOR = B.VENDOR
+LEFT JOIN fmo_diff AS C on A.FMOZONE = C.FMOZONE
+LEFT JOIN fmo_prices AS D on A.YEAR = D.YEAR and 0 = D.month;
