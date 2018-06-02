@@ -17,7 +17,8 @@ CREATE VIEW milk as select rowid, SYSTEM, COUNTY, MRKTCODE, VENDOR,
 cast (substr(LETDATE,0,instr(LETDATE,'/')) as integer) AS MONTH,
 cast(substr(LETDATE, instr(LETDATE,'/')+1 , instr(substr(LETDATE,instr(LETDATE,'/')+1),'/')-1) as integer) AS DAY,
 1900 + YEAR as YEAR,
-LFC, LFW, WW, WC, QLFC, QLFW, QWW, QWC, ESTQTY, QUANTITY, FMOZONE,
+LFC, LFW, WW, WC, QLFC, QLFW, QWW, QWC, ESTQTY, QUANTITY, FMOZONE, DEL,
+ESTQTY/(DEL*36) AS QSTOP,
 instr(ESC,'E') > 0 as ESC,
 WIN is not '' as WIN
 from tx_milk;
@@ -57,6 +58,16 @@ WHERE passed.rowid = contracts.rowid
 AND passed.rowid = commitments.rowid
 AND passed.vendor = capacity.vendor;
 
+/*create view with number of competitors*/
+create view num as 
+select A.rowid, count(*) as NUM from milk as A, milk as B 
+WHERE A.SYSTEM = B.SYSTEM
+AND A.COUNTY = B.COUNTY
+AND A.DAY = B.DAY
+AND A.MONTH = B.MONTH
+AND A.YEAR = B.YEAR
+GROUP BY A.rowid;
+
 
 /*Work in Progress*/
 
@@ -72,10 +83,11 @@ FROM tx_milk;
 SELECT * FROM incumbents WHERE I>=1 ORDER BY county;
 
 /*Generate the Data involved with Table 5*/
-select A.*, B.I as I, C.diff*.01 + D.price as FMO 
+select A.*, B.I as I, C.diff*.01 + D.price as FMO, E.num as N
 from milk as A
 LEFT JOIN incumbents as B ON A.SYSTEM = B.SYSTEM
 AND A.COUNTY = B.COUNTY
 AND A.VENDOR = B.VENDOR
 LEFT JOIN fmo_diff AS C on A.FMOZONE = C.FMOZONE
-LEFT JOIN fmo_prices AS D on A.YEAR = D.YEAR and 0 = D.month;
+LEFT JOIN fmo_prices AS D on A.YEAR = D.YEAR and 0 = D.month
+LEFT JOIN num AS E on A.rowid = E.rowid;
