@@ -2,6 +2,7 @@ milk <- data.frame(read.csv("~/Documents/summer_ra/tx_milk/data/milk_out.csv"))
 
 new_lfc <- data.frame("vendor" = milk$VENDOR,
                       "system" = milk$SYSTEM,
+                      "year" = milk$YEAR,
                       "biddate" =   paste(milk$MONTH, milk$DAY, milk$YEAR, sep="-"),
                       "bid" = log(milk$LFC),
                       "inc" = milk$I, 
@@ -24,6 +25,7 @@ new_lfc <- data.frame("vendor" = milk$VENDOR,
                        
 new_ww <-data.frame("vendor" = milk$VENDOR,
                   "system" = milk$SYSTEM,
+                  "year" = milk$YEAR,
                   "biddate" =   paste(milk$MONTH, milk$DAY, milk$YEAR, sep="-"),
                   "bid" = log(milk$WW),
                   "inc" = milk$I, 
@@ -47,6 +49,7 @@ new_ww <-data.frame("vendor" = milk$VENDOR,
 
 new_lfw <- data.frame("vendor" = milk$VENDOR,
                       "system" = milk$SYSTEM,
+                      "year" = milk$YEAR,
                       "biddate" =   paste(milk$MONTH, milk$DAY, milk$YEAR, sep="-"),
                       "bid" = log(milk$LFW),
                       "inc" = milk$I, 
@@ -70,6 +73,7 @@ new_lfw <- data.frame("vendor" = milk$VENDOR,
 
 new_wc <- data.frame("vendor" = milk$VENDOR,
                      "system" = milk$SYSTEM,
+                     "year" = milk$YEAR,
                      "biddate" =   paste(milk$MONTH, milk$DAY, milk$YEAR, sep="-"),
                      "bid" = log(milk$WC),
                      "inc" = milk$I, 
@@ -90,13 +94,30 @@ new_wc <- data.frame("vendor" = milk$VENDOR,
                      "numni" = (1-milk$I) * milk$N,
                      "escni" = (1-milk$I) * milk$ESC)
 
+install.packages("bitops")
+install.packages("RCurl")
+install.packages("sandwich")
+install.packages("gdata")
+library(bitops)
+library(RCurl)
+library(sandwich)
+library(gdata)
+
+url_robust <- "https://raw.githubusercontent.com/IsidoreBeautrelet/economictheoryblog/master/robust_summary.R"
+eval(parse(text = getURL(url_robust, ssl.verifypeer = FALSE)),
+     envir=.GlobalEnv)
 
 new_milk <- rbind(new_lfc, new_lfw, new_wc, new_ww)
 
-library("plm")
 
-table5 = plm(bid ~ inc + lfci + lfwi + wci + logfmoi + logqstopi + backi + esci + numi
-   + lfcni + lfwni + wcni + logfmoni + logqstopni + backni + escni + numni, new_milk, index = c("vendor","biddate") )
 
-summary(table5)
+lm.object <- lm(bid ~ inc + lfci + lfwi + wci + logfmoi + logqstopi + backi + esci + numi
+   + lfcni + lfwni + wcni + logfmoni + logqstopni + backni + escni + numni, new_milk) 
 
+summary(lm.object )
+
+#summary(lm.object, cluster=c("vendor","year") )
+
+install.packages("dummies")
+library(dummies)
+new_milk <- cbind(new_milk, dummy(new_milk$year,sep = "_"))
