@@ -94,30 +94,13 @@ new_wc <- data.frame("vendor" = milk$VENDOR,
                      "numni" = (1-milk$I) * milk$N,
                      "escni" = (1-milk$I) * milk$ESC)
 
-install.packages("bitops")
-install.packages("RCurl")
-install.packages("sandwich")
-install.packages("gdata")
-library(bitops)
-library(RCurl)
-library(sandwich)
-library(gdata)
-
-url_robust <- "https://raw.githubusercontent.com/IsidoreBeautrelet/economictheoryblog/master/robust_summary.R"
-eval(parse(text = getURL(url_robust, ssl.verifypeer = FALSE)),
-     envir=.GlobalEnv)
-
 new_milk <- rbind(new_lfc, new_lfw, new_wc, new_ww)
 
-
+new_milk$year_dum <- factor(new_milk$year)
+new_milk$sys_dum <- factor(new_milk$system)
 
 lm.object <- lm(bid ~ inc + lfci + lfwi + wci + logfmoi + logqstopi + backi + esci + numi
-   + lfcni + lfwni + wcni + logfmoni + logqstopni + backni + escni + numni, new_milk) 
+   + lfcni + lfwni + wcni + logfmoni + logqstopni + backni + escni + numni + year_dum, new_milk) 
 
 summary(lm.object )
 
-#summary(lm.object, cluster=c("vendor","year") )
-
-install.packages("dummies")
-library(dummies)
-new_milk <- cbind(new_milk, dummy(new_milk$year,sep = "_"))
