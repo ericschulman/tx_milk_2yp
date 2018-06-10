@@ -2,10 +2,12 @@ install.packages("bitops")
 install.packages("RCurl")
 install.packages("sandwich")
 install.packages("gdata")
+install.packages("IDPmisc")
 library(bitops)
 library(RCurl)
 library(sandwich)
 library(gdata)
+
 
 url_robust <- "https://raw.githubusercontent.com/IsidoreBeautrelet/economictheoryblog/master/robust_summary.R"
 eval(parse(text = getURL(url_robust, ssl.verifypeer = FALSE)),
