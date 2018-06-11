@@ -4,16 +4,34 @@ The code attempts to remplicate table 5, and table 6 from the working paper "Inc
 
 ## clustered_SE.R
 
-This file has an attempt to create clustered standard errors using code from this post
+This file has an attempt to create clustered standard errors using code from this post.
 
 It is still in progress. Other relevant posts and entries are:
+
+https://stats.stackexchange.com/questions/124662/group-fixed-effects-not-individual-fixed-effects-using-plm-in-r
+
+https://economictheoryblog.com/2016/08/07/robust-standard-errors-in-r-function/
+
+his blog has the following dependencies:
+
+`install.packages("bitops")`
+`install.packages("RCurl")`
+`install.packages("sandwich")`
+`install.packages("gdata")`
+`install.packages("IDPmisc")`
 
 
 ## replication.R
 
 This file tries to replicate the main tables from the paper.
 
-##replication.SQL
+This file has the following dependencies
+`install.packages("stargazer")`
+`install.packages("IDPmisc")`
+`install.packages('multiwayvcov')`
+`install.packages('lmtest')`
+
+## replication.SQL
 
 Useful SQL queries used for generating BACKLOG and the Incumbencies within the paper
 

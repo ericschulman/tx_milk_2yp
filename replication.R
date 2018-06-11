@@ -6,7 +6,7 @@ library(stargazer)
 library(IDPmisc)
 
 #Read data and set up necessary tables for regression
-milk <- data.frame(read.csv("~/Documents/summer_ra/tx_milk/data/milk_out.csv"))
+milk <- data.frame(read.csv("~/Documents/tx_milk/data/milk_out.csv"))
 
 new_lfc <- data.frame("rowid" = milk$rowid,
                       "lbid" = log(milk$LFC),
@@ -95,13 +95,16 @@ lm.object <- lm(lbid ~ inc + type_dum*inc + lfmo*inc + lqstop*inc + lback*inc + 
                 + year_dum + sys_dum, data=new_milk)
 
 
-stargazer(lm.object, title="Table 5 Results", align=TRUE, type = "text", out="~/Documents/summer_ra/tx_milk/output/table5.txt")
+stargazer(lm.object, title="Table 5 Results", align=TRUE, type = "text", out="~/Documents/tx_milk/output/table5.txt")
+stargazer(lm.object, title="Table 5 Results", align=TRUE, type = "latex", out="~/Documents/tx_milk/output/table5.tex")
 summary(lm.object)
 
 #table 6
+
 lm.object2 <- lm(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum
                 + year_dum + sys_dum, data=new_milk)
 
-stargazer(lm.object, title="Table 6 Results", align=TRUE, type = "text", out="~/Documents/summer_ra/tx_milk/output/table6.txt")
+stargazer(lm.object2, title="Table 6 Results", align=TRUE, type = "text", out="~/Documents/tx_milk/output/table6.txt")
+stargazer(lm.object2, title="Table 6 Results", align=TRUE, type = "latex", out="~/Documents/tx_milk/output/table6.tex")
 summary(lm.object2)
 
