@@ -1,0 +1,582 @@
+
+Table 6 Results
+=========================================================
+                                  Dependent variable:    
+                              ---------------------------
+                                         lbid            
+---------------------------------------------------------
+inc                                    -0.314***         
+                                        (0.099)          
+                                                         
+type_dumlfc                            -0.005**          
+                                        (0.002)          
+                                                         
+type_dumlfw                            -0.049***         
+                                        (0.002)          
+                                                         
+type_dumwc                             0.052***          
+                                        (0.002)          
+                                                         
+lfmo                                   23.985***         
+                                        (1.437)          
+                                                         
+lqstop                                 -0.010**          
+                                        (0.004)          
+                                                         
+lback                                  -0.009***         
+                                        (0.001)          
+                                                         
+esc                                    -0.017***         
+                                        (0.002)          
+                                                         
+lnum                                    0.006**          
+                                        (0.003)          
+                                                         
+year_dum1976                           -2.097***         
+                                        (0.145)          
+                                                         
+year_dum1977                           -1.812***         
+                                        (0.132)          
+                                                         
+year_dum1978                           -3.015***         
+                                        (0.222)          
+                                                         
+year_dum1979                           -5.848***         
+                                        (0.392)          
+                                                         
+year_dum1980                           -7.404***         
+                                        (0.485)          
+                                                         
+year_dum1981                           -8.867***         
+                                        (0.575)          
+                                                         
+year_dum1982                           -8.707***         
+                                        (0.565)          
+                                                         
+year_dum1983                           -8.855***         
+                                        (0.571)          
+                                                         
+year_dum1984                           -8.350***         
+                                        (0.542)          
+                                                         
+year_dum1985                           -7.502***         
+                                        (0.490)          
+                                                         
+year_dum1986                           -7.646***         
+                                        (0.500)          
+                                                         
+year_dum1987                           -8.455***         
+                                        (0.548)          
+                                                         
+year_dum1988                           -7.689***         
+                                        (0.500)          
+                                                         
+year_dum1989                           -9.446***         
+                                        (0.605)          
+                                                         
+year_dum1990                          -10.968***         
+                                        (0.699)          
+                                                         
+year_dum1991                           -7.428***         
+                                        (0.484)          
+                                                         
+year_dum1992                           -9.379***         
+                                        (0.599)          
+                                                         
+sys_dumALEDO                            -0.023           
+                                        (0.017)          
+                                                         
+sys_dumALLEN                            -0.005           
+                                        (0.020)          
+                                                         
+sys_dumALVARADO                          0.004           
+                                        (0.018)          
+                                                         
+sys_dumALVORD                          -0.093***         
+                                        (0.017)          
+                                                         
+sys_dumANNA                             -0.022           
+                                        (0.020)          
+                                                         
+sys_dumARGYLE                           -0.036*          
+                                        (0.019)          
+                                                         
+sys_dumARLINGTON                        -0.002           
+                                        (0.022)          
+                                                         
+sys_dumAUBREY                           -0.004           
+                                        (0.023)          
+                                                         
+sys_dumAUSTIN                          -0.596***         
+                                        (0.039)          
+                                                         
+sys_dumAZLE                             -0.002           
+                                        (0.018)          
+                                                         
+sys_dumBELLS                            -0.020           
+                                        (0.018)          
+                                                         
+sys_dumBELTON                          -0.476***         
+                                        (0.024)          
+                                                         
+sys_dumBIRDVILLE                         0.017           
+                                        (0.020)          
+                                                         
+sys_dumBLAND                             0.027           
+                                        (0.029)          
+                                                         
+sys_dumBLUE RIDGE                        0.015           
+                                        (0.018)          
+                                                         
+sys_dumBLUM                            -0.308***         
+                                        (0.024)          
+                                                         
+sys_dumBOWIE                            -0.010           
+                                        (0.017)          
+                                                         
+sys_dumBOYD                            -0.129***         
+                                        (0.017)          
+                                                         
+sys_dumBRIDGEPORT                      -0.090***         
+                                        (0.016)          
+                                                         
+sys_dumBROCK                            0.045*           
+                                        (0.024)          
+                                                         
+sys_dumBURLESON                          0.003           
+                                        (0.020)          
+                                                         
+sys_dumCARROLL                           0.010           
+                                        (0.018)          
+                                                         
+sys_dumCARROLLTON                       0.042**          
+                                        (0.020)          
+                                                         
+sys_dumCASTLEBERRY                       0.021           
+                                        (0.016)          
+                                                         
+sys_dumCEDAR HILL                        0.008           
+                                        (0.018)          
+                                                         
+sys_dumCELESTE                          0.040**          
+                                        (0.019)          
+                                                         
+sys_dumCELINA                           -0.015           
+                                        (0.022)          
+                                                         
+sys_dumCHICO                           -0.096***         
+                                        (0.018)          
+                                                         
+sys_dumCLEBURNE                          0.012           
+                                        (0.018)          
+                                                         
+sys_dumCOLLINSVILLE                     -0.020           
+                                        (0.022)          
+                                                         
+sys_dumCOMANCHE                        -0.377***         
+                                        (0.022)          
+                                                         
+sys_dumCOMMUNITY                        -0.014           
+                                        (0.023)          
+                                                         
+sys_dumCOMO-PICKTON                    -0.050***         
+                                        (0.018)          
+                                                         
+sys_dumCOPPELL                          -0.021           
+                                        (0.019)          
+                                                         
+sys_dumCRANDALL                         -0.012           
+                                        (0.017)          
+                                                         
+sys_dumCROWLEY                          0.043**          
+                                        (0.017)          
+                                                         
+sys_dumDALLAS                           -0.011           
+                                        (0.021)          
+                                                         
+sys_dumDE LEON                         -0.374***         
+                                        (0.022)          
+                                                         
+sys_dumDE SOTO                           0.013           
+                                        (0.018)          
+                                                         
+sys_dumDECATUR                         -0.106***         
+                                        (0.018)          
+                                                         
+sys_dumDENTON                            0.005           
+                                        (0.019)          
+                                                         
+sys_dumDUBLIN                          -0.326***         
+                                        (0.023)          
+                                                         
+sys_dumDUNCANVILLE                       0.024           
+                                        (0.018)          
+                                                         
+sys_dumEAGLE MOUNTAIN-SAGINAW            0.013           
+                                        (0.017)          
+                                                         
+sys_dumEAST CENTRAL                    -0.657***         
+                                        (0.044)          
+                                                         
+sys_dumECTOR                           0.063***          
+                                        (0.023)          
+                                                         
+sys_dumEDGEWOOD                        -0.723***         
+                                        (0.046)          
+                                                         
+sys_dumENNIS                            -0.015           
+                                        (0.018)          
+                                                         
+sys_dumERA                             0.057***          
+                                        (0.019)          
+                                                         
+sys_dumEUSTACE                         -0.219***         
+                                        (0.028)          
+                                                         
+sys_dumEVERMAN                           0.020           
+                                        (0.017)          
+                                                         
+sys_dumFARMERSVILLE                     -0.002           
+                                        (0.021)          
+                                                         
+sys_dumFERRIS                           -0.027           
+                                        (0.018)          
+                                                         
+sys_dumFORNEY                           -0.020           
+                                        (0.019)          
+                                                         
+sys_dumFORT WORTH                       -0.010           
+                                        (0.021)          
+                                                         
+sys_dumFRISCO                           -0.001           
+                                        (0.020)          
+                                                         
+sys_dumGARLAND                           0.026           
+                                        (0.021)          
+                                                         
+sys_dumGARNER                            0.001           
+                                        (0.029)          
+                                                         
+sys_dumGLEN ROSE                       -0.044**          
+                                        (0.019)          
+                                                         
+sys_dumGODLEY                            0.002           
+                                        (0.019)          
+                                                         
+sys_dumGORDON                          0.226***          
+                                        (0.028)          
+                                                         
+sys_dumGRAFORD                         0.271***          
+                                        (0.029)          
+                                                         
+sys_dumGRANBURY                          0.006           
+                                        (0.019)          
+                                                         
+sys_dumGRAND PRAIRIE                    0.036*           
+                                        (0.020)          
+                                                         
+sys_dumGRANDVIEW                       -0.038**          
+                                        (0.017)          
+                                                         
+sys_dumGRAPEVINE-COLLEYVILLE             0.009           
+                                        (0.018)          
+                                                         
+sys_dumGREENVILLE                        0.028           
+                                        (0.018)          
+                                                         
+sys_dumGROESBECK                       -0.379***         
+                                        (0.024)          
+                                                         
+sys_dumGUNTER                           -0.020           
+                                        (0.021)          
+                                                         
+sys_dumHARLANDALE                      -0.794***         
+                                        (0.045)          
+                                                         
+sys_dumHEB                              0.043**          
+                                        (0.020)          
+                                                         
+sys_dumHICO                            -0.278***         
+                                        (0.024)          
+                                                         
+sys_dumHIGHLAND PARK                    -0.019           
+                                        (0.016)          
+                                                         
+sys_dumHONEY GROVE                     -0.069***         
+                                        (0.020)          
+                                                         
+sys_dumHUCKABAY                        -0.298***         
+                                        (0.025)          
+                                                         
+sys_dumIREDELE                         -0.328***         
+                                        (0.027)          
+                                                         
+sys_dumIRVING                           -0.014           
+                                        (0.020)          
+                                                         
+sys_dumITASCA                          -0.254***         
+                                        (0.023)          
+                                                         
+sys_dumJACKSBORO                       -0.365***         
+                                        (0.026)          
+                                                         
+sys_dumJOSHUA                            0.013           
+                                        (0.018)          
+                                                         
+sys_dumJUDSON                          -0.735***         
+                                        (0.045)          
+                                                         
+sys_dumKELLER                           0.043**          
+                                        (0.018)          
+                                                         
+sys_dumKENNEDALE                        -0.012           
+                                        (0.017)          
+                                                         
+sys_dumKILLEEN                         -0.151***         
+                                        (0.026)          
+                                                         
+sys_dumKRUM                             -0.021           
+                                        (0.020)          
+                                                         
+sys_dumLA VEGA                         -0.408***         
+                                        (0.028)          
+                                                         
+sys_dumLA VERNIA                       -0.703***         
+                                        (0.043)          
+                                                         
+sys_dumLAKE DALLAS                       0.002           
+                                        (0.024)          
+                                                         
+sys_dumLAKE WORTH                       -0.029           
+                                        (0.018)          
+                                                         
+sys_dumLANCASTER                        -0.003           
+                                        (0.017)          
+                                                         
+sys_dumLEONARD                          -0.016           
+                                        (0.021)          
+                                                         
+sys_dumLEWISVILLE                        0.016           
+                                        (0.019)          
+                                                         
+sys_dumLINDSAY                           0.023           
+                                        (0.018)          
+                                                         
+sys_dumLINGLEVILLE                     -0.328***         
+                                        (0.025)          
+                                                         
+sys_dumLITTLE ELM                        0.020           
+                                        (0.019)          
+                                                         
+sys_dumLOVEJOY                         0.178***          
+                                        (0.023)          
+                                                         
+sys_dumMABANK                           -0.038*          
+                                        (0.022)          
+                                                         
+sys_dumMANSFIELD                        -0.014           
+                                        (0.018)          
+                                                         
+sys_dumMARLIN                          -0.411***         
+                                        (0.026)          
+                                                         
+sys_dumMAYPEARL                          0.006           
+                                        (0.021)          
+                                                         
+sys_dumMCKINNEY                          0.009           
+                                        (0.018)          
+                                                         
+sys_dumMESQUITE                         0.039*           
+                                        (0.022)          
+                                                         
+sys_dumMIDLOTHIAN                       -0.019           
+                                        (0.018)          
+                                                         
+sys_dumMILFORD                         -0.048**          
+                                        (0.023)          
+                                                         
+sys_dumMILLER GROVE                      0.001           
+                                        (0.023)          
+                                                         
+sys_dumMILLSAP                         0.106***          
+                                        (0.019)          
+                                                         
+sys_dumMINERAL WELLS                   0.334***          
+                                        (0.027)          
+                                                         
+sys_dumMORGAN                          -0.297***         
+                                        (0.024)          
+                                                         
+sys_dumMORGAN MILL                     -0.276***         
+                                        (0.027)          
+                                                         
+sys_dumMOUNT VERNON                    -0.062***         
+                                        (0.017)          
+                                                         
+sys_dumNORTH EAST                      -0.680***         
+                                        (0.046)          
+                                                         
+sys_dumNORTHSIDE                       -0.709***         
+                                        (0.047)          
+                                                         
+sys_dumPALMER                           -0.014           
+                                        (0.019)          
+                                                         
+sys_dumPARADISE                        -0.142***         
+                                        (0.018)          
+                                                         
+sys_dumPARIS                             0.031           
+                                        (0.020)          
+                                                         
+sys_dumPEASTER                         0.307***          
+                                        (0.022)          
+                                                         
+sys_dumPERRIN-WHITT                    -0.303***         
+                                        (0.026)          
+                                                         
+sys_dumPLANO                            0.036*           
+                                        (0.020)          
+                                                         
+sys_dumPOOLVILLE                       0.217***          
+                                        (0.021)          
+                                                         
+sys_dumPOTTSBORO                         0.003           
+                                        (0.018)          
+                                                         
+sys_dumPRINCETON                         0.009           
+                                        (0.018)          
+                                                         
+sys_dumPROSPER                          0.056**          
+                                        (0.023)          
+                                                         
+sys_dumRED OAK                           0.026           
+                                        (0.018)          
+                                                         
+sys_dumRICHARDSON                        0.029           
+                                        (0.020)          
+                                                         
+sys_dumRIO VISTA                        -0.016           
+                                        (0.017)          
+                                                         
+sys_dumSALADO                          -0.372***         
+                                        (0.023)          
+                                                         
+sys_dumSAN ANTONIO                     -0.769***         
+                                        (0.046)          
+                                                         
+sys_dumSANGER                           -0.026           
+                                        (0.018)          
+                                                         
+sys_dumSANTO                           0.275***          
+                                        (0.028)          
+                                                         
+sys_dumSAVOY                            -0.033           
+                                        (0.024)          
+                                                         
+sys_dumSHERMAN                          -0.003           
+                                        (0.019)          
+                                                         
+sys_dumSOMERSET                        -0.797***         
+                                        (0.045)          
+                                                         
+sys_dumSOUTHSIDE                       -0.692***         
+                                        (0.045)          
+                                                         
+sys_dumSOUTHWEST                       -0.700***         
+                                        (0.045)          
+                                                         
+sys_dumSPRINGTOWN                       -0.018           
+                                        (0.019)          
+                                                         
+sys_dumSTEPHENVILLE                    -0.252***         
+                                        (0.023)          
+                                                         
+sys_dumSTRAWN                          0.210***          
+                                        (0.028)          
+                                                         
+sys_dumSULPHER SPRNG                    -0.015           
+                                        (0.019)          
+                                                         
+sys_dumSUNNYVALE                        -0.011           
+                                        (0.018)          
+                                                         
+sys_dumTEMPLE                          -0.401***         
+                                        (0.025)          
+                                                         
+sys_dumTERRELL                           0.005           
+                                        (0.018)          
+                                                         
+sys_dumTOLAR                            -0.023           
+                                        (0.021)          
+                                                         
+sys_dumVALLEY VIEW                       0.021           
+                                        (0.033)          
+                                                         
+sys_dumVENUS                             0.007           
+                                        (0.021)          
+                                                         
+sys_dumWALNUT SPRGS                    -0.349***         
+                                        (0.023)          
+                                                         
+sys_dumWAXAHACHIE                       -0.011           
+                                        (0.017)          
+                                                         
+sys_dumWEATHERFORD                      -0.014           
+                                        (0.018)          
+                                                         
+sys_dumWHITE SETTLEMENT                 -0.015           
+                                        (0.018)          
+                                                         
+sys_dumWHITESBORO                      0.090***          
+                                        (0.017)          
+                                                         
+sys_dumWHITNEY                         -0.316***         
+                                        (0.023)          
+                                                         
+sys_dumWILMER-HUTCHINS                   0.005           
+                                        (0.020)          
+                                                         
+sys_dumWOLFE CITY                        0.023           
+                                        (0.019)          
+                                                         
+sys_dumWYLIE                             0.015           
+                                        (0.018)          
+                                                         
+sys_dumYANTIS                           -0.016           
+                                        (0.020)          
+                                                         
+inc:type_dumlfc                         0.009*           
+                                        (0.005)          
+                                                         
+inc:type_dumlfw                          0.004           
+                                        (0.005)          
+                                                         
+inc:type_dumwc                           0.004           
+                                        (0.005)          
+                                                         
+inc:lfmo                               0.119***          
+                                        (0.036)          
+                                                         
+inc:lqstop                             -0.006***         
+                                        (0.002)          
+                                                         
+inc:lback                              0.004***          
+                                        (0.002)          
+                                                         
+inc:esc                                 -0.001           
+                                        (0.004)          
+                                                         
+inc:lnum                               -0.020***         
+                                        (0.004)          
+                                                         
+Constant                              -57.550***         
+                                        (3.312)          
+                                                         
+---------------------------------------------------------
+Observations                            11,614           
+R2                                       0.516           
+Adjusted R2                              0.508           
+Residual Std. Error               0.071 (df = 11425)     
+F Statistic                   64.891*** (df = 188; 11425)
+=========================================================
+Note:                         *p<0.1; **p<0.05; ***p<0.01

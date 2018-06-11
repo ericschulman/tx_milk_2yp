@@ -12,6 +12,7 @@ FROM ind_wins as A, sum_wins as B
 WHERE A.SYSTEM = B.SYSTEM
 AND NUMYEAR>=5;
 
+
 /*Simplified table with all the important data and CORRECT let dates*/
 CREATE VIEW milk as select rowid, SYSTEM, COUNTY, MRKTCODE, VENDOR, 
 cast (substr(LETDATE,0,instr(LETDATE,'/')) as integer) AS MONTH,
@@ -58,6 +59,7 @@ WHERE passed.rowid = contracts.rowid
 AND passed.rowid = commitments.rowid
 AND passed.vendor = capacity.vendor;
 
+
 /*create view with number of competitors*/
 create view num as 
 select A.rowid, count(*) as NUM from milk as A, milk as B 
@@ -67,6 +69,17 @@ AND A.DAY = B.DAY
 AND A.MONTH = B.MONTH
 AND A.YEAR = B.YEAR
 GROUP BY A.rowid;
+
+
+/*Generate the Data involved with Table 5*/
+select A.*, B.I as I, C.diff*.01 + D.price as FMO, E.num as N
+from milk as A
+LEFT JOIN incumbents as B ON A.SYSTEM = B.SYSTEM
+AND A.COUNTY = B.COUNTY
+AND A.VENDOR = B.VENDOR
+LEFT JOIN fmo_diff AS C on A.FMOZONE = C.FMOZONE
+LEFT JOIN fmo_prices AS D on A.YEAR = D.YEAR and 0 = D.month
+LEFT JOIN num AS E on A.rowid = E.rowid;
 
 
 /*Work in Progress*/
@@ -79,15 +92,8 @@ cast(substr(LETDATE, instr(LETDATE,'/')+1 , instr(substr(LETDATE,instr(LETDATE,'
 cast (substr(LETDATE, instr(LETDATE,'/')+ instr(substr(LETDATE,instr(LETDATE,'/')+1),'/') + 1 ) as integer)+60 AS YEAR
 FROM tx_milk;
 
+
 /*Querey for listing school districts with incumbent vendors*/
 SELECT * FROM incumbents WHERE I>=1 ORDER BY county;
 
-/*Generate the Data involved with Table 5*/
-select A.*, B.I as I, C.diff*.01 + D.price as FMO, E.num as N
-from milk as A
-LEFT JOIN incumbents as B ON A.SYSTEM = B.SYSTEM
-AND A.COUNTY = B.COUNTY
-AND A.VENDOR = B.VENDOR
-LEFT JOIN fmo_diff AS C on A.FMOZONE = C.FMOZONE
-LEFT JOIN fmo_prices AS D on A.YEAR = D.YEAR and 0 = D.month
-LEFT JOIN num AS E on A.rowid = E.rowid;
+
