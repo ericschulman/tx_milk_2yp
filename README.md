@@ -1,23 +1,27 @@
 # tx_milk
 
-The code attempts to remplicate table 5, and table 6 from the working paper "Incumbency amd Bidding Behavior in the Dallas Ft. Worth School Milk market" using R.
+The code attempts to remplicate table 5, and table 6 from the working paper "Incumbency amd Bidding Behavior in the Dallas Ft. Worth School Milk market" using R and SQLite.
 
-## clustered_SE.R
+## Clustered Standard Errors
+I am still working on reproducing the clustered standard errors in R without the unique indexes. 
 
-This file has an attempt to create clustered standard errors using code from this post.
-
-It is still in progress. Other relevant posts and entries are:
+Relevant posts and forums:
 
 https://stats.stackexchange.com/questions/124662/group-fixed-effects-not-individual-fixed-effects-using-plm-in-r
 
+
 https://economictheoryblog.com/2016/08/07/robust-standard-errors-in-r-function/
 
-his blog has the following dependencies:
+The blog post above has the following dependencies:
 
 `install.packages("bitops")`
+
 `install.packages("RCurl")`
+
 `install.packages("sandwich")`
+
 `install.packages("gdata")`
+
 `install.packages("IDPmisc")`
 
 
