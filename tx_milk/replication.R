@@ -64,13 +64,14 @@ new_milk$type_dum <- relevel(new_milk$type_dum, ref = "ww")
 
 new_milk$year_dum <- factor(new_milk$year)
 new_milk$sys_dum <- factor(new_milk$system)
+new_milk$sys_dum <- factor(new_milk$vendor)
 
 library(IDPmisc)
 new_milk<-NaRV.omit(new_milk)
 
 lm.object <- lm(bid ~ inc + type_dum*inc + logfmo*inc + logqstop*inc + back*inc + esc*inc +  num*inc + type_dum*(1-inc)
                 + logfmo*(1-inc) + logqstop*(1-inc) + back*(1-inc) + esc*(1-inc) +  num*(1-inc)  
-                + year_dum, data=new_milk) 
+                + year_dum , data=new_milk)
 
 
 summary(lm.object)
