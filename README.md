@@ -2,7 +2,8 @@
 
 The code attempts to remplicate table 5, and table 6 from the working paper "Incumbency amd Bidding Behavior in the Dallas Ft. Worth School Milk market" using R and SQLite.
 
-## Clustered Standard Errors
+## Work in progress
+### Clustered Standard Errors
 I am still working on reproducing the clustered standard errors in R without the unique indexes. 
 
 Relevant posts and forums:
@@ -33,6 +34,11 @@ https://www.stata.com/support/faqs/statistics/standard-errors-and-vce-cluster-op
 R packages for dealing with clusters
 https://cran.r-project.org/web/packages/multiwayvcov/index.html
 https://cran.r-project.org/web/packages/clusterSEs/clusterSEs.pdf
+
+### Hierarchical model in R
+
+http://www.r-tutor.com/gpu-computing/rbayes/rhierlmc
+https://www.jaredknowles.com/journal/2013/11/25/getting-started-with-mixed-effect-models-in-r
 
 
 ## replication.R

@@ -74,7 +74,7 @@ write.csv(clean_milk, file = "~/Documents/tx_milk/input/clean_milk.csv")
 #Bonus, setting up logs and stuff variables for stata
 clean_milk2 <- data.frame("rowid" = milk$rowid,
                         "llfc" = log(milk$LFC),
-                        "llfc" = log(milk$LFW),
+                        "llfw" = log(milk$LFW),
                         "lwc" = log(milk$WC),
                         "lww" = log(milk$WW),
                         "inc" = milk$I,
