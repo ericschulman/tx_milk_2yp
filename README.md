@@ -1,6 +1,6 @@
 # tx_milk
 
-The code attempts to remplicate table 5, and table 6 from the working paper "Incumbency amd Bidding Behavior in the Dallas Ft. Worth School Milk market" using R and SQLite.
+The code attempts to replicate table 5, and table 6 from the working paper "Incumbency and Bidding Behavior in the Dallas Ft. Worth School Milk market" using R and SQLite.
 
 ## Work in progress
 ### Clustered Standard Errors
