@@ -40,6 +40,8 @@ https://cran.r-project.org/web/packages/clusterSEs/clusterSEs.pdf
 http://www.r-tutor.com/gpu-computing/rbayes/rhierlmc
 https://www.jaredknowles.com/journal/2013/11/25/getting-started-with-mixed-effect-models-in-r
 
+https://www.stata.com/features/overview/multilevel-generalized-linear-models/
+https://www.stata.com/features/multivariate-methods/
 
 ## replication.R
 
