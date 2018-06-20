@@ -92,3 +92,11 @@ clean_milk2 <- data.frame("rowid" = milk$rowid,
 
 #write to file
 write.csv(clean_milk2, file = "~/Documents/tx_milk/input/clean_milk2.csv", row.names=FALSE)
+
+
+#only include 'correct' processors
+clean_milk3 <- clean_milk[(clean_milk$vendor=="BORDEN" | clean_milk$vendor=="CABELL" 
+                          | clean_milk$vendor=="FOREMOST" | clean_milk$vendor=="OAK FARMS"
+                          | clean_milk$vendor=="PRESTON" | clean_milk$vendor=="SCHEPPS"
+                          | clean_milk$vendor=="VANDERVOORT"),]
+write.csv(clean_milk3, file = "~/Documents/tx_milk/input/clean_milk3.csv")
