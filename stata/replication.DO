@@ -1,13 +1,17 @@
 /*Table 6*/
 clear
-import delimited C:\Users\ehs588\Downloads\input\clean_milk.csv, numericcols(3 5 6 7 8 9 10 11 12)
+import delimited C:\Users\ehs588\Documents\tx_milk\input\clean_milk3.csv, numericcols(3 5 6 7 8 9 10 11 12)
 
 generate ww = type=="ww"
 generate wc = type=="wc"
 generate lfw = type=="lfw"
 generate lfc = type=="lfc"
 
+/*varying intercepts*/
 mixed lbid inc wc lfw lfc lfmo lestqty lnostop lback esc lnum || system: || year:, mle
+
+/*same things, but slopes can vary*/
+mixed lbid inc wc lfw lfc lfmo lestqty lnostop lback esc lnum || system: lestqty lnostop lback lnum || year: lback lnum, mle
 
 /*Table 5*/
 

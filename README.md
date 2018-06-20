@@ -25,6 +25,13 @@ https://www.stata.com/support/faqs/statistics/standard-errors-and-vce-cluster-op
 
 This file tries to replicate the main tables from the paper.
 
+## dependencies.R
+
+Install the necessary R dependencies and libraries
+
+## data_clean.R
+
+More post processing
 
 ## replication.SQL
 
@@ -59,4 +66,10 @@ The file is called 1975 - 1995 statistical summary
 ## output
 
 This folder contains the relevant output to the project
+
+## input
+destination for cleaned data files for use in R and STATA
+
+## stata
+This folder contains the relevant stata scripts to the project
 
