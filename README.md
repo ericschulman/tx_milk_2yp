@@ -3,59 +3,28 @@
 The code attempts to replicate table 5, and table 6 from the working paper "Incumbency and Bidding Behavior in the Dallas Ft. Worth School Milk market" using R and SQLite.
 
 ## Work in progress
-### Clustered Standard Errors
-I am still working on reproducing the clustered standard errors in R without the unique indexes. 
-
-Relevant posts and forums:
-
-Stack exchange post
-
-https://stats.stackexchange.com/questions/124662/group-fixed-effects-not-individual-fixed-effects-using-plm-in-r
-
-Blog post
-
-https://economictheoryblog.com/2016/08/07/robust-standard-errors-in-r-function/
-
-The blog post above has the following dependencies:
-
-`install.packages("bitops")`
-
-`install.packages("RCurl")`
-
-`install.packages("sandwich")`
-
-`install.packages("gdata")`
-
-`install.packages("IDPmisc")`
-
-STATA documentation on cluster robust SEs
-https://www.stata.com/support/faqs/statistics/standard-errors-and-vce-cluster-option/
-
-R packages for dealing with clusters
-https://cran.r-project.org/web/packages/multiwayvcov/index.html
-https://cran.r-project.org/web/packages/clusterSEs/clusterSEs.pdf
 
 ### Hierarchical model in R
-
 http://www.r-tutor.com/gpu-computing/rbayes/rhierlmc
 https://www.jaredknowles.com/journal/2013/11/25/getting-started-with-mixed-effect-models-in-r
 
-https://www.stata.com/features/overview/multilevel-generalized-linear-models/
-https://www.stata.com/features/multivariate-methods/
+### Clustered Standard Errors
+Blogs for reproducing the clustered standard errors in R
+Relevant posts and forums:
+
+Stack exchange post
+https://stats.stackexchange.com/questions/124662/group-fixed-effects-not-individual-fixed-effects-using-plm-in-r
+
+Blog post
+https://economictheoryblog.com/2016/08/07/robust-standard-errors-in-r-function/
+
+STATA documentation on cluster robust SEs
+https://www.stata.com/support/faqs/statistics/standard-errors-and-vce-cluster-option/
 
 ## replication.R
 
 This file tries to replicate the main tables from the paper.
 
-This file has the following dependencies
-
-`install.packages("stargazer")`
-
-`install.packages("IDPmisc")`
-
-`install.packages('multiwayvcov')`
-
-`install.packages('lmtest')`
 
 ## replication.SQL
 
