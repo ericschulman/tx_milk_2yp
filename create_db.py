@@ -7,8 +7,8 @@ import os
 
 def create_db():
 	"""run the sql file to create the db"""
-	db = 'data/edp_changes.db'
-	f = open('edp_changes.sql','r')
+	db = 'data/creamers.db'
+	f = open('creamers.sql','r')
 	sql = f.read()
 	if (os.path.isfile(db) ):
 		os.remove(db)
@@ -20,10 +20,10 @@ def create_db():
 
 
 def load_initial():
-	con = sqlite3.connect('data/edp_changes.db') #create the db
+	con = sqlite3.connect('data/creamers.db') #create the db
 	cur = con.cursor()
 
-	f = open('data/edp_changes.csv')
+	f = open('data/creamers.csv')
 	
 	reader = csv.reader(f)
 	headers = reader.next() #skip the header line
@@ -37,7 +37,7 @@ def load_initial():
 
 def create_dummy_tables(arg,type_arg):
 	"""setup list of CTAS and group dummies in the database"""
-	con = sqlite3.connect('data/edp_changes.db') #create the db
+	con = sqlite3.connect('data/creamers.db') #create the db
 	cur = con.cursor()
 
 	#first create a view to see the distinct categories
@@ -77,7 +77,7 @@ def create_dummy_tables(arg,type_arg):
 def create_group_dummies():
 	"""setup list of group dummy variables in the database"""
 	query1 = 'select * from dim_group_key_view'
-	con = sqlite3.connect('data/edp_changes.db') #create the db
+	con = sqlite3.connect('data/creamers.db') #create the db
 	cur = con.cursor()
 	cur.execute(query1)
 	results = cur.fetchall()

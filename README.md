@@ -1,30 +1,11 @@
-# MD
-Code and documentation to predict consumer response to EDP changes
+# creamers
 
-TODO:
---------------------------------------------------------------
-Dec 29
+Code and documentation to predict creamer sales based on panel data. Creamer sales are essentially a repeated Bertrand game. I plan to work out assumptions that can identify the market response to price changes using economic and statistical theory. Then I plan to estimate the responses using panel data from neilson. 
 
-Modify plots to include CTAs and include PL - Done
+## MD
 
-Rank CTAs by volume (and # of groups) 
--chose top 2 and median - done
-Rank CTAs by Revenue (and # of groups)
--chose top 2 and median - done
+This folder contains the legacy code from when I was working with Massive Dynamics on the project.
 
--Run linear regressions for each group
--construct plot
--order CTAs by size
--plot alpha, plus confidence interval around alpha
+## Data
 
-
-for each cta
-#, size, lower bound, mean, upper boud
-(write to file)
---------------------------------------------------------------
-Jan 5
-
-The underlying model should read: (Q_i/Q_T)@t = (Q_i/Q_T)@t-2  + coeff_1*(…….) + coeff_2*(……..)
-- fix query
-- fix regression
-- fix plot
+This folder contains the proprietary data from when I was working with Massive Dynamics. It comes originally from Neilson. Unfortunately, I am not planning to share it here.
