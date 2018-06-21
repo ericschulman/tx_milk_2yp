@@ -1,52 +1,26 @@
-/*Creates table with dairy dummy*/
-CREATE TABLE dairy (
-dim_group_key TEXT,
-dairy INTEGER,
-PRIMARY KEY(dim_group_key));
+/*better view the creamers data*/
+create view creamers_1  as SELECT
+substr(dim_group_key,0,3) as brand,
+substr(dim_group_key,4,2) as oz,
+substr(dim_group_key,7,1) as dairy,
+substr(dim_group_key,9,1) as flavor,
+dim_cta_key as region,
+week,
+price,
+eq_vol as quantity
+FROM creamers;
 
+/*focus on one market*/
+select region, flavor, dairy, oz, count(distinct brand) as firms, count(distinct week) as weeks
+from creamers_1
+where brand<>'PL'
+group by region, flavor, dairy, oz;
 
-/*Creates table with flavor dummy*/
-CREATE TABLE flavor (
-dim_group_key TEXT,
-flavor INTEGER,
-PRIMARY KEY(dim_group_key));
+/*focus on one region*/
+/*analyzed this view in creamers 1, PL makes it more complicated*/
+create view U_D_32_4 as select * from creamers_1 where region = 4 and flavor = 'U' and dairy = 'D' and oz = '32';
 
+create view F_N_16_120 as select * from creamers_1 where region = 120 and flavor = 'F' and dairy = 'N' and oz = '16';
 
-/*Creates table with brand dummies
-leaves out BA (i.e. 0000)*/
-CREATE TABLE brand(
-dim_group_key TEXT,
-CM INTEGER,
-DD INTEGER,
-ID INTEGER,
-PL INTEGER,
-PRIMARY KEY(dim_group_key));
-
-
-/*creates table with size dummy (000 is 16 oz)*/
-CREATE TABLE prod_size (
-dim_group_key TEXT,
-`s32` INTEGER,
-`s64` INTEGER,
-`s48` INTEGER,
-PRIMARY KEY(dim_group_key));
-
-
-/* Create the main table in SQL*/
-CREATE TABLE group_edps (
-dim_group_key TEXT,
-dim_cta_key TEXT,
-week INTEGER,
-price REAL,
-edp REAL,
-eq_vol REAL,
-PRIMARY KEY(dim_cta_key, dim_group_key, week)
-FOREIGN KEY (dim_group_key) REFERENCES dairy(dim_group_key)
-FOREIGN KEY (dim_group_key) REFERENCES flavor(dim_group_key)
-FOREIGN KEY (dim_group_key) REFERENCES brand(dim_group_key)
-FOREIGN KEY (dim_group_key) REFERENCES size(dim_group_key)
-FOREIGN KEY (dim_cta_key) REFERENCES groups(dim_cta_key)
-);
-
-
-
+/*three at a time*/
+create view F_D_16_4 as select * from creamers_1 where region = 4 and flavor = 'F' and dairy = 'D' and oz = '16';

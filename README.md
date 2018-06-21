@@ -9,3 +9,10 @@ This folder contains the legacy code from when I was working with Massive Dynami
 ## Data
 
 This folder contains the proprietary data from when I was working with Massive Dynamics. It comes originally from Neilson. Unfortunately, I am not planning to share it here.
+
+## Reading
+CMU Notes on EM and Mixture Models:
+http://www.stat.cmu.edu/~cshalizi/uADA/12/lectures/ch20.pdf
+
+Blog Post About Clusters:
+https://www.r-bloggers.com/em-and-regression-mixture-modeling/
