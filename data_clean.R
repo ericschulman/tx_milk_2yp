@@ -1,3 +1,6 @@
+#Refresh Working Environment
+rm(list=ls())
+
 #Read data and set up necessary tables for regression
 milk <- data.frame(read.csv("~/Documents/tx_milk/input/milk_out.csv"))
 
@@ -15,7 +18,8 @@ new_lfc <- data.frame("rowid" = milk$rowid,
                       "vendor" = milk$VENDOR,
                       "system" = milk$SYSTEM,
                       "year" = milk$YEAR,
-                      "biddate" =   paste(milk$MONTH, milk$DAY, milk$YEAR, sep="-"))
+                      "biddate" =    milk$YEAR*10000 + milk$MONTH*100 +milk$DAY,
+                      "win" = milk$WIN)
 
 new_wc <- data.frame("rowid" = milk$rowid,
                      "lbid" = log(milk$WC),
@@ -31,7 +35,8 @@ new_wc <- data.frame("rowid" = milk$rowid,
                      "vendor" = milk$VENDOR,
                      "system" = milk$SYSTEM,
                      "year" = milk$YEAR,
-                     "biddate" =   paste(milk$MONTH, milk$DAY, milk$YEAR, sep="-"))
+                     "biddate" =    milk$YEAR*10000 + milk$MONTH*100 +milk$DAY,
+                     "win" = milk$WIN)
 
 new_lfw <- data.frame("rowid" = milk$rowid,
                       "lbid" = log(milk$LFW),
@@ -47,7 +52,8 @@ new_lfw <- data.frame("rowid" = milk$rowid,
                       "vendor" = milk$VENDOR,
                       "system" = milk$SYSTEM,
                       "year" = milk$YEAR,
-                      "biddate" =   paste(milk$MONTH, milk$DAY, milk$YEAR, sep="-"))
+                      "biddate" =    milk$YEAR*10000 + milk$MONTH*100 +milk$DAY,
+                      "win" = milk$WIN)
 
 new_ww <- data.frame("rowid" = milk$rowid,
                      "lbid" = log(milk$WW),
@@ -63,7 +69,8 @@ new_ww <- data.frame("rowid" = milk$rowid,
                      "vendor" = milk$VENDOR,
                      "system" = milk$SYSTEM,
                      "year" = milk$YEAR,
-                     "biddate" =   paste(milk$MONTH, milk$DAY, milk$YEAR, sep="-"))
+                     "biddate" =    milk$YEAR*10000 + milk$MONTH*100 +milk$DAY,
+                     "win" = milk$WIN)
 
 #bind each 'type' of bid together
 clean_milk <- rbind(new_lfc, new_lfw, new_wc, new_ww)
@@ -88,8 +95,8 @@ clean_milk2 <- data.frame("rowid" = milk$rowid,
                         "vendor" = milk$VENDOR,
                         "system" = milk$SYSTEM,
                         "year" = milk$YEAR,
-                        "biddate" =   paste(milk$MONTH, milk$DAY, milk$YEAR, sep="-"))
-
+                        "biddate" =   milk$YEAR*10000 + milk$MONTH*100 +milk$DAY)
+                        
 #write to file
 write.csv(clean_milk2, file = "~/Documents/tx_milk/input/clean_milk2.csv", row.names=FALSE)
 
