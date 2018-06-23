@@ -19,7 +19,8 @@ new_lfc <- data.frame("rowid" = milk$rowid,
                       "system" = milk$SYSTEM,
                       "year" = milk$YEAR,
                       "biddate" =    milk$YEAR*10000 + milk$MONTH*100 +milk$DAY,
-                      "win" = milk$WIN)
+                      "win" = milk$WIN,
+                      "county" = milk$COUNTY)
 
 new_wc <- data.frame("rowid" = milk$rowid,
                      "lbid" = log(milk$WC),
@@ -36,7 +37,8 @@ new_wc <- data.frame("rowid" = milk$rowid,
                      "system" = milk$SYSTEM,
                      "year" = milk$YEAR,
                      "biddate" =    milk$YEAR*10000 + milk$MONTH*100 +milk$DAY,
-                     "win" = milk$WIN)
+                     "win" = milk$WIN,
+                     "county" = milk$COUNTY)
 
 new_lfw <- data.frame("rowid" = milk$rowid,
                       "lbid" = log(milk$LFW),
@@ -53,7 +55,8 @@ new_lfw <- data.frame("rowid" = milk$rowid,
                       "system" = milk$SYSTEM,
                       "year" = milk$YEAR,
                       "biddate" =    milk$YEAR*10000 + milk$MONTH*100 +milk$DAY,
-                      "win" = milk$WIN)
+                      "win" = milk$WIN,
+                      "county" = milk$COUNTY)
 
 new_ww <- data.frame("rowid" = milk$rowid,
                      "lbid" = log(milk$WW),
@@ -70,7 +73,8 @@ new_ww <- data.frame("rowid" = milk$rowid,
                      "system" = milk$SYSTEM,
                      "year" = milk$YEAR,
                      "biddate" =    milk$YEAR*10000 + milk$MONTH*100 +milk$DAY,
-                     "win" = milk$WIN)
+                     "win" = milk$WIN,
+                     "county" = milk$COUNTY)
 
 #bind each 'type' of bid together
 clean_milk <- rbind(new_lfc, new_lfw, new_wc, new_ww)
