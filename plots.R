@@ -1,6 +1,10 @@
 #Refresh Working Environment
 rm(list=ls())
 
+#Import statements
+library(IDPmisc)
+
+#load data into memory
 milk <- data.frame(read.csv("~/Documents/tx_milk/input/clean_milk3.csv"))
 milk$bid = exp(milk$lbid)
 
@@ -8,6 +12,8 @@ milk$bid = exp(milk$lbid)
 years <- seq(1980,1989)
 types <- c('ww','lfw','lfc','wc')
 
+#Drop inf, na, and nan
+milk<-NaRV.omit(milk)
 
 for (year in years) {
   for (type in types){
@@ -24,5 +30,6 @@ for (year in years) {
     dev.off()
   }
 }
+
 
 

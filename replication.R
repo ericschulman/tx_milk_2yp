@@ -52,14 +52,14 @@ summary(fit2)
 
 #table 6 - modified
 #Include a dummy for any bids taking place after August 10
-milk$aug_10 <- as.integer(milk$biddate - milk$year*10000 >= 610)
+milk$aug_10 <- as.integer(milk$biddate - milk$year*10000 >= 810)
 
 #include a dummy for any ISD in Wise County
-milk$aug_10 <- as.integer(milk$county=="WISE")
+milk$wise <- as.integer(milk$county=="WISE")
 
 #fit model
 fit3 <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum
-             + aug_10 +  (1 | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
+             + aug_10 + wise + (1 | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
 #write to text
 stargazer(fit3, title="Modified Table 6 Results RE", align=TRUE, type = "text", 
           out="~/Documents/tx_milk/output/table6_m.txt")
