@@ -1,3 +1,5 @@
+#NOTE: X contains the new rowID
+
 #Refresh Working Environment
 rm(list=ls())
 
@@ -20,7 +22,8 @@ new_lfc <- data.frame("rowid" = milk$rowid,
                       "year" = milk$YEAR,
                       "biddate" =    milk$YEAR*10000 + milk$MONTH*100 +milk$DAY,
                       "win" = milk$WIN,
-                      "county" = milk$COUNTY)
+                      "county" = milk$COUNTY,
+                      "fmozone"= milk$FMOZONE)
 
 new_wc <- data.frame("rowid" = milk$rowid,
                      "lbid" = log(milk$WC),
@@ -38,7 +41,8 @@ new_wc <- data.frame("rowid" = milk$rowid,
                      "year" = milk$YEAR,
                      "biddate" =    milk$YEAR*10000 + milk$MONTH*100 +milk$DAY,
                      "win" = milk$WIN,
-                     "county" = milk$COUNTY)
+                     "county" = milk$COUNTY,
+                     "fmozone"= milk$FMOZONE)
 
 new_lfw <- data.frame("rowid" = milk$rowid,
                       "lbid" = log(milk$LFW),
@@ -56,7 +60,8 @@ new_lfw <- data.frame("rowid" = milk$rowid,
                       "year" = milk$YEAR,
                       "biddate" =    milk$YEAR*10000 + milk$MONTH*100 +milk$DAY,
                       "win" = milk$WIN,
-                      "county" = milk$COUNTY)
+                      "county" = milk$COUNTY,
+                      "fmozone"= milk$FMOZONE)
 
 new_ww <- data.frame("rowid" = milk$rowid,
                      "lbid" = log(milk$WW),
@@ -74,7 +79,8 @@ new_ww <- data.frame("rowid" = milk$rowid,
                      "year" = milk$YEAR,
                      "biddate" =    milk$YEAR*10000 + milk$MONTH*100 +milk$DAY,
                      "win" = milk$WIN,
-                     "county" = milk$COUNTY)
+                     "county" = milk$COUNTY,
+                     "fmozone"= milk$FMOZONE)
 
 #bind each 'type' of bid together
 clean_milk <- rbind(new_lfc, new_lfw, new_wc, new_ww)
@@ -103,7 +109,6 @@ clean_milk2 <- data.frame("rowid" = milk$rowid,
                         
 #write to file
 write.csv(clean_milk2, file = "~/Documents/tx_milk/input/clean_milk2.csv", row.names=FALSE)
-
 
 #only include 'correct' processors
 clean_milk3 <- clean_milk[(clean_milk$vendor=="BORDEN" | clean_milk$vendor=="CABELL" 
