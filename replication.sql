@@ -96,4 +96,23 @@ FROM tx_milk;
 /*Querey for listing school districts with incumbent vendors*/
 SELECT * FROM incumbents WHERE I>=1 ORDER BY county;
 
-
+/*Query for identifying 'complete' observations. This allows panel data
+methods to be applied if desired*/
+/*Query for identifying 'complete' observations. This allows panel data
+methods to be applied if desired*/
+create view ids5 as SELECT SYSTEM, COUNTY, VENDOR,  ESC
+FROM (
+select SYSTEM, COUNTY, VENDOR,  ESC, count(DISTINCT YEAR) as YEARS, count(YEAR) as OBS
+from milk
+where ( YEAR>=1980 AND YEAR <=1990 )
+AND (VENDOR = "BORDEN"
+OR VENDOR = "CABELL"
+OR VENDOR = "FOREMOST"
+OR VENDOR = "OAK FARMS"
+OR VENDOR = "PRESTON"
+OR VENDOR = "SCHEPPS"
+OR VENDOR = "VANDERVOORT")
+group by ESC, SYSTEM, COUNTY, VENDOR)
+WHERE (YEARS >= 5)
+GROUP BY COUNTY,SYSTEM , VENDOR,  ESC
+ 

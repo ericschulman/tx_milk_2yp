@@ -116,3 +116,14 @@ clean_milk3 <- clean_milk[(clean_milk$vendor=="BORDEN" | clean_milk$vendor=="CAB
                           | clean_milk$vendor=="PRESTON" | clean_milk$vendor=="SCHEPPS"
                           | clean_milk$vendor=="VANDERVOORT"),]
 write.csv(clean_milk3, file = "~/Documents/tx_milk/input/clean_milk3.csv")
+
+
+#only include 'correct' processors (i.e. enough bids a given system)
+ids <- data.frame(read.csv("~/Documents/tx_milk/input/ids8.csv"))
+
+clean_milk4 <- clean_milk3[which(clean_milk3$year>=1980 & clean_milk3$year <=1990),]
+clean_milk4 <- merge(clean_milk4, ids,
+                              by.x=c("system","vendor","county","esc"),
+                              by.y=c("SYSTEM","VENDOR","COUNTY","ESC"))
+  
+write.csv(clean_milk4, file = "~/Documents/tx_milk/input/clean_milk4.csv")
