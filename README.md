@@ -67,18 +67,18 @@ This folder contains the relevant stata commands to the project, development is 
 ## Work in Progress/Notes
 
 ### Hierarchical model in R
-http://www.r-tutor.com/gpu-computing/rbayes/rhierlmc
-https://www.jaredknowles.com/journal/2013/11/25/getting-started-with-mixed-effect-models-in-r
+* http://www.r-tutor.com/gpu-computing/rbayes/rhierlmc
+* https://www.jaredknowles.com/journal/2013/11/25/getting-started-with-mixed-effect-models-in-r
 
 ### Clustered Standard Errors
-Blogs for reproducing the clustered standard errors in R
+* Blogs for reproducing the clustered standard errors in R
 Relevant posts and forums:
 
-Stack exchange post
+* Stack exchange post
 https://stats.stackexchange.com/questions/124662/group-fixed-effects-not-individual-fixed-effects-using-plm-in-r
 
-Blog post
+* Blog post
 https://economictheoryblog.com/2016/08/07/robust-standard-errors-in-r-function/
 
-STATA documentation on cluster robust SEs
+* STATA documentation on cluster robust SEs
 https://www.stata.com/support/faqs/statistics/standard-errors-and-vce-cluster-option/
