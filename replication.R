@@ -92,6 +92,7 @@ milk <- milk[which(milk$year>=1980 & milk$year <=1990),]
 
 #Run functions on all data ---------------------------
 dir<-"~/Documents/tx_milk/output/tables/"
+dir.create(dir, showWarnings = FALSE)
 
 fit<-table5(milk,dir,"Table 5 Results All Data")
 fit2<-table6(milk,dir,"Table 6 Results All Data")
@@ -104,6 +105,7 @@ fit3<-table6m(milk,dir,"Table 6 Modified Results All Data")
 milkSA<-milk[which(milk$fmozone==9),]
 
 dirSA<-"~/Documents/tx_milk/output/tablesSA/"
+dir.create(dirSA, showWarnings = FALSE)
 
 fitSA<-table5(milkSA,dirSA,"Table 5 Results San Antonio")
 fitSA2<-table6(milkSA,dirSA,"Table 6 Results San Antonio")
@@ -120,7 +122,9 @@ milkC <- merge(milk, ids,
                      by.x=c("system","vendor","county","esc"),
                      by.y=c("SYSTEM","VENDOR","COUNTY","ESC"))
 
+#create directory
 dirC<-"~/Documents/tx_milk/output/tablesC/"
+dir.create(dirC, showWarnings = FALSE)
 
 fitC<-table5(milkC,dirC,"Table 5 Results 'Filtered' Observations")
 fitC2<-table6(milkC,dirC,"Table 6 Results 'Filtered' Observations")
@@ -130,7 +134,11 @@ fitC3<-table6m(milkC,dirC,"Table 6 Modified 'Filtered' Observations")
 #Run functions on subset of data for SA ---------------------------
 #Focus on SA area
 milkSAC<-milk[which(milkC$fmozone==9),]
+
+#create directory
 dirSAC<-"~/Documents/tx_milk/output/tablesSAC/"
+dir.create(dirSAC, showWarnings = FALSE)
+
 fitSAC<-table5(milkSAC,dirSAC,"Table 5 Results San Antonio with 'Filtered' Observations")
 fitSAC2<-table6(milkSAC,dirSAC,"Table 6 Results San Antonio with 'Filtered' Observations")
 fitSAC3<-table6m(milkSAC,dirSAC,"Table 6 Modified Results San Antonio with 'Filtered' Observations")
