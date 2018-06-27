@@ -7,6 +7,7 @@ library(stargazer)
 library(IDPmisc)
 library(lme4)
 library(nloptr)
+library(car)
 
 
 #function definitions ---------------------------
@@ -18,7 +19,7 @@ table5<-function(milk,dir,label){
   
   #write to latex
   fname<-paste(dir,"table5.tex",sep="")
-  stargazer(fit, title=label, align=TRUE, type = "latex", out=fname, no.space=TRUE)
+  output <- capture.output(stargazer(fit, title=label, align=TRUE, type = "latex", out=fname, no.space=TRUE))
   return(fit)
 }
 
@@ -29,7 +30,7 @@ table6<-function(milk,dir,label){
               + (1 | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
   #write to latex
   fname<-paste(dir,"table6.tex",sep="")
-  stargazer(fit, title=label, align=TRUE, type = "latex", out=fname,no.space=TRUE)
+  output <- capture.output(stargazer(fit, title=label, align=TRUE, type = "latex", out=fname,no.space=TRUE))
   return(fit) 
 }
 
@@ -46,7 +47,7 @@ table6m<-function(milk,dir,label){
                + aug_10 + wise + (1 | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
   #write to latex
   fname<-paste(dir,"table6m.tex",sep="")
-  stargazer(fit, title=label, align=TRUE, type = "latex", out=fname,no.space=TRUE)
+  output <- capture.output(stargazer(fit, title=label, align=TRUE, type = "latex", out=fname,no.space=TRUE))
   return(fit)
 }
 
@@ -65,11 +66,9 @@ table10<-function(milk,dir,label){
   
   #write to latex
   fname<-paste(dir,"table10.tex",sep="")
-  stargazer(fit4, title=label, align=TRUE, type = "latex", out=fname, no.space=TRUE)
+  output <- capture.output(stargazer(fit4, title=label, align=TRUE, type = "latex", out=fname, no.space=TRUE))
 }
 
-
-#run Code ---------------------------
 
 #import data and set up correct ---------------------------
 milk <- data.frame(read.csv("~/Documents/tx_milk/input/clean_milk.csv"))
@@ -90,6 +89,7 @@ milk <- milk[(milk$vendor=="BORDEN" | milk$vendor=="CABELL"
 #only include correct years
 milk <- milk[which(milk$year>=1980 & milk$year <=1990),]
 
+
 #Run functions on all data ---------------------------
 dir<-"~/Documents/tx_milk/output/tables/"
 
@@ -97,21 +97,56 @@ fit<-table5(milk,dir,"Table 5 Results All Data")
 fit2<-table6(milk,dir,"Table 6 Results All Data")
 fit3<-table6m(milk,dir,"Table 6 Modified Results All Data")
 
+
 #Run functions on SA data ---------------------------
 
 #Focus on SA area
 milkSA<-milk[which(milk$fmozone==9),]
+
 dirSA<-"~/Documents/tx_milk/output/tablesSA/"
-fit<-table5(milkSA,dirSA,"Table 5 Results San Antonio")
-fit2<-table6(milkSA,dirSA,"Table 6 Results San Antonio")
-fit3<-table6m(milkSA,dirSA,"Table 6 Modified Results San Antonio")
-fit4<-table10(milkSA,dirSA,"Table 10 Results")
+
+fitSA<-table5(milkSA,dirSA,"Table 5 Results San Antonio")
+fitSA2<-table6(milkSA,dirSA,"Table 6 Results San Antonio")
+fitSA3<-table6m(milkSA,dirSA,"Table 6 Modified Results San Antonio")
+fitSA4<-table10(milkSA,dirSA,"Table 10 Results")
+
 
 #Run functions on subset of data ---------------------------
 
 #only include 'correct' processors (i.e. complete data)
 ids <- data.frame(read.csv("~/Documents/tx_milk/input/ids/ids8.csv"))
 
-cmilk <- merge(milk, ids,
+milkC <- merge(milk, ids,
                      by.x=c("system","vendor","county","esc"),
                      by.y=c("SYSTEM","VENDOR","COUNTY","ESC"))
+
+dirC<-"~/Documents/tx_milk/output/tablesC/"
+
+fitC<-table5(milkC,dirC,"Table 5 Results 'Filtered' Observations")
+fitC2<-table6(milkC,dirC,"Table 6 Results 'Filtered' Observations")
+fitC3<-table6m(milkC,dirC,"Table 6 Modified 'Filtered' Observations")
+
+
+#Run functions on subset of data for SA ---------------------------
+#Focus on SA area
+milkSAC<-milk[which(milkC$fmozone==9),]
+dirSAC<-"~/Documents/tx_milk/output/tablesSAC/"
+fitSAC<-table5(milkSAC,dirSAC,"Table 5 Results San Antonio with 'Filtered' Observations")
+fitSAC2<-table6(milkSAC,dirSAC,"Table 6 Results San Antonio with 'Filtered' Observations")
+fitSAC3<-table6m(milkSAC,dirSAC,"Table 6 Modified Results San Antonio with 'Filtered' Observations")
+fitSAC4<-table10(milkSAC,dirSAC,"Table 10 Results with 'Filtered' Observations")
+
+
+#Hypothesis tests ---------------------------
+linearHypothesis(fit, c("(Intercept)=inc","type_dumlfc=inc:type_dumlfc",
+                        "type_dumlfw=inc:type_dumlfw","type_dumwc=inc:type_dumwc",
+                        "lfmo = inc:lfmo","lqstop=inc:lqstop",
+                        "lback=inc:lback","esc=inc:esc","lnum=inc:lnum" ))
+linearHypothesis(fitSA, c("(Intercept)=inc","type_dumlfc=inc:type_dumlfc",
+                         "type_dumlfw=inc:type_dumlfw","type_dumwc=inc:type_dumwc",
+                         "lfmo = inc:lfmo","lqstop=inc:lqstop",
+                         "lback=inc:lback","esc=inc:esc","lnum=inc:lnum" ))
+linearHypothesis(fitC, c("(Intercept)=inc","type_dumlfc=inc:type_dumlfc",
+                        "type_dumlfw=inc:type_dumlfw","type_dumwc=inc:type_dumwc",
+                        "lfmo = inc:lfmo","lqstop=inc:lqstop",
+                        "lback=inc:lback","esc=inc:esc","lnum=inc:lnum" ))
