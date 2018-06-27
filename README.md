@@ -2,6 +2,8 @@
 
 The code attempts to replicate and extend the working paper "Incumbency and Bidding Behavior in the Dallas Ft. Worth School Milk Market" using R and SQLite.
 
+## Folder Structure
+
 Below is an explanaton of the project's file structure
 
 * `dependencies.R` This file installs the necessary R dependencies and libraries for R
@@ -15,41 +17,25 @@ Below is an explanaton of the project's file structure
 * `db`
 contains the database and a `.sql` file used for constructing the required views in for the data
 
-	* `replication.SQL`
+	* `replication.SQL` Useful SQL queries used for generating BACKLOG and the Incumbencies within the paper
 
-	Useful SQL queries used for generating BACKLOG and the Incumbencies within the paper
+	* `tx_milk.db` SQLite database containing relevant tables to the project
 
-	* `tx_milk.db`
+* `data` The data on historic milk prices is courtesy of the Dallas Federal Marketing Order's office. It can be found using the link below
 
-	SQLite database containing relevant tables to the project
+	* `fmo_diff.csv` price differentials for adjusting the Dallas price to different regions
 
-* data
-
-The data on historic milk prices is courtesy of the Dallas Federal Marketing Order's office. It can be found using the link below
-
-	* `fmo_diff.csv`
-
-price differentials for adjusting the Dallas price to different regions
-
-	* `fmo_prices.csv`
-
-table with historical FMO prices in Dallas, I formatted these using the original file. The file is found under 1975 - 1995 statistical summary from http://www.dallasma.com/order_stats/stats_sum.jsp
+	*`fmo_prices.csv` table with historical FMO prices in Dallas, I formatted these using the original file. The file is found under 1975 - 1995 statistical summary from http://www.dallasma.com/order_stats/stats_sum.jsp
 
 	*  `milk_out.csv` is a table with all the relevant information to table 5
 
 	* `tx_milk.csv` is the original data on milk bids
 
-* `output`
+* `output`This folder contains the relevant output to the project
 
-This folder contains the relevant output to the project
+* `input` destination for cleaned data files for use in R and STATA
 
-* `input`
-
-destination for cleaned data files for use in R and STATA
-
-* `stata`
-
-This folder contains the relevant stata commands to the project, development is mainly in R. The data undergoes further filtering in the `replication.R`
+* `stata` This folder contains the relevant stata commands to the project, development is mainly in R. The data undergoes further filtering in the `replication.R`
 
 
 ## Work in Progress/Notes
