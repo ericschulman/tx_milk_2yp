@@ -7,7 +7,7 @@ library(IDPmisc)
 
 
 #function definitions ---------------------------
-plot1<-function(milk,dir,years,types){
+plot_bid<-function(milk,dir,years,types){
   #create dir
   dir.create(dir, showWarnings = FALSE)
   #loop over years and types
@@ -15,7 +15,6 @@ plot1<-function(milk,dir,years,types){
     for (type in types){
       #filter data
       milkf <- milk[ which(milk$type==type & milk$year==year & milk$win==1 ), ]
-      
       #create file path
       file_path <- paste(dir,'plot_',year, "_", type, ".png", sep="")
       
@@ -29,20 +28,19 @@ plot1<-function(milk,dir,years,types){
 }
 
 
-plot2<-function(milk,dir,years,types){
+plot_avg<-function(milk,dir,years,types){
   #create dir
   dir.create(dir, showWarnings = FALSE)
   week = 7
   for (year in years) {
     for (type in types){
       #filter data by year and type
-      milkf <- milk[ which(milk$year==year & milk$type==type & milk$win==1), ]
-      
-      start <- as.Date(as.character(year*10000+710),"%Y%m%d")
+      milkf <-  milk[ which(milk$type==type & milk$year==year & milk$win==1 ), ]
+      start <- head( (milkf[order(milkf$biddate),]$biddate), 1)
       end <-tail( (milkf[order(milkf$biddate),]$biddate), 1)
       weeks <- c()
       avg_bids <- c()
-      while (start < end){
+      while (start <= end){
         milkw <- milkf[ which(milkf$biddate >= start & milkf$biddate < (start+week) ), ]
         weeks<- c(start,weeks)
         avg_bids<- c(mean(milkw$bid),avg_bids)
@@ -107,21 +105,37 @@ years <- 1980:1990
 types <- c('ww')
 
 
-#Make plots 1 ---------------------------
-dir1<-'~/Documents/tx_milk/output/plots1/'
-dir2<-'~/Documents/tx_milk/output/plots2/'
+#Make plots for all data ---------------------------
+dir1<-'~/Documents/tx_milk/output/plots/'
+dir2<-'~/Documents/tx_milk/output/plots_avg/'
 dir3<-'~/Documents/tx_milk/output/'
 
-plot1(milk,dir1,years,types)
-plot2(milk,dir2,years,types)
+plot_bid(milk,dir1,years,types)
+plot_avg(milk,dir2,years,types)
 last_bids(milk,dir3,years,types)
 
+
 #Make plots for SA ---------------------------
-milkSA<-milk[which(milk$fmozone==9),]
+milk_sa<-milk[which(milk$fmozone==9),]
 
-dirSA1<-'~/Documents/tx_milk/output/plotsSA1/'
-dirSA2<-'~/Documents/tx_milk/output/plotsSA2/'
+dir_sa1<-'~/Documents/tx_milk/output/plots_sa/'
+dir_sa2<-'~/Documents/tx_milk/output/plots_avgsa/'
 
-plot1(milk,dirSA1,years,types)
-plot2(milk,dirSA2,years,types)
+plot_bid(milk_sa,dir_sa1,years,types)
+plot_avg(milk_sa,dir_sa2,years,types)
+
+
+#Make plots for filtered data ---------------------------
+ids <- data.frame(read.csv("~/Documents/tx_milk/input/ids/ids8.csv"))
+
+milk_f <- merge(milk, ids,
+                by.x=c("system","vendor","county","esc"),
+                by.y=c("SYSTEM","VENDOR","COUNTY","ESC"))
+
+#create directory
+dir_f<-"~/Documents/tx_milk/output/plots_f/"
+dir_f2<-"~/Documents/tx_milk/output/plots_avgf/"
+
+plot_bid(milk_f,dir_f,years,types)
+plot_avg(milk_f,dir_f2,years,types)
 

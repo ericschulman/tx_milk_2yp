@@ -61,12 +61,13 @@ table10<-function(milk,dir,label){
   
   milk_m <- milk_m[which(milk_m$year==(milk_m$year.prev+1)),]
   
-  fit4 <- lmer(lbid ~ win.prev  + type_dum + lfmo + lqstop
+  fit <- lmer(lbid ~ win.prev  + type_dum + lfmo + lqstop
                + (1 | system/year) , control=lmerControl(optimizer="nloptwrap"), data=milk_m)
   
   #write to latex
   fname<-paste(dir,"table10.tex",sep="")
-  output <- capture.output(stargazer(fit4, title=label, align=TRUE, type = "latex", out=fname, no.space=TRUE))
+  output <- capture.output(stargazer(fit, title=label, align=TRUE, type = "latex", out=fname, no.space=TRUE))
+  return(fit)
 }
 
 
@@ -94,23 +95,23 @@ milk <- milk[which(milk$year>=1980 & milk$year <=1990),]
 dir<-"~/Documents/tx_milk/output/tables/"
 dir.create(dir, showWarnings = FALSE)
 
-fit<-table5(milk,dir,"Table 5 Results All Data")
-fit2<-table6(milk,dir,"Table 6 Results All Data")
-fit3<-table6m(milk,dir,"Table 6 Modified Results All Data")
+fit<-table5(milk,dir,"Reproduced Table 5 Regression (All Available Data)")
+fit2<-table6(milk,dir,"Reproduced Table 6 Regression (All Available Data)")
+fit3<-table6m(milk,dir,"Modified Table 6 Regression (All Available Data)")
 
 
 #Run functions on SA data ---------------------------
 
 #Focus on SA area
-milkSA<-milk[which(milk$fmozone==9),]
+milk_sa<-milk[which(milk$fmozone==9),]
 
-dirSA<-"~/Documents/tx_milk/output/tablesSA/"
-dir.create(dirSA, showWarnings = FALSE)
+dir_sa<-"~/Documents/tx_milk/output/tables_sa/"
+dir.create(dir_sa, showWarnings = FALSE)
 
-fitSA<-table5(milkSA,dirSA,"Table 5 Results San Antonio")
-fitSA2<-table6(milkSA,dirSA,"Table 6 Results San Antonio")
-fitSA3<-table6m(milkSA,dirSA,"Table 6 Modified Results San Antonio")
-fitSA4<-table10(milkSA,dirSA,"Table 10 Results")
+fit_sa<-table5(milk_sa,dir_sa,"Reproduced Table 5 Regression (All Available Data for San Antonio)")
+fit_sa2<-table6(milk_sa,dir_sa,"Reproduced Table 6 Regression (All Available Data for San Antonio)")
+fit_sa3<-table6m(milk_sa,dir_sa,"Modified Table 6 Regression (All Available Data for San Antonio)")
+fit_sa4<-table10(milk_sa,dir_sa,"Reproduced Table 10 Regression (All Available Data for San Antonio)")
 
 
 #Run functions on subset of data ---------------------------
@@ -118,31 +119,31 @@ fitSA4<-table10(milkSA,dirSA,"Table 10 Results")
 #only include 'correct' processors (i.e. complete data)
 ids <- data.frame(read.csv("~/Documents/tx_milk/input/ids/ids8.csv"))
 
-milkC <- merge(milk, ids,
+milk_f <- merge(milk, ids,
                      by.x=c("system","vendor","county","esc"),
                      by.y=c("SYSTEM","VENDOR","COUNTY","ESC"))
 
 #create directory
-dirC<-"~/Documents/tx_milk/output/tablesC/"
-dir.create(dirC, showWarnings = FALSE)
+dir_f<-"~/Documents/tx_milk/output/tables_f/"
+dir.create(dir_f, showWarnings = FALSE)
 
-fitC<-table5(milkC,dirC,"Table 5 Results 'Filtered' Observations")
-fitC2<-table6(milkC,dirC,"Table 6 Results 'Filtered' Observations")
-fitC3<-table6m(milkC,dirC,"Table 6 Modified 'Filtered' Observations")
+fit_f<-table5(milk_f,dir_f,"Reproduced Table 5 Regression (Filtered Data)")
+fit_f2<-table6(milk_f,dir_f,"Reproduced Table 6 Regression (Filtered Data)")
+fit_f3<-table6m(milk_f,dir_f,"Modified Table 6 Regression (Filtered Data)")
 
 
 #Run functions on subset of data for SA ---------------------------
 #Focus on SA area
-milkSAC<-milk[which(milkC$fmozone==9),]
+milk_saf<-milk[which(milk_f$fmozone==9),]
 
 #create directory
-dirSAC<-"~/Documents/tx_milk/output/tablesSAC/"
-dir.create(dirSAC, showWarnings = FALSE)
+dir_saf<-"~/Documents/tx_milk/output/tables_saf/"
+dir.create(dir_saf, showWarnings = FALSE)
 
-fitSAC<-table5(milkSAC,dirSAC,"Table 5 Results San Antonio with 'Filtered' Observations")
-fitSAC2<-table6(milkSAC,dirSAC,"Table 6 Results San Antonio with 'Filtered' Observations")
-fitSAC3<-table6m(milkSAC,dirSAC,"Table 6 Modified Results San Antonio with 'Filtered' Observations")
-fitSAC4<-table10(milkSAC,dirSAC,"Table 10 Results with 'Filtered' Observations")
+fit_Filtered<-table5(milk_saf,dir_saf,"Reproduced Table 5 Regression (Filtered Data for San Antonio)")
+fit_saf2<-table6(milk_saf,dir_saf,"Reproduced Table 6 Regression (Filtered Data for San Antonio)")
+fit_saf3<-table6m(milk_saf,dir_saf,"Modified Table 6 Regression (Filtered Data for San Antonio)")
+fit_saf4<-table10(milk_saf,dir_saf,"Reproduced Table 10 Regression (Filtered Data for San Antonio)")
 
 
 #Hypothesis tests ---------------------------
@@ -150,11 +151,11 @@ linearHypothesis(fit, c("(Intercept)=inc","type_dumlfc=inc:type_dumlfc",
                         "type_dumlfw=inc:type_dumlfw","type_dumwc=inc:type_dumwc",
                         "lfmo = inc:lfmo","lqstop=inc:lqstop",
                         "lback=inc:lback","esc=inc:esc","lnum=inc:lnum" ))
-linearHypothesis(fitSA, c("(Intercept)=inc","type_dumlfc=inc:type_dumlfc",
+linearHypothesis(fit_sa, c("(Intercept)=inc","type_dumlfc=inc:type_dumlfc",
                          "type_dumlfw=inc:type_dumlfw","type_dumwc=inc:type_dumwc",
                          "lfmo = inc:lfmo","lqstop=inc:lqstop",
                          "lback=inc:lback","esc=inc:esc","lnum=inc:lnum" ))
-linearHypothesis(fitC, c("(Intercept)=inc","type_dumlfc=inc:type_dumlfc",
+linearHypothesis(fit_f, c("(Intercept)=inc","type_dumlfc=inc:type_dumlfc",
                         "type_dumlfw=inc:type_dumlfw","type_dumwc=inc:type_dumwc",
                         "lfmo = inc:lfmo","lqstop=inc:lqstop",
                         "lback=inc:lback","esc=inc:esc","lnum=inc:lnum" ))
