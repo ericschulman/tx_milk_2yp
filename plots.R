@@ -109,13 +109,12 @@ types <- c('ww')
 
 #Make plots 1 ---------------------------
 dir1<-'~/Documents/tx_milk/output/plots1/'
-plot1(milk,dir1,years,types)
-
-
-#Make plots 2 ---------------------------
 dir2<-'~/Documents/tx_milk/output/plots2/'
-plot2(milk,dir2,years,types)
+dir3<-'~/Documents/tx_milk/output/'
 
+plot1(milk,dir1,years,types)
+plot2(milk,dir2,years,types)
+last_bids(milk,dir3,years,types)
 
 #Make plots for SA ---------------------------
 milkSA<-milk[which(milk$fmozone==9),]
@@ -125,10 +124,4 @@ dirSA2<-'~/Documents/tx_milk/output/plotsSA2/'
 
 plot1(milk,dirSA1,years,types)
 plot2(milk,dirSA2,years,types)
-
-
-#Make last bids ---------------------------
-dir3<-'~/Documents/tx_milk/output/'
-last_bids(milk,dir3,years,types)
-
 
