@@ -1,62 +1,117 @@
-#Refresh Working Environment
+#Refresh Working Environment ---------------------------
 rm(list=ls())
 
-#Import statements
+
+#Import statements ---------------------------
 library(stargazer)
 library(IDPmisc)
 library(lme4)
 library(nloptr)
 
-#import data
-milk <- data.frame(read.csv("~/Documents/tx_milk/input/clean_milk4.csv"))
+
+#function definitions ---------------------------
+table5<-function(milk,dir,label){
+  #fit model
+  fit <- lmer(lbid ~ inc + type_dum*inc + lfmo*inc + lqstop*inc + lback*inc + esc*inc +  lnum*inc + type_dum*(1-inc)
+              + lfmo*(1-inc) + lqstop*(1-inc) + lback*(1-inc) + esc*(1-inc) +  lnum*(1-inc)  
+              + (1 | system/year) , control=lmerControl(optimizer="nloptwrap"), data=milk)
+  
+  #write to latex
+  fname<-paste(dir,"table5.tex",sep="")
+  stargazer(fit, title=label, align=TRUE, type = "latex", out=fname, no.space=TRUE)
+  return(fit)
+}
+
+
+table6<-function(milk,dir,label){
+  #fit model
+  fit <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum
+              + (1 | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
+  #write to latex
+  fname<-paste(dir,"table6.tex",sep="")
+  stargazer(fit, title=label, align=TRUE, type = "latex", out=fname,no.space=TRUE)
+  return(fit) 
+}
+
+
+table6m<-function(milk,dir,label){
+  #Include a dummy for any bids taking place after August 10
+  milk$aug_10 <- as.integer(milk$biddate - milk$year*10000 >= 810)
+  
+  #include a dummy for any ISD in Wise County
+  milk$wise <- as.integer(milk$county=="WISE")
+  
+  #fit model
+  fit <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum
+               + aug_10 + wise + (1 | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
+  #write to latex
+  fname<-paste(dir,"table6m.tex",sep="")
+  stargazer(fit, title=label, align=TRUE, type = "latex", out=fname,no.space=TRUE)
+  return(fit)
+}
+
+
+table10<-function(milk,dir,label){
+  #create a lagged wins
+  milk_m <- merge(milk, milk,
+                  by.x=c("system","vendor","county","type","esc"),
+                  by.y=c("system","vendor","county","type","esc"),
+                  suffixes=c("",".prev"))
+  
+  milk_m <- milk_m[which(milk_m$year==(milk_m$year.prev+1)),]
+  
+  fit4 <- lmer(lbid ~ win.prev  + type_dum + lfmo + lqstop
+               + (1 | system/year) , control=lmerControl(optimizer="nloptwrap"), data=milk_m)
+  
+  #write to latex
+  fname<-paste(dir,"table10.tex",sep="")
+  stargazer(fit4, title=label, align=TRUE, type = "latex", out=fname, no.space=TRUE)
+}
+
+
+#run Code ---------------------------
+
+#import data and set up correct ---------------------------
+milk <- data.frame(read.csv("~/Documents/tx_milk/input/clean_milk.csv"))
 
 #setting up type dummies correctly
 milk$type_dum <- factor(milk$type)
 milk$type_dum <- relevel(milk$type_dum, ref = "ww")
 
-#Drop inf, na, and nan
+#Drop inf, na, and nan 
 milk<-NaRV.omit(milk)
 
+#only include correct processors
+milk <- milk[(milk$vendor=="BORDEN" | milk$vendor=="CABELL" 
+                           | milk$vendor=="FOREMOST" | milk$vendor=="OAK FARMS"
+                           | milk$vendor=="PRESTON" | milk$vendor=="SCHEPPS"
+                           | milk$vendor=="VANDERVOORT"),]
 
-#table 5
-#fit model
-fit <- lmer(lbid ~ inc + type_dum*inc + lfmo*inc + lqstop*inc + lback*inc + esc*inc +  lnum*inc + type_dum*(1-inc)
-                + lfmo*(1-inc) + lqstop*(1-inc) + lback*(1-inc) + esc*(1-inc) +  lnum*(1-inc)  
-                + (1 | system/year) , control=lmerControl(optimizer="nloptwrap"), data=milk)
+#only include correct years
+milk <- milk[which(milk$year>=1980 & milk$year <=1990),]
 
-#write to latex
-stargazer(fit, title="Table 5 Results RE", align=TRUE, type = "latex", 
-          out="~/Documents/tx_milk/output/table5_RE.tex", no.space=TRUE)
+#Run functions on all data ---------------------------
+dir<-"~/Documents/tx_milk/output/tables/"
 
+fit<-table5(milk,dir,"Table 5 Results All Data")
+fit2<-table6(milk,dir,"Table 6 Results All Data")
+fit3<-table6m(milk,dir,"Table 6 Modified Results All Data")
 
-#table 6
-#fit model
-fit2 <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum
-                   + (1 | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
+#Run functions on SA data ---------------------------
 
-#write to latex
-stargazer(fit2, title="Table 6 Results RE", align=TRUE, type = "latex", 
-          out="~/Documents/tx_milk/output/table6_RE.tex",no.space=TRUE)
+#Focus on SA area
+milkSA<-milk[which(milk$fmozone==9),]
+dirSA<-"~/Documents/tx_milk/output/tablesSA/"
+fit<-table5(milkSA,dirSA,"Table 5 Results San Antonio")
+fit2<-table6(milkSA,dirSA,"Table 6 Results San Antonio")
+fit3<-table6m(milkSA,dirSA,"Table 6 Modified Results San Antonio")
+fit4<-table10(milkSA,dirSA,"Table 10 Results")
 
-#table 6 - modified
-#Include a dummy for any bids taking place after August 10
-milk$aug_10 <- as.integer(milk$biddate - milk$year*10000 >= 810)
+#Run functions on subset of data ---------------------------
 
-#include a dummy for any ISD in Wise County
-milk$wise <- as.integer(milk$county=="WISE")
+#only include 'correct' processors (i.e. complete data)
+ids <- data.frame(read.csv("~/Documents/tx_milk/input/ids/ids8.csv"))
 
-#fit model
-fit3 <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum
-             + aug_10 + wise + (1 | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
-#write to latex
-stargazer(fit3, title="Modified Table 6 Results RE", align=TRUE, type = "latex", 
-          out="~/Documents/tx_milk/output/table6_m.tex",no.space=TRUE)
-
-
-#print summary to console
-summary(fit)
-summary(fit2)
-summary(fit3)
-
-
-
+cmilk <- merge(milk, ids,
+                     by.x=c("system","vendor","county","esc"),
+                     by.y=c("SYSTEM","VENDOR","COUNTY","ESC"))
