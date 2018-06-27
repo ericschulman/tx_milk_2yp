@@ -1,66 +1,54 @@
 # tx_milk
 
-The code attempts to replicate and extend the working paper "Incumbency and Bidding Behavior in the Dallas Ft. Worth School Milk market" using R and SQLite.
+The code attempts to replicate and extend the working paper "Incumbency and Bidding Behavior in the Dallas Ft. Worth School Milk Market" using R and SQLite.
 
 Below is an explanaton of the project's file structure
 
-## dependencies.R
+* `dependencies.R` This file installs the necessary R dependencies and libraries for R
 
-Install the necessary R dependencies and libraries
+* `replication.R` This file tries to replicate the main tables from the paper with some extensions.
 
-## replication.R
+* `data_clean.R` This is more post processing after the data is taken from the database
 
-This file tries to replicate the main tables from the paper.
+* `plots.R` This file containing relevant R code to make plots
 
-## data_clean.R
+* `db`
+contains the database and a `.sql` file used for constructing the required views in for the data
 
-More post processing
+	* `replication.SQL`
 
-## plots.R
+	Useful SQL queries used for generating BACKLOG and the Incumbencies within the paper
 
-folder containing relevant R code to make plots
+	* `tx_milk.db`
 
-##db
-contains the database and a sql file used for constructing the required views in the paper
+	SQLite database containing relevant tables to the project
 
-### replication.SQL
-
-Useful SQL queries used for generating BACKLOG and the Incumbencies within the paper
-
-### tx_milk.db
-
-SQLite database containing relevant tables to the project
-
-## data
+* data
 
 The data on historic milk prices is courtesy of the Dallas Federal Marketing Order's office. It can be found using the link below
 
-### fmo_diff.csv
+	* `fmo_diff.csv`
 
 price differentials for adjusting the Dallas price to different regions
 
-### fmo_prices.csv
+	* `fmo_prices.csv`
 
-table with historical FMO prices in Dallas, I formatted these using the original file
+table with historical FMO prices in Dallas, I formatted these using the original file. The file is found under 1975 - 1995 statistical summary from http://www.dallasma.com/order_stats/stats_sum.jsp
 
-http://www.dallasma.com/order_stats/stats_sum.jsp
+	*  `milk_out.csv` is a table with all the relevant information to table 5
 
-### milk_out.csv
+	* `tx_milk.csv` is the original data on milk bids
 
-table with all the relevant information to table 5
-
-### tx_milk.csv
-
-The file is called 1975 - 1995 statistical summary
-
-## output
+* `output`
 
 This folder contains the relevant output to the project
 
-## input
+* `input`
+
 destination for cleaned data files for use in R and STATA
 
-## stata
+* `stata`
+
 This folder contains the relevant stata commands to the project, development is mainly in R. The data undergoes further filtering in the `replication.R`
 
 
