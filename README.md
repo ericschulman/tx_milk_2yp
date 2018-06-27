@@ -1,43 +1,33 @@
 # tx_milk
 
-The code attempts to replicate table 5, and table 6 from the working paper "Incumbency and Bidding Behavior in the Dallas Ft. Worth School Milk market" using R and SQLite.
+The code attempts to replicate and extend the working paper "Incumbency and Bidding Behavior in the Dallas Ft. Worth School Milk market" using R and SQLite.
 
-## Work in progress
-
-### Hierarchical model in R
-http://www.r-tutor.com/gpu-computing/rbayes/rhierlmc
-https://www.jaredknowles.com/journal/2013/11/25/getting-started-with-mixed-effect-models-in-r
-
-### Clustered Standard Errors
-Blogs for reproducing the clustered standard errors in R
-Relevant posts and forums:
-
-Stack exchange post
-https://stats.stackexchange.com/questions/124662/group-fixed-effects-not-individual-fixed-effects-using-plm-in-r
-
-Blog post
-https://economictheoryblog.com/2016/08/07/robust-standard-errors-in-r-function/
-
-STATA documentation on cluster robust SEs
-https://www.stata.com/support/faqs/statistics/standard-errors-and-vce-cluster-option/
-
-## replication.R
-
-This file tries to replicate the main tables from the paper.
+Below is an explanaton of the project's file structure
 
 ## dependencies.R
 
 Install the necessary R dependencies and libraries
 
+## replication.R
+
+This file tries to replicate the main tables from the paper.
+
 ## data_clean.R
 
 More post processing
 
-## replication.SQL
+## plots.R
+
+folder containing relevant R code to make plots
+
+##db
+contains the database and a sql file used for constructing the required views in the paper
+
+### replication.SQL
 
 Useful SQL queries used for generating BACKLOG and the Incumbencies within the paper
 
-## tx_milk.db
+### tx_milk.db
 
 SQLite database containing relevant tables to the project
 
@@ -45,15 +35,15 @@ SQLite database containing relevant tables to the project
 
 The data on historic milk prices is courtesy of the Dallas Federal Marketing Order's office. It can be found using the link below
 
-http://www.dallasma.com/order_stats/stats_sum.jsp
-
 ### fmo_diff.csv
 
 price differentials for adjusting the Dallas price to different regions
 
 ### fmo_prices.csv
 
-table with historical FMO prices in Dallas
+table with historical FMO prices in Dallas, I formatted these using the original file
+
+http://www.dallasma.com/order_stats/stats_sum.jsp
 
 ### milk_out.csv
 
@@ -71,5 +61,24 @@ This folder contains the relevant output to the project
 destination for cleaned data files for use in R and STATA
 
 ## stata
-This folder contains the relevant stata scripts to the project
+This folder contains the relevant stata commands to the project, development is mainly in R. The data undergoes further filtering in the `replication.R`
 
+
+## Work in Progress/Notes
+
+### Hierarchical model in R
+http://www.r-tutor.com/gpu-computing/rbayes/rhierlmc
+https://www.jaredknowles.com/journal/2013/11/25/getting-started-with-mixed-effect-models-in-r
+
+### Clustered Standard Errors
+Blogs for reproducing the clustered standard errors in R
+Relevant posts and forums:
+
+Stack exchange post
+https://stats.stackexchange.com/questions/124662/group-fixed-effects-not-individual-fixed-effects-using-plm-in-r
+
+Blog post
+https://economictheoryblog.com/2016/08/07/robust-standard-errors-in-r-function/
+
+STATA documentation on cluster robust SEs
+https://www.stata.com/support/faqs/statistics/standard-errors-and-vce-cluster-option/
