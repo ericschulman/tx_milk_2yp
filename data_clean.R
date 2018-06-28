@@ -4,7 +4,7 @@
 rm(list=ls())
 
 #Read data and set up necessary tables for regression  ---------------------------
-milk <- data.frame(read.csv("~/Documents/tx_milk/input/milk_out.csv"))
+milk <- data.frame(read.csv("~/Documents/tx_milk/input/milk_out2.csv"))
 
 new_lfc <- data.frame("rowid" = milk$rowid,
                       "lbid" = log(milk$LFC),
@@ -88,7 +88,7 @@ clean_milk <- rbind(new_lfc, new_lfw, new_wc, new_ww)
 
 #cleanmilk set up  ---------------------------
 #write to CSV file
-write.csv(clean_milk, file = "~/Documents/tx_milk/input/clean_milk.csv")
+write.csv(clean_milk, file = "~/Documents/tx_milk/input/clean_milk2.csv")
 
 
 #clean milk2 set up ---------------------------
@@ -111,4 +111,4 @@ clean_milk2 <- data.frame("rowid" = milk$rowid,
                         "year" = milk$YEAR,
                         "biddate" =   milk$YEAR*10000 + milk$MONTH*100 +milk$DAY)
 #write to file
-write.csv(clean_milk2, file = "~/Documents/tx_milk/input/clean_milk2.csv", row.names=FALSE)
+write.csv(clean_milk2, file = "~/Documents/tx_milk/input/clean_milkm.csv", row.names=FALSE)
