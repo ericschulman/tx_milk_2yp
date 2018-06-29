@@ -25,7 +25,7 @@ contains the database and a `.sql` file used for constructing the required views
 
 	* `fmo_diff.csv` price differentials for adjusting the Dallas price to different regions
 
-	*`fmo_prices.csv` table with historical FMO prices in Dallas, I formatted these using the original file. The file is found under 1975 - 1995 statistical summary from http://www.dallasma.com/order_stats/stats_sum.jsp
+	* `fmo_prices.csv` table with historical FMO prices in Dallas, I formatted these using the original file. The file is found under 1975 - 1995 statistical summary from http://www.dallasma.com/order_stats/stats_sum.jsp
 
 	*  `milk_out.csv` is a table with all the relevant information to table 5
 
