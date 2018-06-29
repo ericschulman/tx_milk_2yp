@@ -116,6 +116,18 @@ dir.create(dir, showWarnings = FALSE)
 fit<-table5(milk,dir,"Reproduced Table 5 Results (All ISDs 1980-1991)")
 fit2<-table6m(milk,dir,"Modified Table 6 Results (All ISDs 1980-1991)")
 
+
+#Run functions on Dallas data ---------------------------
+#set up Dallas data
+milk_da<-milk[which(milk$fmozone==1 & milk$year <=1991), ]
+
+dir_da<-"~/Documents/tx_milk/output/tables_da/"
+dir.create(dir_da, showWarnings = FALSE)
+
+fit_da<-table5(milk_da,dir_da,"Reproduced Table 5 Results (Dallas Ft. Worth 1980-1991)")
+fit_da<-table6(milk_da,dir_da,"Reproduced Table 6 Results (Dallas Ft. Worth 1980-1991)")
+
+
 #Run functions on SA data ---------------------------
 #set up SA data
 milk_sa<-milk[which(milk$fmozone==9 & milk$year >= 1988 & milk$year <=1991), ]
@@ -126,6 +138,7 @@ dir.create(dir_sa, showWarnings = FALSE)
 fit_sa<-table6(milk_sa,dir_sa,"Reproduced Table 6 Results (San Antonio 1988-1991)")
 fit_sa1<-table10(milk_sa,dir_sa,"Reproduced Table 10 Results (San Antonio 1988-1991)")
 
+
 # 'Broken' Regression ---------------------------
 #set up data
 milk_m1<-milk[which(milk$year <=1990), ]
@@ -135,7 +148,8 @@ dir_m<-"~/Documents/tx_milk/output/tables_m/"
 dir.create(dir_m, showWarnings = FALSE)
 
 fit_sa<-table5(milk_m1,dir_m,"Reproduced Table 5 Results (All ISDs 1980-1990)")
-fit_sa1<-table10(milk_m2,dir_m,"Reproduced Table 10 Results (San Antonio 1980-1990)")
+fit_sa1<-table6(milk_m2,dir_m,"Reproduced Table 6 Results (San Antonio 1980-1990)")
+
 
 #Hypothesis tests ---------------------------
 linearHypothesis(fit, c("(Intercept)=inc","type_dumlfc=inc:type_dumlfc",
