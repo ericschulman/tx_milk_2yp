@@ -9,4 +9,5 @@ install.packages("lme4")
 install.packages("nloptr")
 
 #to install car need libcurl through: sudo apt-get install libcurl4-openssl-dev
-install.packages("car")
+update.packages()
+install.packages("car",dependencies=TRUE)

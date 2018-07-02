@@ -76,14 +76,27 @@ AND A.YEAR = B.YEAR
 GROUP BY A.rowid;
 
 
-/*Generate the Data involved with Table 5*/
+/*helpful for older version of milk_out with differential included
+also previous 'differential' adjusted fmo is included*/
 create view milk_out as 
+select A.*, B.I as I, C.diff*.01 + D.price as FMO, E.num as N
+from backlog as A
+LEFT JOIN incumbents as B ON A.SYSTEM = B.SYSTEM
+AND A.COUNTY = B.COUNTY
+AND A.VENDOR = B.VENDOR
+LEFT JOIN fmo_diff AS C on A.FMOZONE = C.FMOZONE
+LEFT JOIN fmo_prices AS D on A.YEAR = D.YEAR and A.MONTH = D.MONTH
+LEFT JOIN num AS E on A.rowid = E.rowid;
+
+
+/*Generate the Data involved with Table 5*/
+create view milk_out2 as 
 select A.*, B.I as I, D.price as FMO, E.num as N
 from backlog as A
 LEFT JOIN incumbents as B ON A.SYSTEM = B.SYSTEM
 AND A.COUNTY = B.COUNTY
 AND A.VENDOR = B.VENDOR
-LEFT JOIN fmo_prices AS D on A.YEAR = D.YEAR and 0 = D.month
+LEFT JOIN fmo_prices AS D on A.YEAR = D.YEAR and A.MONTH = D.MONTH
 LEFT JOIN num AS E on A.rowid = E.rowid;
 
 
@@ -139,17 +152,17 @@ LEFT JOIN incumbents as B ON A.SYSTEM = B.SYSTEM
 AND A.COUNTY = B.COUNTY
 AND A.VENDOR = B.VENDOR
 LEFT JOIN fmo_diff AS C on A.FMOZONE = C.FMOZONE
-LEFT JOIN fmo_prices AS D on A.YEAR = D.YEAR and 0 = D.month
+LEFT JOIN fmo_prices AS D on A.YEAR = D.YEAR and A.MONTH = D.MONTH
 LEFT JOIN num AS E on A.rowid = E.rowid;
 
 
-/*helpful for older version of milk_out with differential included
-also previous 'differential' adjusted fmo is included*/
-select A.*, B.I as I, C.diff*.01 + D.price as FMO, E.num as N
-from backlog as A
+/*helpful for seeing SA FMO results*/
+select A.SYSTEM, A.COUNTY, A.VENDOR,  C.diff*.01 + D.price as FMO
+from (select * from milk 
+where YEAR >= 1980 and YEAR <=1983 and FMOZONE = 9) as A
 LEFT JOIN incumbents as B ON A.SYSTEM = B.SYSTEM
 AND A.COUNTY = B.COUNTY
 AND A.VENDOR = B.VENDOR
 LEFT JOIN fmo_diff AS C on A.FMOZONE = C.FMOZONE
-LEFT JOIN fmo_prices AS D on A.YEAR = D.YEAR and 0 = D.month
+LEFT JOIN fmo_prices AS D on A.YEAR = D.YEAR and A.MONTH = D.MONTH
 LEFT JOIN num AS E on A.rowid = E.rowid;
