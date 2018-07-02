@@ -82,6 +82,16 @@ last_bids<-function(milk,dir,years,types){
 }  
 
 
+filter_data<-function(milk){
+  ids <- data.frame(read.csv("~/Documents/tx_milk/input/ids/complete_isd.csv"))
+  
+  milk_f <- merge(milk, ids,
+                  by.x=c("system","county"),
+                  by.y=c("SYSTEM","COUNTY"))
+  return(milk_f)
+}
+
+
 #Load data into memory ---------------------------
 milk <- data.frame(read.csv("~/Documents/tx_milk/input/clean_milk.csv"))
 
@@ -115,27 +125,16 @@ plot_avg(milk,dir2,years,types)
 last_bids(milk,dir3,years,types)
 
 
-#Make plots for SA ---------------------------
-milk_sa<-milk[which(milk$fmozone==9),]
+#Make plots for Dallas data ---------------------------
+milk_dfw<-milk[which(milk$fmozone==1 & milk$year <=1991 & milk$county!='WISE'), ]
+milk_dfw2 <- filter_data(milk_dfw)
 
-dir_sa1<-'~/Documents/tx_milk/output/plots_sa/'
-dir_sa2<-'~/Documents/tx_milk/output/plots_avgsa/'
-
-plot_bid(milk_sa,dir_sa1,years,types)
-plot_avg(milk_sa,dir_sa2,years,types)
-
-
-#Make plots for filtered data ---------------------------
-ids <- data.frame(read.csv("~/Documents/tx_milk/input/ids/ids8.csv"))
-
-milk_f <- merge(milk, ids,
-                by.x=c("system","vendor","county","esc"),
-                by.y=c("SYSTEM","VENDOR","COUNTY","ESC"))
+dir_dfw<-"~/Documents/tx_milk/output/plots_dfw/"
+dir_dfw2<-"~/Documents/tx_milk/output/plots_dfw_filtered/"
+dir.create(dir_dfw, showWarnings = FALSE)
+dir.create(dir_dfw2, showWarnings = FALSE)
 
 #create directory
-dir_f<-"~/Documents/tx_milk/output/plots_f/"
-dir_f2<-"~/Documents/tx_milk/output/plots_avgf/"
-
-plot_bid(milk_f,dir_f,years,types)
-plot_avg(milk_f,dir_f2,years,types)
+plot_avg(milk_dfw,dir_dfw,years,types)
+plot_avg(milk_dfw2,dir_dfw2,years,types)
 

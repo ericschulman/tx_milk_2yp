@@ -122,13 +122,13 @@ fit2<-table6m(milk,out_dir,"Modified Table 6 Results (All ISDs 1980-1991)")
 
 #Run functions on Dallas data ---------------------------
 #set up Dallas data
-milk_da<-milk[which(milk$fmozone==1 & milk$year <=1991), ]
+milk_dfw<-milk[which(milk$fmozone==1 & milk$year <=1991), ]
 
-out_dir_da<-"~/Documents/tx_milk/output/tables_da/"
-dir.create(out_dir_da, showWarnings = FALSE)
+out_dir_dfw<-"~/Documents/tx_milk/output/tables_dfw/"
+dir.create(out_dir_dfw, showWarnings = FALSE)
 
-fit_da<-table5(milk_da,out_dir_da,"Reproduced Table 5 Results (Dallas Ft. Worth 1980-1991)")
-fit_da<-table6(milk_da,out_dir_da,"Reproduced Table 6 Results (Dallas Ft. Worth 1980-1991)")
+fit_dfw<-table5(milk_dfw,out_dir_dfw,"Reproduced Table 5 Results (Dallas Ft. Worth 1980-1991)")
+fit_dfw<-table6(milk_dfw,out_dir_dfw,"Reproduced Table 6 Results (Dallas Ft. Worth 1980-1991)")
 
 
 #Run functions on SA data ---------------------------
