@@ -96,6 +96,7 @@ where  YEAR>=1980 AND YEAR <=1990
 group by SYSTEM, COUNTY)
 WHERE YEARS = 11;
 
+
 /*create view with number of competitors*/
 create view num as 
 select A.rowid, count(*) as NUM from milk as A, milk as B 
@@ -139,7 +140,7 @@ OR VENDOR = "SCHEPPS"
 OR VENDOR = "VANDERVOORT")
 group by ESC, SYSTEM, COUNTY, VENDOR)
 WHERE (YEARS >= 5)
-GROUP BY COUNTY,SYSTEM , VENDOR,  ESC
+GROUP BY COUNTY, SYSTEM, VENDOR,  ESC
 
 
 /*helpful for debugging milk out
