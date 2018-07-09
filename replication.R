@@ -8,9 +8,11 @@ library(IDPmisc)
 library(lme4)
 library(nloptr)
 library(car)
+source("data_clean.R")
 
 
 #function definitions ---------------------------
+
 table5<-function(milk,dir,label,fname="table5.tex"){
   #add not-incumbent column
   milk$ninc = (1-milk$inc)
@@ -38,8 +40,9 @@ table6<-function(milk,dir,label,fname="table6.tex"){
   return(fit) 
 }
 
+
 table10<-function(milk,dir,label,fname="table10.tex"){
-  #create a lagged wins
+  #create a lagged wins, to reproduce table 10 from the original working paper
   milk_m <- merge(milk, milk,
                   by.x=c("system","vendor","county","type","esc","fmozone"),
                   by.y=c("system","vendor","county","type","esc","fmozone"),
@@ -54,37 +57,6 @@ table10<-function(milk,dir,label,fname="table10.tex"){
   fname<-paste(dir,fname,sep="")
   output <- capture.output(stargazer(fit, title=label, align=TRUE, type = "latex", out=fname, no.space=TRUE))
   return(fit)
-}
-
-
-filter_data<-function(milk){
-  ids <- data.frame(read.csv("~/Documents/tx_milk/input/ids/complete_isd.csv"))
-  
-  milk_f <- merge(milk, ids,
-                  by.x=c("system","county"),
-                  by.y=c("SYSTEM","COUNTY"))
-  return(milk_f)
-}
-
-
-load_milk<-function(dir){
-  milk <- data.frame(read.csv(dir))
-  #setting up type dummies correctly
-  milk$type_dum <- factor(milk$type)
-  milk$type_dum <- relevel(milk$type_dum, ref = "ww")
-  #only include correct processors
-  milk <- milk[which(milk$vendor=="BORDEN" | milk$vendor=="CABELL" 
-                     | milk$vendor=="FOREMOST" | milk$vendor=="OAK FARMS"
-                     | milk$vendor=="PRESTON" | milk$vendor=="SCHEPPS"
-                     | milk$vendor=="VANDERVOORT"),]
-  #fix bid dates
-  milk$biddate<-as.Date(as.character(milk$biddate),"%Y%m%d")
-  #focus on correct bid dates
-  milk <- milk[which(milk$year>=1980 & milk$year <=1991),]
-  #Drop inf, na, and nan 
-  milk<-NaRV.omit(milk)
-  
-  return(milk)
 }
 
 
