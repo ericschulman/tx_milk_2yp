@@ -22,6 +22,24 @@ table6<-function(milk,dir,label,fname="table6.tex"){
 }
 
 
+table6m<-function(milk,dir,label,fname="table6m.tex"){
+  #Include a dummy for any bids taking place after August 10
+  aug_10 =  as.Date(as.character(810+10000*milk$year),"%Y%m%d")
+  milk$aug_10 <- as.integer(aug_10 > milk$biddate)
+  
+  #include a dummy for any ISD in Wise County
+  milk$wise <- as.integer(milk$county=="WISE")
+  
+  #fit model
+  fit <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum + wise
+              + (1 + lfmo | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
+  #write to latex
+  fname<-paste(dir,fname,sep="")
+  output <- capture.output(stargazer(fit, title=label, align=TRUE, type = "latex", out=fname,no.space=TRUE))
+  return(fit)
+}
+
+
 table6fe<-function(milk,dir,label,fname="table6fe.tex"){
   #fit model - fixed effects for mkt as well
   fit <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum
@@ -52,7 +70,7 @@ table6c<-function(milk,dir,label,fname="table6c.tex"){
 
 
 table6ci<-function(milk,dir,label,fname="table6ci.tex"){
-  #fixed effects for just SA and DFW
+  #3 regressions side by side with SA, DFW, and misc
   
   milk_sa <-milk[which(milk$fmozone==9 & milk$year <=1991), ]
   milk_dfw<-milk[which(milk$fmozone==1 & milk$year <=1991), ]
@@ -68,7 +86,7 @@ table6ci<-function(milk,dir,label,fname="table6ci.tex"){
   
   #write to latex
   fname<-paste(dir,fname,sep="")
-  output <- capture.output(stargazer(fit_misc, fit_dfw, fit_sa, title=label, align=TRUE, type = "latex", out=fname,no.space=TRUE))
+  output <- capture.output(stargazer(fit_dfw, fit_sa, fit_misc, title=label, align=TRUE, type = "latex", out=fname,no.space=TRUE))
   return(fit) 
 }
 
@@ -110,7 +128,7 @@ milk <- load_milk(input_dir)
 
 
 #Run functions on all data ---------------------------
-out_dir<-"~/Documents/tx_milk/output/tables_mkt/"
+out_dir<-"~/Documents/tx_milk/output/ext/tables/"
 dir.create(out_dir, showWarnings = FALSE)
 
 fit1<-table6(milk,out_dir,"Pooled Table 6 Results (All ISDs 1980-1991)")

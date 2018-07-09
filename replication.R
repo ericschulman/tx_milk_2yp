@@ -38,25 +38,6 @@ table6<-function(milk,dir,label,fname="table6.tex"){
   return(fit) 
 }
 
-
-table6m<-function(milk,dir,label,fname="table6m.tex"){
-  #Include a dummy for any bids taking place after August 10
-  aug_10 =  as.Date(as.character(810+10000*milk$year),"%Y%m%d")
-  milk$aug_10 <- as.integer(aug_10 > milk$biddate)
-  
-  #include a dummy for any ISD in Wise County
-  milk$wise <- as.integer(milk$county=="WISE")
-  
-  #fit model
-  fit <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum + wise
-               + (1 + lfmo | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
-  #write to latex
-  fname<-paste(dir,fname,sep="")
-  output <- capture.output(stargazer(fit, title=label, align=TRUE, type = "latex", out=fname,no.space=TRUE))
-  return(fit)
-}
-
-
 table10<-function(milk,dir,label,fname="table10.tex"){
   #create a lagged wins
   milk_m <- merge(milk, milk,
@@ -113,18 +94,18 @@ milk <- load_milk(input_dir)
 
 
 #Run functions on all data ---------------------------
-out_dir<-"~/Documents/tx_milk/output/tables/"
+out_dir<-"~/Documents/tx_milk/output/rep/tables/"
 dir.create(out_dir, showWarnings = FALSE)
 
 fit<-table5(milk,out_dir,"Reproduced Table 5 Results (All ISDs 1980-1991)")
-fit2<-table6m(milk,out_dir,"Modified Table 6 Results (All ISDs 1980-1991)")
+fit2<-table6(milk,out_dir,"Modified Table 6 Results (All ISDs 1980-1991)")
 
 
 #Run functions on Dallas data ---------------------------
 #set up Dallas data
 milk_dfw<-milk[which(milk$fmozone==1 & milk$year <=1991), ]
 
-out_dir_dfw<-"~/Documents/tx_milk/output/tables_dfw/"
+out_dir_dfw<-"~/Documents/tx_milk/output/rep/tables_dfw/"
 dir.create(out_dir_dfw, showWarnings = FALSE)
 
 fit_dfw<-table5(milk_dfw,out_dir_dfw,"Reproduced Table 5 Results (Dallas Ft. Worth 1980-1991)")
@@ -135,7 +116,7 @@ fit_dfw<-table6(milk_dfw,out_dir_dfw,"Reproduced Table 6 Results (Dallas Ft. Wor
 #set up SA data
 milk_sa<-milk[which(milk$fmozone==9 & milk$year >= 1988 & milk$year <=1991), ]
 
-out_dir_sa<-"~/Documents/tx_milk/output/tables_sa/"
+out_dir_sa<-"~/Documents/tx_milk/output/rep/tables_sa/"
 dir.create(out_dir_sa, showWarnings = FALSE)
 
 fit_sa<-table6(milk_sa,out_dir_sa,"Reproduced Table 6 Results (San Antonio 1988-1991)")
@@ -143,7 +124,7 @@ fit_sa1<-table10(milk_sa,out_dir_sa,"Reproduced Table 10 Results (San Antonio 19
 
 
 # 'Broken' Regression ---------------------------
-out_dir_m<-"~/Documents/tx_milk/output/tables_m/"
+out_dir_m<-"~/Documents/tx_milk/output/rep/tables_m/"
 dir.create(out_dir_m, showWarnings = FALSE)
 
 #set up data
