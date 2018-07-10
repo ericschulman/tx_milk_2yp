@@ -79,7 +79,7 @@ table6c<-function(milk,dir,label,fname="table6c.tex"){
   milk$aust <- as.integer(milk$fmozone==7)
   
   #fit model
-  fit <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum + sa + dfw + aust
+  fit <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum + sa + dfw
               + (1 + lfmo | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
   #write to latex
   fname<-paste(dir,fname,sep="")
