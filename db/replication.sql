@@ -64,6 +64,18 @@ WHERE passed.rowid = contracts.rowid
 AND passed.rowid = commitments.rowid
 AND passed.vendor = capacity.vendor;
 
+
+/*create view with number of competitors*/
+create view num as 
+select A.rowid, count(*) as NUM from milk as A, milk as B 
+WHERE A.SYSTEM = B.SYSTEM
+AND A.COUNTY = B.COUNTY
+AND A.DAY = B.DAY
+AND A.MONTH = B.MONTH
+AND A.YEAR = B.YEAR
+GROUP BY A.rowid;
+
+
 /*helpful for older version of milk_out with differential included
 also previous 'differential' adjusted fmo is included*/
 create view milk_out as 
@@ -97,15 +109,7 @@ group by SYSTEM, COUNTY)
 WHERE YEARS = 11;
 
 
-/*create view with number of competitors*/
-create view num as 
-select A.rowid, count(*) as NUM from milk as A, milk as B 
-WHERE A.SYSTEM = B.SYSTEM
-AND A.COUNTY = B.COUNTY
-AND A.DAY = B.DAY
-AND A.MONTH = B.MONTH
-AND A.YEAR = B.YEAR
-GROUP BY A.rowid;
+
 
 
 /*Work in Progress*/

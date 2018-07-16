@@ -39,6 +39,14 @@ load_milk<-function(dir){
 #Read data and set up necessary tables for regression  ---------------------------
 milk <- data.frame(read.csv("~/Documents/tx_milk/input/milk_out.csv"))
 
+
+#add strategic variablse as in lee 1999
+milk$ONEBID <- as.integer(milk$N==1)
+milk$BEGIN <- as.integer( ( 1.0*milk$PASSED)/milk$CONTRACTS <= .05 )
+milk$END <- as.integer( ( 1.0*milk$PASSED)/milk$CONTRACTS >= .95 )
+milk$ENTRY <- as.integer( milk$YEAR>=1985 & milk$VENDOR == 'PRESTON' )
+  
+
 new_lfc <- data.frame("rowid" = milk$rowid,
                       "lbid" = log(milk$LFC),
                       "type" = "lfc",
@@ -56,7 +64,11 @@ new_lfc <- data.frame("rowid" = milk$rowid,
                       "biddate" =    milk$YEAR*10000 + milk$MONTH*100 +milk$DAY,
                       "win" = milk$WIN,
                       "county" = milk$COUNTY,
-                      "fmozone"= milk$FMOZONE)
+                      "fmozone"= milk$FMOZONE,
+                      "onebid"= milk$ONEBID,
+                      "begin"= milk$BEGIN,
+                      "end"= milk$END,
+                      "entry"= milk$ENTRY)
 
 new_wc <- data.frame("rowid" = milk$rowid,
                      "lbid" = log(milk$WC),
@@ -75,7 +87,11 @@ new_wc <- data.frame("rowid" = milk$rowid,
                      "biddate" =    milk$YEAR*10000 + milk$MONTH*100 +milk$DAY,
                      "win" = milk$WIN,
                      "county" = milk$COUNTY,
-                     "fmozone"= milk$FMOZONE)
+                     "fmozone"= milk$FMOZONE,
+                     "onebid"= milk$ONEBID,
+                     "begin"= milk$BEGIN,
+                     "end"= milk$END,
+                     "entry"= milk$ENTRY)
 
 new_lfw <- data.frame("rowid" = milk$rowid,
                       "lbid" = log(milk$LFW),
@@ -94,7 +110,11 @@ new_lfw <- data.frame("rowid" = milk$rowid,
                       "biddate" =    milk$YEAR*10000 + milk$MONTH*100 +milk$DAY,
                       "win" = milk$WIN,
                       "county" = milk$COUNTY,
-                      "fmozone"= milk$FMOZONE)
+                      "fmozone"= milk$FMOZONE,
+                      "onebid"= milk$ONEBID,
+                      "begin"= milk$BEGIN,
+                      "end"= milk$END,
+                      "entry"= milk$ENTRY)
 
 new_ww <- data.frame("rowid" = milk$rowid,
                      "lbid" = log(milk$WW),
@@ -113,7 +133,12 @@ new_ww <- data.frame("rowid" = milk$rowid,
                      "biddate" =    milk$YEAR*10000 + milk$MONTH*100 +milk$DAY,
                      "win" = milk$WIN,
                      "county" = milk$COUNTY,
-                     "fmozone"= milk$FMOZONE)
+                     "fmozone"= milk$FMOZONE,
+                     "onebid"= milk$ONEBID,
+                     "begin"= milk$BEGIN,
+                     "end"= milk$END,
+                     "entry"= milk$ENTRY)
+
 
 #bind each 'type' of bid together  ---------------------------
 clean_milk <- rbind(new_lfc, new_lfw, new_wc, new_ww)
