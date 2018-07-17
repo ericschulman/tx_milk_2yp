@@ -15,9 +15,10 @@ source("data_clean.R")
 
 fu<-function(milk,dir,label,fname='fu.tex'){
   #trying to replicate lee's results from 1999 - only DFW
-  milk<-milk[which(milk$fmozone==1 & milk$year >= 1986 & milk$year <=1991), ]
+  #this doesn't work 
+  milk<-milk[which(milk$fmozone==1 & milk$year >= 1990 & milk$year <=1991), ]
 
-  fit <- lm(llevel ~ lsize + lseasont + lnum + inc + ldist + lnostop + lbackt + lfmo + esc + cooler , data=milk)
+  fit <- lm( llevel ~ lsize + lseasont + lnum + inc + ldist + lnostop + lbackt + lfmo + esc + cooler , data=milk, na.action=na.omit)
   fit_fe <- lmer(llevel ~ lsize + lseasont + lnum + inc + ldist + lnostop + lbackt + lfmo + esc + cooler 
               + (1 + lfmo | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
   

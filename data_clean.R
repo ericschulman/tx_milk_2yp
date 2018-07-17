@@ -35,7 +35,7 @@ load_milk<-function(dir){
   #focus on correct bid dates
   milk <- milk[which(milk$year>=1980 & milk$year <=1991),]
   
-  #Drop inf, na, and nan 
+  #Drop inf, na, and nan
   milk<-NaRV.omit(milk)
   
   return(milk)
@@ -100,6 +100,7 @@ lee_ext<-function(milk){
 #Read data and set up necessary tables for regression  ---------------------------
 
 milk <- data.frame(read.csv("~/Documents/tx_milk/input/milk_out.csv"))
+
 #add variables
 milk$NOSTOP<-  (milk$DEL*milk$NUMSCHL)/(1.0*milk$NUMWIN)
 milk$QSTOP<-  milk$ESTQTY/milk$NOSTOP
@@ -239,14 +240,12 @@ clean_milkm <- data.frame("rowid" = milk$rowid,
                         "lfmo" =  log(milk$FMO),
                         "esc" =  milk$ESC,
                         "cooler" = milk$COOLER,
-                        "llfc" = log(milk$LFC),
-                        "llfw" = log(milk$LFW),
-                        "lwc" = log(milk$WC),
-                        "lww" = log(milk$WW),
                         "lqstop" =  log(milk$QSTOP),
                         "vendor" = milk$VENDOR,
                         "system" = milk$SYSTEM,
                         "year" = milk$YEAR,
-                        "biddate" =   milk$YEAR*10000 + milk$MONTH*100 +milk$DAY)
+                        "biddate" =   milk$YEAR*10000 + milk$MONTH*100 +milk$DAY,
+                        "system" = milk$YEAR,
+                        "year" = milk$YEAR)
 #write to file
-write.csv(clean_milkm, file = "~/Documents/tx_milk/input/clean_milkm.csv", row.names=FALSE)
+write.csv(clean_milkm, file = "~/Documents/tx_milk/input/clean_milkm.csv")
