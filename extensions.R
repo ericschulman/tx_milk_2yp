@@ -13,21 +13,32 @@ source("data_clean.R")
 
 #function definitions ---------------------------
 
-lee<-function(milk,dir,label,fname='lee.tex'){
-  #trying to replicate lee's results from 1999
-  fit <- lm(lbid ~ inc + begin + end + entry + onebid + type_dum + lfmo + lestqty + lnostop + lback + esc, data=milk)
-  
-  fit_fe <- lmer(lbid ~ inc + begin + end + entry + onebid + type_dum + lfmo + lestqty + lnostop + lback + esc
-              + (1 | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
-  
-  #limit to dfw data
-  milk_dfw<-milk[which(milk$fmozone==1 & milk$year <=1991), ]
-  fit_dfw <- lmer(lbid ~ inc + begin + end + entry + onebid + type_dum + lfmo + lestqty + lnostop + lback + esc
-                 + (1 | system/year) , data=milk_dfw, control=lmerControl(optimizer="nloptwrap"))
+fu<-function(milk,dir,label,fname='fu.tex'){
+  #trying to replicate lee's results from 1999 - only DFW
+  milk<-milk[which(milk$fmozone==1 & milk$year >= 1986 & milk$year <=1991), ]
+
+  fit <- lm(llevel ~ lsize + lseasont + lnum + inc + ldist + lnostop + lbackt + lfmo + esc + cooler , data=milk)
+  fit_fe <- lmer(llevel ~ lsize + lseasont + lnum + inc + ldist + lnostop + lbackt + lfmo + esc + cooler 
+              + (1 + lfmo | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
   
   fname<-paste(dir,fname,sep="")
-  output <- capture.output(stargazer(fit,fit_fe,fit_dfw, title=label, align=TRUE, type = "latex", out=fname,no.space=TRUE))
-  return(c(fit,fit_fe,fit_dfw))
+  output <- capture.output(stargazer(fit , fit_fe, title=label, align=TRUE, type = "latex", out=fname,no.space=TRUE))
+  return(fit)
+}
+
+
+lee<-function(milk,dir,label,fname='lee.tex'){
+  #trying to replicate lee's results from 1999 - only DFW
+  milk<-milk[which(milk$fmozone==1 & milk$year <=1991), ]
+  milk$lbacksq <- milk$lback*milk$lback
+  milk$lbacktsq <- milk$lbackt*milk$lbackt
+  fit <- lm(lbid ~ inc + begin + end + entry + onebid + type_dum + lfmo + lqstop + lback + lbacksq + esc, data=milk)
+  fit_fe <- lmer(lbid ~ inc + begin + end + entry + onebid + type_dum + lfmo + lqstop + lback + lbacksq + esc
+                 + (1 + lfmo | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
+  
+  fname<-paste(dir,fname,sep="")
+  output <- capture.output(stargazer(fit , fit_fe, title=label, align=TRUE, type = "latex", out=fname,no.space=TRUE))
+  return(fit)
 }
 
 
@@ -116,8 +127,10 @@ milk <- load_milk(input_dir)
 out_dir<-"~/Documents/tx_milk/output/ext/tables/"
 dir.create(out_dir, showWarnings = FALSE)
 
-fits<-table6(milk,out_dir,"Table 6 Results (By Market)")
-fit2<-table6fe(milk,out_dir,"Table 6 Results (Market Fixed Effects)")
-fit3<-table6c(milk,out_dir,"Table 6 Results (Categorical Variables)")
-fit4<-table6w(milk,out_dir,"Quick Check for August")
+#fit lee's models
 fits_lee<-lee(milk , out_dir , "Lee Table II")
+
+#fit Fu's models
+#input_dirm <- "~/Documents/tx_milk/input/clean_milkm.csv"
+#milkm <- load_milk(input_dirm)
+#fits_fu<-fu(milkm , out_dir , "Fu Table 3.4")

@@ -20,13 +20,19 @@ cast (substr(LETDATE,0,instr(LETDATE,'/')) as integer) AS MONTH,
 cast(substr(LETDATE, instr(LETDATE,'/')+1 , instr(substr(LETDATE,instr(LETDATE,'/')+1),'/')-1) as integer) AS DAY,
 1900 + YEAR as YEAR,
 LFC, LFW, WW, WC, QLFC, QLFW, QWW, QWC, ESTQTY, QUANTITY, FMOZONE, DEL,
-ESTQTY/(DEL*36) AS QSTOP,
 CASE ESC
  WHEN 'E' THEN 1
  WHEN 'F' THEN 0
  ELSE ''
  END ESC,
-WIN is not '' as WIN
+CASE COOLER
+ WHEN 'Y' THEN 1
+ WHEN 'N' THEN 0
+ ELSE ''
+ END COOLER,
+ MILES,
+WIN is not '' as WIN,
+NUMSCHL, NUMWIN
 from tx_milk;
 
 
@@ -76,8 +82,7 @@ AND A.YEAR = B.YEAR
 GROUP BY A.rowid;
 
 
-/*helpful for older version of milk_out with differential included
-also previous 'differential' adjusted fmo is included*/
+/*milk_out with differential included*/
 create view milk_out as 
 select A.*, B.I as I, C.diff*.01 + D.price as FMO, E.num as N
 from backlog as A

@@ -25,7 +25,7 @@ SELECT YEAR, ROUND((1.0*LATE_BIDS)/MONTHS,2) AS PERCENT_AUG
 FROM SEASON
 
 
-/*Shows which mont the low bids occur in by percentage (low is <.15) */
+/*Shows which month the low bids occur in by percentage (low is <.15) */
 WITH SEASON AS (SELECT year, count(DISTINCT WW) as BIDS,
 SUM(CASE WHEN (WW<.15) THEN 1 ELSE 0 END) as LOW_BIDS,
 SUM(CASE WHEN (WW<.15 and MONTH = 5) THEN 1 ELSE 0 END) as LOW_MAY,
