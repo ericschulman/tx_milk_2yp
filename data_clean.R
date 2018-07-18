@@ -14,7 +14,6 @@ filter_data<-function(milk){
 
 
 #function definitions ---------------------------
-
 load_milk<-function(dir){
   milk <- data.frame(read.csv(dir))
   
@@ -77,7 +76,6 @@ lee_ext<-function(milk){
                by.y=c("YEAR"),
                suffixes=c("",".season"))
   
-  
   milk$biddate<- as.Date(as.character(milk$YEAR*10000 + milk$MONTH*100 +milk$DAY),"%Y%m%d")
   
   #time based definitions for variables
@@ -97,15 +95,34 @@ lee_ext<-function(milk){
 }
 
 
-#Read data and set up necessary tables for regression  ---------------------------
+setup_level<-function(milk){
+  #removing NAs so I can add
+  milk$WW[is.na(milk$WW)] <- 0
+  milk$QWW[is.na(milk$QWW)] <- 0
+  milk$WC[is.na(milk$WC)] <- 0
+  milk$QWC[is.na(milk$QWC)] <- 0
+  milk$LFW[is.na(milk$LFW)] <- 0
+  milk$QLFW[is.na(milk$QLFW)] <- 0
+  milk$LFC[is.na(milk$LFC)] <- 0
+  milk$QLFC[is.na(milk$QLFC)] <- 0
+  
+  milk$LEVEL<- (milk$WW*milk$QWW + milk$WC*milk$QWC+ milk$LFW*milk$QLFW + milk$LFC*milk$QLFC)/(
+    1.0*milk$QWW + milk$QWC + milk$LFW + milk$LFC)
+  
+  milk$LEVEL[(milk$LEVEL==0.0)] <- NA
+  return(milk$LEVEL)
+}
 
+
+#Read data and set up necessary tables for regression  ---------------------------
 milk <- data.frame(read.csv("~/Documents/tx_milk/input/milk_out.csv"))
 
 #add variables
-milk$NOSTOP<-  (milk$DEL*milk$NUMSCHL)/(1.0*milk$NUMWIN)
-milk$QSTOP<-  milk$ESTQTY/milk$NOSTOP
+milk$NOSTOP<-  (milk$DEL*milk$NUMSCHL*36.0)
+milk$QSTOP<-  milk$ESTQTY/(milk$NOSTOP*milk$NUMWIN)
 milk$SEASONQ <-  milk$PASSED/(1.0*milk$CONTRACTS)
 
+#add more variables for lee
 milk <- lee_ext(milk)
 
 new_lfc <- data.frame("rowid" = milk$rowid,
@@ -132,7 +149,8 @@ new_lfc <- data.frame("rowid" = milk$rowid,
                       "entry"= milk$ENTRY,
                       "begint" = milk$BEGINT,
                       "endt"=milk$ENDT,
-                      "lbackt"= log(1+milk$BACKLOGT))
+                      "lbackt"= log(1+milk$BACKLOGT),
+                      "lseason" = log(milk$SEASONQ))
 
 new_wc <- data.frame("rowid" = milk$rowid,
                      "lbid" = log(milk$WC),
@@ -158,7 +176,8 @@ new_wc <- data.frame("rowid" = milk$rowid,
                      "entry"= milk$ENTRY,
                      "begint" = milk$BEGINT,
                      "endt"=milk$ENDT,
-                     "lbackt"= log(1+milk$BACKLOGT))
+                     "lbackt"= log(1+milk$BACKLOGT),
+                     "lseason" = log(milk$SEASONQ))
 
 new_lfw <- data.frame("rowid" = milk$rowid,
                       "lbid" = log(milk$LFW),
@@ -184,7 +203,8 @@ new_lfw <- data.frame("rowid" = milk$rowid,
                       "entry"= milk$ENTRY,
                       "begint" = milk$BEGINT,
                       "endt"=milk$ENDT,
-                      "lbackt"= log(1+milk$BACKLOGT))
+                      "lbackt"= log(1+milk$BACKLOGT),
+                      "lseason" = log(milk$SEASONQ))
 
 new_ww <- data.frame("rowid" = milk$rowid,
                      "lbid" = log(milk$WW),
@@ -210,7 +230,8 @@ new_ww <- data.frame("rowid" = milk$rowid,
                      "entry"= milk$ENTRY,
                      "begint" = milk$BEGINT,
                      "endt"=milk$ENDT,
-                     "lbackt"= log(1+milk$BACKLOGT))
+                     "lbackt"= log(1+milk$BACKLOGT),
+                     "lseason" = log(milk$SEASONQ))
 
 
 #bind each 'type' of bid together  ---------------------------
@@ -224,28 +245,29 @@ write.csv(clean_milk, file = "~/Documents/tx_milk/input/clean_milk.csv")
 
 #clean milk2 set up ---------------------------
 #Bonus, setting up logs and stuff variables for stata
+milk$LEVEL <- setup_level(milk)
+
 clean_milkm <- data.frame("rowid" = milk$rowid,
-                        "llevel" = log( (milk$WW*milk$QWW + milk$WC*milk$QWC + milk$LFC*milk$QLFC + milk$LFW*milk$LFW)
-                                        /(1.0*(milk$QWW + milk$QWC + milk$QLFC + milk$LFW) ) ),
-                        "lsize" = log((milk$QWW + milk$QWC + milk$QLFC + milk$LFW)),
+                        "llevel" = log( milk$LEVEL),
                         "lestqty" = log(milk$ESTQTY),
                         "lseason" = log(milk$SEASONQ),
-                        "lseasont" = log(milk$SEASONT),
+                        #"lseasont" = log(milk$SEASONT),
                         "lnum" =  log(milk$N),
                         "inc" = milk$I,
                         "ldist" = log(milk$MILES),
                         "lnostop" = log(milk$NOSTOP),
                         "lback" = log(1+milk$BACKLOG),
-                        "lbackt" = log(1+milk$BACKLOGT),
+                        #"lbackt" = log(1+milk$BACKLOGT),
                         "lfmo" =  log(milk$FMO),
                         "esc" =  milk$ESC,
                         "cooler" = milk$COOLER,
                         "lqstop" =  log(milk$QSTOP),
                         "vendor" = milk$VENDOR,
                         "system" = milk$SYSTEM,
+                        "fmozone"= milk$FMOZONE,
+                        "county" = milk$COUNTY,
                         "year" = milk$YEAR,
-                        "biddate" =   milk$YEAR*10000 + milk$MONTH*100 +milk$DAY,
-                        "system" = milk$YEAR,
-                        "year" = milk$YEAR)
+                        "biddate" =   milk$YEAR*10000 + milk$MONTH*100 +milk$DAY)
+
 #write to file
 write.csv(clean_milkm, file = "~/Documents/tx_milk/input/clean_milkm.csv")

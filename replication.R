@@ -12,7 +12,6 @@ source("data_clean.R")
 
 
 #function definitions ---------------------------
-
 table5<-function(milk,dir,label,fname="table5.tex"){
   #add not-incumbent column
   milk$ninc = (1-milk$inc)
@@ -33,7 +32,7 @@ table5<-function(milk,dir,label,fname="table5.tex"){
 table6<-function(milk,dir,label,fname="table6.tex"){
   #fit model
   fit <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum
-              + (1 + lfmo | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
+              + (1 | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
   #write to latex
   fname<-paste(dir,fname,sep="")
   output <- capture.output(stargazer(fit, title=label, align=TRUE, type = "latex", out=fname,no.space=TRUE))
@@ -51,7 +50,7 @@ table10<-function(milk,dir,label,fname="table10.tex"){
   milk_m <- milk_m[which(milk_m$year==(milk_m$year.prev+1)),]
   
   fit <- lmer(lbid ~ win.prev  + type_dum + lfmo + lqstop
-               + (1 + lfmo | system/year) , control=lmerControl(optimizer="nloptwrap"), data=milk_m)
+               + (1 | system/year) , control=lmerControl(optimizer="nloptwrap"), data=milk_m)
   
   #write to latex
   fname<-paste(dir,fname,sep="")
