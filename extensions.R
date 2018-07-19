@@ -14,13 +14,11 @@ source("data_clean.R")
 #function definitions ---------------------------
 
 fu<-function(milk,dir,label,fname='fu.tex'){
-  #trying to replicate lee's results from 1999 - only DFW
-  #this doesn't work 
-  milk<-milk[which(milk$fmozone==1 & milk$year >= 1980 & milk$year <=1991), ]
-
-  fit_fe <- lmer(llevel ~  inc + lfmo + lestqty + lnostop + lback  + esc + lnum + lseason + ldist + cooler
-              + (1 | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
-  fit_fe2 <- lmer(llevel ~  inc + lfmo + lestqty + lnostop + lback  + esc + lnum + lseason + ldist + cooler
+  #trying to replicate fu's results from 2011 - only DFW
+  milk<-lag_wins(milk) 
+  fit_fe <- lmer(llevel ~  lestqty + lseason + lnum + win.prev + ldist + lnostop + lback + lfmo + esc + cooler
+                 + (1 | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
+  fit_fe2 <- lmer(llevel ~  lestqty + lseason + lnum + win.prev + ldist + lnostop + lback + lfmo + esc + cooler
                   + (1 | system/year/vendor ) , data=milk, control=lmerControl(optimizer="nloptwrap"))
   fname<-paste(dir,fname,sep="")
   output <- capture.output(stargazer(fit_fe, fit_fe2, title=label, align=TRUE, type = "latex", out=fname,no.space=TRUE))
@@ -31,10 +29,11 @@ fu<-function(milk,dir,label,fname='fu.tex'){
 lee<-function(milk,dir,label,fname='lee.tex'){
   #trying to replicate lee's results from 1999 - only DFW
   milk<-milk[which(milk$fmozone==1 & milk$year <=1991), ]
+  milk<-lag_wins(milk)
   milk$lbacksq <- milk$lback*milk$lback
   milk$lbacktsq <- milk$lbackt*milk$lbackt
-  fit <- lm(lbid ~ inc + begin + end + entry + onebid + type_dum + lfmo + lqstop + lback + lbacksq + esc, data=milk)
-  fit_fe <- lmer(lbid ~ inc + begin + end + entry + onebid + type_dum + lfmo + lqstop + lback + lbacksq + esc
+  fit <- lm(lbid ~ win.prev + begin + end + entry + onebid + type_dum + lfmo + lqstop + lback + lbacksq + esc, data=milk)
+  fit_fe <- lmer(lbid ~ win.prev + begin + end + entry + onebid + type_dum + lfmo + lqstop + lback + lbacksq + esc
                  + (1 | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
   
   fname<-paste(dir,fname,sep="")
@@ -140,17 +139,20 @@ table6c<-function(milk,dir,label,fname="table6c.tex"){
 input_dir <- "~/Documents/tx_milk/input/clean_milk.csv"
 milk <- load_milk(input_dir)
 
+input_dirm <- "~/Documents/tx_milk/input/clean_milkm.csv"
+milkm <- load_fu(input_dirm)
+
+
 #Run functions on all data ---------------------------
 out_dir<-"~/Documents/tx_milk/output/ext/tables/"
 dir.create(out_dir, showWarnings = FALSE)
 
 #fit lee's models
-fits_lee<-lee(milk , out_dir , "Lee Table II")
+fits_lee<-lee(milk , out_dir , "Table II (Lee 1999)")
 
 #fit table 6 with season control
 fitseason<-table6season(milk , out_dir , "Table 6 Modified with Season")
 
 #fit Fu's models
-input_dirm <- "~/Documents/tx_milk/input/clean_milkm.csv"
-milkm <- load_milk(input_dirm)
-fits_fu<-fu(milkm , out_dir , "Fu Table 3.4")
+
+fits_fu<-fu(milkm , out_dir , "Table 3.4 (Fu 2011)")

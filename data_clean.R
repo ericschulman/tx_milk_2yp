@@ -3,26 +3,14 @@
 #Refresh Working Environment  ---------------------------
 rm(list=ls())
 
-filter_data<-function(milk){
-  ids <- data.frame(read.csv("~/Documents/tx_milk/input/ids/complete_isd.csv"))
-  
-  milk_f <- merge(milk, ids,
-                  by.x=c("system","county"),
-                  by.y=c("SYSTEM","COUNTY"))
-  return(milk_f)
-}
-
 
 #function definitions ---------------------------
 load_milk<-function(dir){
   milk <- data.frame(read.csv(dir))
   
   #setting up type dummies correctly
-   if("type" %in% colnames(milk))
-  {
-    milk$type_dum <- factor(milk$type)
-    milk$type_dum <- relevel(milk$type_dum, ref = "ww")
-  }
+  milk$type_dum <- factor(milk$type)
+  milk$type_dum <- relevel(milk$type_dum, ref = "ww")
   
   #only include correct processors
   milk <- milk[which(milk$vendor=="BORDEN" | milk$vendor=="CABELL" 
@@ -41,8 +29,56 @@ load_milk<-function(dir){
 }
 
 
+lag_wins<-function(milk){
+  #create lag
+  if("type" %in% colnames(milk)){
+    milk_m <- merge(milk, milk,
+                    by.x=c("system","vendor","county","type","esc","fmozone"),
+                    by.y=c("system","vendor","county","type","esc","fmozone"),
+                    suffixes=c("",".prev"))
+    
+    milk_m <- milk_m[which(milk_m$year==(milk_m$year.prev+1)),]
+    return(milk_m)
+  }
+  else{
+    milk_m <- merge(milk, milk,
+                    by.x=c("system","vendor","county","esc","fmozone"),
+                    by.y=c("system","vendor","county","esc","fmozone"),
+                    suffixes=c("",".prev"))
+    
+    milk_m <- milk_m[which(milk_m$year==(milk_m$year.prev+1)),]
+    return(milk_m)
+  }
+}
+
+
+filter_data<-function(milk){
+  ids <- data.frame(read.csv("~/Documents/tx_milk/input/ids/complete_isd.csv"))
+  
+  milk_f <- merge(milk, ids,
+                  by.x=c("system","county"),
+                  by.y=c("SYSTEM","COUNTY"))
+  return(milk_f)
+}
+
+
+load_fu<-function(dir){
+  milk <- data.frame(read.csv(dir))
+  
+  #fix bid dates
+  milk$biddate<-as.Date(as.character(milk$biddate),"%Y%m%d")
+  #focus on correct bid dates
+  milk <- milk[which(milk$year>=1986 & milk$year <=1991),]
+  
+  #Drop inf, na, and nan
+  milk<-NaRV.omit(milk)
+  
+  return(milk)
+}
+
+
 lee_ext<-function(milk){
-  #set up seasonal information
+  #set up seasonal information by finding out information on the first and last let dates
   min_year <-  milk[order(milk$YEAR),]$YEAR[1]
   max_year <- milk[order(-milk$YEAR),]$YEAR[1]
   years <- min_year:max_year
@@ -116,6 +152,9 @@ setup_level<-function(milk){
 
 #Read data and set up necessary tables for regression  ---------------------------
 milk <- data.frame(read.csv("~/Documents/tx_milk/input/milk_out.csv"))
+
+#drop variables with bad dates (i.e.)
+milk <- milk[which(milk$MONTH!=0  & milk$MONTH!=0 ),]
 
 #add variables
 milk$NOSTOP<-  (milk$DEL*milk$NUMSCHL*36.0)
@@ -248,26 +287,28 @@ write.csv(clean_milk, file = "~/Documents/tx_milk/input/clean_milk.csv")
 milk$LEVEL <- setup_level(milk)
 
 clean_milkm <- data.frame("rowid" = milk$rowid,
-                        "llevel" = log( milk$LEVEL),
-                        "lestqty" = log(milk$ESTQTY),
-                        "lseason" = log(milk$SEASONQ),
-                        #"lseasont" = log(milk$SEASONT),
-                        "lnum" =  log(milk$N),
-                        "inc" = milk$I,
-                        "ldist" = log(milk$MILES),
-                        "lnostop" = log(milk$NOSTOP),
-                        "lback" = log(1+milk$BACKLOG),
-                        #"lbackt" = log(1+milk$BACKLOGT),
-                        "lfmo" =  log(milk$FMO),
-                        "esc" =  milk$ESC,
-                        "cooler" = milk$COOLER,
-                        "lqstop" =  log(milk$QSTOP),
-                        "vendor" = milk$VENDOR,
-                        "system" = milk$SYSTEM,
-                        "fmozone"= milk$FMOZONE,
-                        "county" = milk$COUNTY,
-                        "year" = milk$YEAR,
-                        "biddate" =   milk$YEAR*10000 + milk$MONTH*100 +milk$DAY)
+                          "llevel" = log( milk$LEVEL),
+                          "lestqty" = log(milk$ESTQTY),
+                          "lseason" = log(milk$SEASONQ),
+                          #"lseasont" = log(milk$SEASONT),
+                          "lnum" =  log(milk$N),
+                          "inc" = milk$I,
+                          "ldist" = log(milk$MILES),
+                          "lnostop" = log(milk$NOSTOP),
+                          "lback" = log(1+milk$BACKLOG),
+                          #"lbackt" = log(1+milk$BACKLOGT),
+                          "lfmo" =  log(milk$FMO),
+                          "esc" =  milk$ESC,
+                          "cooler" = milk$COOLER,
+                          "lqstop" =  log(milk$QSTOP),
+                          "system" = milk$SYSTEM,
+                          "vendor" = milk$VENDOR,
+                          "county" = milk$COUNTY,
+                          "fmozone"= milk$FMOZONE,
+                          "county" = milk$COUNTY,
+                          "year" = milk$YEAR,
+                          "biddate" =   milk$YEAR*10000 + milk$MONTH*100 +milk$DAY,
+                          "win"=milk$WIN)
 
 #write to file
 write.csv(clean_milkm, file = "~/Documents/tx_milk/input/clean_milkm.csv")

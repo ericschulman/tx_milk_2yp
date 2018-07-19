@@ -20,7 +20,7 @@ table5<-function(milk,dir,label,fname="table5.tex"){
                 type_dum*inc + lfmo*inc + lqstop*inc + lback*inc + esc*inc +  lnum*inc + 
                 type_dum*(1-inc) + lfmo*(1-inc) + lqstop*(1-inc) + lback*(1-inc) + esc*(1-inc) + lnum*(1-inc) +
                 (1 | system/year) ,
-                control=lmerControl(optimizer="nloptwrap"), data=milk)
+              control=lmerControl(optimizer="nloptwrap"), data=milk)
   
   #write to latex
   fname<-paste(dir,fname,sep="")
@@ -42,15 +42,9 @@ table6<-function(milk,dir,label,fname="table6.tex"){
 
 table10<-function(milk,dir,label,fname="table10.tex"){
   #create a lagged wins, to reproduce table 10 from the original working paper
-  milk_m <- merge(milk, milk,
-                  by.x=c("system","vendor","county","type","esc","fmozone"),
-                  by.y=c("system","vendor","county","type","esc","fmozone"),
-                  suffixes=c("",".prev"))
-  
-  milk_m <- milk_m[which(milk_m$year==(milk_m$year.prev+1)),]
-  
+  milk_m<-lag_wins(milk)
   fit <- lmer(lbid ~ win.prev  + type_dum + lfmo + lqstop
-               + (1 | system/year) , control=lmerControl(optimizer="nloptwrap"), data=milk_m)
+              + (1 | system/year) , control=lmerControl(optimizer="nloptwrap"), data=milk_m)
   
   #write to latex
   fname<-paste(dir,fname,sep="")
