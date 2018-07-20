@@ -7,11 +7,6 @@ rm(list=ls())
 #function definitions ---------------------------
 load_milk<-function(dir){
   milk <- data.frame(read.csv(dir))
-  
-  #setting up type dummies correctly
-  milk$type_dum <- factor(milk$type)
-  milk$type_dum <- relevel(milk$type_dum, ref = "ww")
-  
   #only include correct processors
   milk <- milk[which(milk$vendor=="BORDEN" | milk$vendor=="CABELL" 
                      | milk$vendor=="FOREMOST" | milk$vendor=="OAK FARMS"
@@ -21,10 +16,13 @@ load_milk<-function(dir){
   milk$biddate<-as.Date(as.character(milk$biddate),"%Y%m%d")
   #focus on correct bid dates
   milk <- milk[which(milk$year>=1980 & milk$year <=1992),]
-  
   #Drop inf, na, and nan
   milk<-NaRV.omit(milk)
-  
+  if("type" %in% colnames(milk)){
+    #setting up type dummies correctly
+    milk$type_dum <- factor(milk$type)
+    milk$type_dum <- relevel(milk$type_dum, ref = "ww")
+  }
   return(milk)
 }
 
@@ -46,14 +44,12 @@ lag_wins<-function(milk){
   }
   milk_m$win.prev[is.null(milk_m$win.prev)] <- 0
   milk_m$win.prev[is.na(milk_m$win.prev)] <- 0
-  milk_m <- milk_m[which(milk$year >=1981), ]
   return(milk_m)
 }
 
 
 filter_data<-function(milk){
   ids <- data.frame(read.csv("~/Documents/tx_milk/input/ids/complete_isd.csv"))
-  
   milk_f <- merge(milk, ids,
                   by.x=c("system","county"),
                   by.y=c("SYSTEM","COUNTY"))
@@ -61,22 +57,7 @@ filter_data<-function(milk){
 }
 
 
-load_fu<-function(dir){
-  milk <- data.frame(read.csv(dir))
-  
-  #fix bid dates
-  milk$biddate<-as.Date(as.character(milk$biddate),"%Y%m%d")
-  #focus on correct bid dates
-  milk <- milk[which(milk$year>=1986 & milk$year <=1991),]
-  
-  #Drop inf, na, and nan
-  milk<-NaRV.omit(milk)
-  
-  return(milk)
-}
-
-
-lee_ext<-function(milk){
+time_variables<-function(milk){
   #set up seasonal information by finding out information on the first and last let dates
   min_year <-  milk[order(milk$YEAR),]$YEAR[1]
   max_year <- milk[order(-milk$YEAR),]$YEAR[1]
@@ -85,7 +66,6 @@ lee_ext<-function(milk){
                              STARTDAY=as.Date(character()),
                              ENDDAY = as.Date(character()),
                              DIFF= numeric())
-  
   for (year in years){  
     milk_f<- milk[ which(milk$YEAR==year & (milk$MONTH!= 0 & milk$DAY != 0) ),]
     
@@ -104,28 +84,18 @@ lee_ext<-function(milk){
                         DIFF= diff)
     season_info <- rbind(season_info, new)
   }
-  
   #add season to columns
   milk<- merge(milk, season_info,
                by.x=c("YEAR"),
                by.y=c("YEAR"),
                suffixes=c("",".season"))
-  
   milk$biddate<- as.Date(as.character(milk$YEAR*10000 + milk$MONTH*100 +milk$DAY),"%Y%m%d")
-  
   #time based definitions for variables
   milk$PASSEDT <- as.numeric(difftime(milk$ENDDAY, milk$biddate), units="days")
   milk$BEGINT<- as.integer( ( 1.0*milk$PASSEDT)/milk$DIFF <= .5 )
   milk$ENDT<- as.integer( ( 1.0*milk$PASSEDT)/milk$DIFF >= .95 )
   milk$BACKLOGT <- (1.0*milk$COMMITMENTS/milk$CAPACITY) - ( 1.0*milk$PASSEDT)/milk$DIFF
   milk$SEASONT <-  ( 1.0*milk$PASSEDT)/milk$DIFF
-  
-  #quanity based definitions for variables
-  milk$ONEBID <- as.integer(milk$N==1)
-  milk$BEGIN <- as.integer( ( 1.0*milk$PASSED)/milk$CONTRACTS <= .5 )
-  milk$END <- as.integer( ( 1.0*milk$PASSED)/milk$CONTRACTS >= .95 )
-  milk$ENTRY <- as.integer( milk$YEAR==1985 & milk$VENDOR == 'PRESTON' )
-  
   return(milk)
 }
 
@@ -153,15 +123,17 @@ setup_level<-function(milk){
 milk <- data.frame(read.csv("~/Documents/tx_milk/input/milk_out.csv"))
 
 #drop variables with bad dates (i.e.)
-milk <- milk[which(milk$MONTH!=0  & milk$MONTH!=0 ),]
+milk <- milk[which(milk$MONTH!=0  & milk$MONTH!=0),]
 
-#add variables
+#add strategic variables
 milk$NOSTOP<-  (milk$DEL*milk$NUMSCHL*36.0)
 milk$QSTOP<-  milk$ESTQTY/(milk$NOSTOP*milk$NUMWIN)
 milk$SEASONQ <-  milk$PASSED/(1.0*milk$CONTRACTS)
+milk$ONEBID <- as.integer(milk$N==1)
+milk$BEGIN <- as.integer( ( 1.0*milk$PASSED)/milk$CONTRACTS <= .5 )
+milk$END <- as.integer( ( 1.0*milk$PASSED)/milk$CONTRACTS >= .95 )
+milk$ENTRY <- as.integer( milk$YEAR==1985 & milk$VENDOR == 'PRESTON' )
 
-#add more variables for lee
-milk <- lee_ext(milk)
 
 new_lfc <- data.frame("rowid" = milk$rowid,
                       "lbid" = log(milk$LFC),
@@ -185,9 +157,9 @@ new_lfc <- data.frame("rowid" = milk$rowid,
                       "begin"= milk$BEGIN,
                       "end"= milk$END,
                       "entry"= milk$ENTRY,
-                      "begint" = milk$BEGINT,
-                      "endt"=milk$ENDT,
-                      "lbackt"= log(1+milk$BACKLOGT),
+                      #"begint" = milk$BEGINT,
+                      #"endt"=milk$ENDT,
+                      #"lbackt"= log(1+milk$BACKLOGT),
                       "lseason" = log(milk$SEASONQ))
 
 new_wc <- data.frame("rowid" = milk$rowid,
@@ -212,9 +184,9 @@ new_wc <- data.frame("rowid" = milk$rowid,
                      "begin"= milk$BEGIN,
                      "end"= milk$END,
                      "entry"= milk$ENTRY,
-                     "begint" = milk$BEGINT,
-                     "endt"=milk$ENDT,
-                     "lbackt"= log(1+milk$BACKLOGT),
+                     #"begint" = milk$BEGINT,
+                     #"endt"=milk$ENDT,
+                     #"lbackt"= log(1+milk$BACKLOGT),
                      "lseason" = log(milk$SEASONQ))
 
 new_lfw <- data.frame("rowid" = milk$rowid,
@@ -239,9 +211,9 @@ new_lfw <- data.frame("rowid" = milk$rowid,
                       "begin"= milk$BEGIN,
                       "end"= milk$END,
                       "entry"= milk$ENTRY,
-                      "begint" = milk$BEGINT,
-                      "endt"=milk$ENDT,
-                      "lbackt"= log(1+milk$BACKLOGT),
+                      #"begint" = milk$BEGINT,
+                      #"endt"=milk$ENDT,
+                      #"lbackt"= log(1+milk$BACKLOGT),
                       "lseason" = log(milk$SEASONQ))
 
 new_ww <- data.frame("rowid" = milk$rowid,
@@ -266,9 +238,9 @@ new_ww <- data.frame("rowid" = milk$rowid,
                      "begin"= milk$BEGIN,
                      "end"= milk$END,
                      "entry"= milk$ENTRY,
-                     "begint" = milk$BEGINT,
-                     "endt"=milk$ENDT,
-                     "lbackt"= log(1+milk$BACKLOGT),
+                     #"begint" = milk$BEGINT,
+                     #"endt"=milk$ENDT,
+                     #"lbackt"= log(1+milk$BACKLOGT),
                      "lseason" = log(milk$SEASONQ))
 
 
@@ -286,20 +258,6 @@ write.csv(clean_milk, file = "~/Documents/tx_milk/input/clean_milk.csv")
 milk$LEVEL <- setup_level(milk)
 
 clean_milkm <- data.frame("rowid" = milk$rowid,
-                          "llevel" = log( milk$LEVEL),
-                          "lestqty" = log(milk$ESTQTY),
-                          "lseason" = log(milk$SEASONQ),
-                          #"lseasont" = log(milk$SEASONT),
-                          "lnum" =  log(milk$N),
-                          "inc" = milk$I,
-                          "ldist" = log(milk$MILES),
-                          "lnostop" = log(milk$NOSTOP),
-                          "lback" = log(1+milk$BACKLOG),
-                          #"lbackt" = log(1+milk$BACKLOGT),
-                          "lfmo" =  log(milk$FMO),
-                          "esc" =  milk$ESC,
-                          "cooler" = milk$COOLER,
-                          "lqstop" =  log(milk$QSTOP),
                           "system" = milk$SYSTEM,
                           "vendor" = milk$VENDOR,
                           "county" = milk$COUNTY,
@@ -307,6 +265,18 @@ clean_milkm <- data.frame("rowid" = milk$rowid,
                           "county" = milk$COUNTY,
                           "year" = milk$YEAR,
                           "biddate" =   milk$YEAR*10000 + milk$MONTH*100 +milk$DAY,
+                          "llevel" = log( milk$LEVEL),
+                          "lestqty" = log(milk$ESTQTY),
+                          "lseason" = log(milk$SEASONQ),
+                          "lnum" =  log(milk$N),
+                          "inc" = milk$I,
+                          "ldist" = log(milk$MILES),
+                          "lnostop" = log(milk$NOSTOP),
+                          "lback" = log(1+milk$BACKLOG),
+                          "lfmo" =  log(milk$FMO),
+                          "esc" =  milk$ESC,
+                          "cooler" = milk$COOLER,
+                          "lqstop" =  log(milk$QSTOP),
                           "win"=milk$WIN)
 
 #write to file
