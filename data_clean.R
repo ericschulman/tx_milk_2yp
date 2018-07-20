@@ -20,7 +20,7 @@ load_milk<-function(dir){
   #fix bid dates
   milk$biddate<-as.Date(as.character(milk$biddate),"%Y%m%d")
   #focus on correct bid dates
-  milk <- milk[which(milk$year>=1980 & milk$year <=1991),]
+  milk <- milk[which(milk$year>=1980 & milk$year <=1992),]
   
   #Drop inf, na, and nan
   milk<-NaRV.omit(milk)
@@ -46,6 +46,7 @@ lag_wins<-function(milk){
   }
   milk_m$win.prev[is.null(milk_m$win.prev)] <- 0
   milk_m$win.prev[is.na(milk_m$win.prev)] <- 0
+  milk_m <- milk_m[which(milk$year >=1981), ]
   return(milk_m)
 }
 
@@ -123,7 +124,7 @@ lee_ext<-function(milk){
   milk$ONEBID <- as.integer(milk$N==1)
   milk$BEGIN <- as.integer( ( 1.0*milk$PASSED)/milk$CONTRACTS <= .5 )
   milk$END <- as.integer( ( 1.0*milk$PASSED)/milk$CONTRACTS >= .95 )
-  milk$ENTRY <- as.integer( milk$YEAR>=1985 & milk$VENDOR == 'PRESTON' )
+  milk$ENTRY <- as.integer( milk$YEAR==1985 & milk$VENDOR == 'PRESTON' )
   
   return(milk)
 }

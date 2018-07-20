@@ -15,10 +15,9 @@ source("~/Documents/tx_milk/data_clean.R")
 
 fu<-function(milk,dir,label,fname='fu.tex'){
   #trying to replicate fu's results from 2011 - only DFW
-  milk<-lag_wins(milk)
   fit_fe <- lmer(llevel ~  lestqty + lseason + lnum + win.prev + ldist + lnostop + lback + lfmo + esc + cooler
                  + (1 | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
-  fit_fe2 <- lmer(llevel ~  lestqty + lseason + lnum + win.prev + ldist + lnostop + lback + lfmo + esc + cooler
+  fit_fe2 <- lmer(llevel ~ lestqty + lseason + lnum + win.prev + ldist + lnostop + lback + lfmo + esc + cooler
                   + (1 | system/year/vendor ) , data=milk, control=lmerControl(optimizer="nloptwrap"))
   fname<-paste(dir,fname,sep="")
   output <- capture.output(stargazer(fit_fe, fit_fe2, title=label, align=TRUE, type = "latex", out=fname,no.space=TRUE))
@@ -28,11 +27,11 @@ fu<-function(milk,dir,label,fname='fu.tex'){
 
 lee<-function(milk,dir,label,fname='lee.tex'){
   #trying to replicate lee's results from 1999 - only DFW
-  milk<-milk[which(milk$fmozone==1 & milk$year <=1991), ]
-  milk<-lag_wins(milk)
+  milk<-milk[which( (milk$fmozone==1 | milk$fmozone==9) & milk$year <=1992), ]
   milk$lbacksq <- milk$lback*milk$lback
   milk$lbacktsq <- milk$lbackt*milk$lbackt
-  fit <- lm(lbid ~ win.prev + begin + end + entry + onebid + type_dum + lfmo + lqstop + lback + lbacksq + esc, data=milk)
+  fit <- lmer(lbid ~ win.prev + begin + end + entry + onebid + type_dum + lfmo + lqstop + lback + lbacksq + esc
+              + (1 | system) +(1| year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
   fit_fe <- lmer(lbid ~ win.prev + begin + end + entry + onebid + type_dum + lfmo + lqstop + lback + lbacksq + esc
                  + (1 | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
   
@@ -45,6 +44,7 @@ lee<-function(milk,dir,label,fname='lee.tex'){
 table6season<-function(milk,dir,label,fname="table6season.tex"){
   #4 regressions side by side with pooled, SA, DFW, and misc
   #set up data
+  milk <-milk[which(milk$year <=1991), ]
   milk_sa <-milk[which(milk$fmozone==9 & milk$year <=1991), ]
   milk_dfw<-milk[which(milk$fmozone==1 & milk$year <=1991), ]
   milk_misc <- milk[which(milk$fmozone!=1 & milk$fmozone!=9 & milk$year <=1991), ]
@@ -147,11 +147,11 @@ milkm <- load_fu(input_dirm)
 out_dir<-"~/Documents/tx_milk/output/ext/tables/"
 dir.create(out_dir, showWarnings = FALSE)
 
-milk_lag<-lag_wins(milk)
+milk<-lag_wins(milk)
+milkm<-lag_wins(milkm)
 
 #fit lee's models
 fits_lee<-lee(milk , out_dir , "Table II (Lee 1999)")
-
 #fit table 6 with season control
 fitseason<-table6season(milk , out_dir , "Table 6 Modified with Season")
 

@@ -56,7 +56,7 @@ table10<-function(milk,dir,label,fname="table10.tex"){
 #import data and set up correct ---------------------------
 input_dir <- "~/Documents/tx_milk/input/clean_milk.csv"
 milk <- load_milk(input_dir)
-
+milk <- milk[which(milk$year <=1991), ]
 
 #Run functions on all data ---------------------------
 out_dir<-"~/Documents/tx_milk/output/rep/tables/"
