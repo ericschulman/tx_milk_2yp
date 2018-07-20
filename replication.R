@@ -8,7 +8,7 @@ library(IDPmisc)
 library(lme4)
 library(nloptr)
 library(car)
-source("data_clean.R")
+source("~/Documents/tx_milk/data_clean.R")
 
 
 #function definitions ---------------------------

@@ -8,14 +8,14 @@ library(IDPmisc)
 library(lme4)
 library(nloptr)
 library(car)
-source("data_clean.R")
+source("~/Documents/tx_milk/data_clean.R")
 
 
 #function definitions ---------------------------
 
 fu<-function(milk,dir,label,fname='fu.tex'){
   #trying to replicate fu's results from 2011 - only DFW
-  milk<-lag_wins(milk) 
+  milk<-lag_wins(milk)
   fit_fe <- lmer(llevel ~  lestqty + lseason + lnum + win.prev + ldist + lnostop + lback + lfmo + esc + cooler
                  + (1 | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
   fit_fe2 <- lmer(llevel ~  lestqty + lseason + lnum + win.prev + ldist + lnostop + lback + lfmo + esc + cooler
@@ -147,6 +147,8 @@ milkm <- load_fu(input_dirm)
 out_dir<-"~/Documents/tx_milk/output/ext/tables/"
 dir.create(out_dir, showWarnings = FALSE)
 
+milk_lag<-lag_wins(milk)
+
 #fit lee's models
 fits_lee<-lee(milk , out_dir , "Table II (Lee 1999)")
 
@@ -154,5 +156,4 @@ fits_lee<-lee(milk , out_dir , "Table II (Lee 1999)")
 fitseason<-table6season(milk , out_dir , "Table 6 Modified with Season")
 
 #fit Fu's models
-
 fits_fu<-fu(milkm , out_dir , "Table 3.4 (Fu 2011)")

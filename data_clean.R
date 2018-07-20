@@ -31,24 +31,22 @@ load_milk<-function(dir){
 
 lag_wins<-function(milk){
   #create lag
+  milk_m <- milk
+  milk_m$year <- milk_m$year +1
   if("type" %in% colnames(milk)){
-    milk_m <- merge(milk, milk,
-                    by.x=c("system","vendor","county","type","esc","fmozone"),
-                    by.y=c("system","vendor","county","type","esc","fmozone"),
-                    suffixes=c("",".prev"))
-    
-    milk_m <- milk_m[which(milk_m$year==(milk_m$year.prev+1)),]
-    return(milk_m)
+    milk_m <- merge(milk, milk_m,
+                    by.x=c("system","vendor","county","type","esc","fmozone","year"),
+                    by.y=c("system","vendor","county","type","esc","fmozone","year"),
+                    suffixes=c("",".prev"), all.x =TRUE)
+  } else{
+    milk_m <- merge(milk, milk_m,
+                    by.x=c("system","vendor","county","esc","fmozone","year"),
+                    by.y=c("system","vendor","county","esc","fmozone","year"),
+                    suffixes=c("",".prev"), all.x =TRUE)
   }
-  else{
-    milk_m <- merge(milk, milk,
-                    by.x=c("system","vendor","county","esc","fmozone"),
-                    by.y=c("system","vendor","county","esc","fmozone"),
-                    suffixes=c("",".prev"))
-    
-    milk_m <- milk_m[which(milk_m$year==(milk_m$year.prev+1)),]
-    return(milk_m)
-  }
+  milk_m$win.prev[is.null(milk_m$win.prev)] <- 0
+  milk_m$win.prev[is.na(milk_m$win.prev)] <- 0
+  return(milk_m)
 }
 
 
