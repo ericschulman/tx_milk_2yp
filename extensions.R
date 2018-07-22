@@ -15,9 +15,9 @@ source("~/Documents/tx_milk/data_clean.R")
 
 fu<-function(milk,dir,label,fname='fu.tex'){
   #trying to replicate fu's results from 2011 - only DFW
-  fit_fe <- lmer(llevel ~  lestqty + lseason + lnum + win.prev + ldist + lnostop + lback + lfmo + esc + cooler
+  fit_fe <- lmer(llevel ~  lestqty + lseasont + lnum + win.prev + ldist + lnostop + lbackt + lfmo + esc + cooler
                  + (1 | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
-  fit_fe2 <- lmer(llevel ~ lestqty + lseason + lnum + win.prev + ldist + lnostop + lback + lfmo + esc + cooler
+  fit_fe2 <- lmer(llevel ~ lestqty + lseasont + lnum + win.prev + ldist + lnostop + lbackt + lfmo + esc + cooler
                   + (1 | system/year/vendor) , data=milk, control=lmerControl(optimizer="nloptwrap"))
   fname<-paste(dir,fname,sep="")
   output <- capture.output(stargazer(fit_fe, fit_fe2, title=label, align=TRUE, type = "latex", out=fname,no.space=TRUE))
@@ -48,19 +48,42 @@ table6season<-function(milk,dir,label,fname="table6season.tex"){
   milk_dfw<-milk[which(milk$fmozone==1 & milk$year <=1991), ]
   milk_misc <- milk[which(milk$fmozone!=1 & milk$fmozone!=9 & milk$year <=1991), ]
   #fit models
-  fit <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum + lseason
+  fit <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum + lseason 
               + (1 | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
-  fit_dfw <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum + lseason
+  fit_dfw <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum + lseason 
                   + (1  | system/year) , data=milk_dfw, control=lmerControl(optimizer="nloptwrap"))
-  fit_sa <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum + lseason
+  fit_sa <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum + lseason 
                  + (1  | system/year) , data=milk_sa, control=lmerControl(optimizer="nloptwrap"))
-  fit_misc <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum + lseason
+  fit_misc <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum + lseason 
                    + (1 | system/year) , data=milk_misc, control=lmerControl(optimizer="nloptwrap"))
   #write to latex
   fname<-paste(dir,fname,sep="")
   output <- capture.output(stargazer(fit, fit_dfw, fit_sa, fit_misc, title=label, align=TRUE, type = "latex", out=fname,no.space=TRUE))
   
   return(c(fit,fit_dfw,fit_sa,fit_misc)) 
+}
+
+
+table6season2<-function(milk,dir,label,fname="table6season2.tex"){
+  #4 regressions side by side with pooled, SA, DFW, and misc
+  #set up data
+  milk_sa <-milk[which(milk$fmozone==9 & milk$year <=1991), ]
+  milk_dfw<-milk[which(milk$fmozone==1 & milk$year <=1991), ]
+  #fit models
+ 
+  fit_dfw <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum + lseason 
+                  + (1  | system/year) , data=milk_dfw, control=lmerControl(optimizer="nloptwrap"))
+  fit_sa <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum + lseason 
+                 + (1  | system/year) , data=milk_sa, control=lmerControl(optimizer="nloptwrap"))
+  fit_dfw2 <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum + lseason + lseason*lestqty
+                  + (1  | system/year) , data=milk_dfw, control=lmerControl(optimizer="nloptwrap"))
+  fit_sa2 <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum + lseason + lseason*lestqty
+                 + (1  | system/year) , data=milk_sa, control=lmerControl(optimizer="nloptwrap"))
+  #write to latex
+  fname<-paste(dir,fname,sep="")
+  output <- capture.output(stargazer(fit_dfw,fit_dfw2, fit_sa, fit_sa2, title=label, align=TRUE, type = "latex", out=fname,no.space=TRUE))
+  
+  return(fit_dfw) 
 }
 
 
@@ -71,11 +94,11 @@ table6<-function(milk,dir,label,fname="table6.tex"){
   milk_dfw<-milk[which(milk$fmozone==1 & milk$year <=1991), ]
   milk_misc <- milk[which(milk$fmozone!=1 & milk$fmozone!=9 & milk$year <=1991), ]
   #fit models
-  fit <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum
+  fit <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum  
               + (1 | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
-  fit_dfw <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum
+  fit_dfw <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum  
                   + (1  | system/year) , data=milk_dfw, control=lmerControl(optimizer="nloptwrap"))
-  fit_sa <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum
+  fit_sa <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum 
                  + (1 | system/year) , data=milk_sa, control=lmerControl(optimizer="nloptwrap"))
   fit_misc <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum
                    + (1 | system/year) , data=milk_misc, control=lmerControl(optimizer="nloptwrap"))
@@ -154,7 +177,7 @@ dir.create(out_dir, showWarnings = FALSE)
 fits_lee<-lee(milklag , out_dir , "Table II (Lee 1999)")
 
 #fit table 6 with season control
-fitseason<-table6season(milk , out_dir , "Table 6 Modified with Season")
+fitseason<-table6season2(milk , out_dir , "Table 6 Modified with Season")
 
 #fit Fu's models
 fits_fu<-fu(milkmlag , out_dir , "Table 3.4 (Fu 2011)")

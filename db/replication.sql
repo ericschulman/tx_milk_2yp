@@ -114,11 +114,7 @@ group by SYSTEM, COUNTY)
 WHERE YEARS = 11;
 
 
-
-
-
 /*Work in Progress*/
-
 
 /*View with correct dates*/
 SELECT 

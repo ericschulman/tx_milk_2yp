@@ -1,4 +1,3 @@
-
 /*If there is a decreasing trend in winning bids, one might expect ISDs to use this fact. If you look at the order in which school districts
 have their annual bid meetings, is there any change? Do we see ISDs holding their bid meetings later on and getting lower bids? */
 

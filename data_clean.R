@@ -160,7 +160,9 @@ new_lfc <- data.frame("rowid" = milk$rowid,
                       #"begint" = milk$BEGINT,
                       #"endt"=milk$ENDT,
                       #"lbackt"= log(1+milk$BACKLOGT),
-                      "lseason" = log(milk$SEASONQ))
+                      "lseason" = log(milk$SEASONQ),
+                      "season" = milk$SEASONQ,
+                      "back" = milk$BACKLOG)
 
 new_wc <- data.frame("rowid" = milk$rowid,
                      "lbid" = log(milk$WC),
@@ -187,7 +189,9 @@ new_wc <- data.frame("rowid" = milk$rowid,
                      #"begint" = milk$BEGINT,
                      #"endt"=milk$ENDT,
                      #"lbackt"= log(1+milk$BACKLOGT),
-                     "lseason" = log(milk$SEASONQ))
+                     "lseason" = log(milk$SEASONQ),
+                     "season" = milk$SEASONQ,
+                     "back" = milk$BACKLOG)
 
 new_lfw <- data.frame("rowid" = milk$rowid,
                       "lbid" = log(milk$LFW),
@@ -214,7 +218,10 @@ new_lfw <- data.frame("rowid" = milk$rowid,
                       #"begint" = milk$BEGINT,
                       #"endt"=milk$ENDT,
                       #"lbackt"= log(1+milk$BACKLOGT),
-                      "lseason" = log(milk$SEASONQ))
+                      "lseason" = log(milk$SEASONQ),
+                      "season" = milk$SEASONQ,
+                      "back" = milk$BACKLOG)
+            
 
 new_ww <- data.frame("rowid" = milk$rowid,
                      "lbid" = log(milk$WW),
@@ -241,7 +248,9 @@ new_ww <- data.frame("rowid" = milk$rowid,
                      #"begint" = milk$BEGINT,
                      #"endt"=milk$ENDT,
                      #"lbackt"= log(1+milk$BACKLOGT),
-                     "lseason" = log(milk$SEASONQ))
+                     "lseason" = log(milk$SEASONQ),
+                     "season" = milk$SEASONQ,
+                     "back" = milk$BACKLOG)
 
 
 #bind each 'type' of bid together  ---------------------------
@@ -257,6 +266,8 @@ write.csv(clean_milk, file = "~/Documents/tx_milk/input/clean_milk.csv")
 #Bonus, setting up logs and stuff variables for stata
 milk$LEVEL <- setup_level(milk)
 
+milk <- time_variables(milk)
+
 clean_milkm <- data.frame("rowid" = milk$rowid,
                           "system" = milk$SYSTEM,
                           "vendor" = milk$VENDOR,
@@ -268,6 +279,7 @@ clean_milkm <- data.frame("rowid" = milk$rowid,
                           "llevel" = log( milk$LEVEL),
                           "lestqty" = log(milk$ESTQTY),
                           "lseason" = log(milk$SEASONQ),
+                          "season" = milk$SEASONQ,
                           "lnum" =  log(milk$N),
                           "inc" = milk$I,
                           "ldist" = log(milk$MILES),
@@ -277,7 +289,10 @@ clean_milkm <- data.frame("rowid" = milk$rowid,
                           "esc" =  milk$ESC,
                           "cooler" = milk$COOLER,
                           "lqstop" =  log(milk$QSTOP),
-                          "win"=milk$WIN)
+                          "win"=milk$WIN
+                          ,"lseasont" = log(milk$SEASONT),
+                          "seasont" = milk$SEASONT,
+                          "lbackt" = log(1+milk$BACKLOGT))
 
 #write to file
 write.csv(clean_milkm, file = "~/Documents/tx_milk/input/clean_milkm.csv")
