@@ -42,7 +42,7 @@ CREATE VIEW backlog AS
 WITH passed as (SELECT A.*, SUM(B.ESTQTY*B.WIN) as PASSED
 FROM milk as A, milk as B
 WHERE A.YEAR = B.YEAR
-AND ( (A.MONTH <= B.MONTH) OR (A.MONTH = B.MONTH AND A.DAY <= B.DAY) )
+AND ( (A.MONTH > B.MONTH) OR (A.MONTH = B.MONTH AND A.DAY > B.DAY) )
 GROUP BY A.rowid),
 
 contracts as (SELECT A.*, SUM(B.ESTQTY*B.WIN) as CONTRACTS
@@ -54,7 +54,7 @@ commitments as (SELECT A.*, SUM(B.ESTQTY*B.WIN) as COMMITMENTS
 FROM milk as A, milk as B
 WHERE A.VENDOR = B.VENDOR
 AND A.YEAR = B.YEAR
-AND ( (A.MONTH >= B.MONTH) OR (A.MONTH = B.MONTH AND A.DAY >= B.DAY) )
+AND ( (A.MONTH > B.MONTH) OR (A.MONTH = B.MONTH AND A.DAY > B.DAY) )
 GROUP BY A.rowid),
 
 capacity as (SELECT VENDOR, max(contracts) as CAPACITY

@@ -129,6 +129,7 @@ milk <- milk[which(milk$MONTH!=0  & milk$MONTH!=0),]
 milk$NOSTOP<-  (milk$DEL*milk$NUMSCHL*36.0)
 milk$QSTOP<-  milk$ESTQTY/(milk$NOSTOP*milk$NUMWIN)
 milk$SEASONQ <-  milk$PASSED/(1.0*milk$CONTRACTS)
+#milk$BACKLOG <-  milk$COMMITMENTS/(1.0*milk$CAPACITY)
 milk$ONEBID <- as.integer(milk$N==1)
 milk$BEGIN <- as.integer( ( 1.0*milk$PASSED)/milk$CONTRACTS <= .5 )
 milk$END <- as.integer( ( 1.0*milk$PASSED)/milk$CONTRACTS >= .95 )

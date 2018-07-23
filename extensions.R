@@ -177,7 +177,7 @@ dir.create(out_dir, showWarnings = FALSE)
 fits_lee<-lee(milklag , out_dir , "Table II (Lee 1999)")
 
 #fit table 6 with season control
-fitseason<-table6season2(milk , out_dir , "Table 6 Modified with Season")
+fitseason<-table6season(milk , out_dir , "Table 6 Modified with Season")
 
 #fit Fu's models
 fits_fu<-fu(milkmlag , out_dir , "Table 3.4 (Fu 2011)")
