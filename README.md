@@ -8,7 +8,11 @@ Below is an explanaton of the project's file structure
 
 * `dependencies.R` This file installs the necessary R dependencies and libraries for R
 
-* `replication.R` This file tries to replicate the main tables from the paper with some extensions.
+* `models.R` code for loading in the data and running linear models is defined in this file and called in other scripts
+
+* `ext.R` This file tries to replicate the main tables from Fu 2011 and Lee 1999 from the paper with some extensions.
+
+* `rep.R` This file tries to replicate the main tables from the paper with some extensions.
 
 * `data_clean.R` This is more post processing after the data is taken from the database
 
@@ -36,23 +40,3 @@ contains the database and a `.sql` file used for constructing the required views
 * `input` destination for cleaned data files for use in R and STATA
 
 * `stata` This folder contains the relevant stata commands to the project, development is mainly in R. The data undergoes further filtering in the `replication.R`
-
-
-## Work in Progress/Notes
-
-### Hierarchical model in R
-* http://www.r-tutor.com/gpu-computing/rbayes/rhierlmc
-* https://www.jaredknowles.com/journal/2013/11/25/getting-started-with-mixed-effect-models-in-r
-
-### Clustered Standard Errors
-* Blogs for reproducing the clustered standard errors in R
-Relevant posts and forums:
-
-* Stack exchange post
-https://stats.stackexchange.com/questions/124662/group-fixed-effects-not-individual-fixed-effects-using-plm-in-r
-
-* Blog post
-https://economictheoryblog.com/2016/08/07/robust-standard-errors-in-r-function/
-
-* STATA documentation on cluster robust SEs
-https://www.stata.com/support/faqs/statistics/standard-errors-and-vce-cluster-option/
