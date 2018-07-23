@@ -1,62 +1,12 @@
-#Refresh Working Environment ---------------------------
+#Dependencies ---------------------------
 rm(list=ls())
-
-
-#Import statements ---------------------------
-library(stargazer)
-library(IDPmisc)
-library(lme4)
-library(nloptr)
-library(car)
-source("~/Documents/tx_milk/data_clean.R")
-
-
-#function definitions ---------------------------
-table5<-function(milk,dir,label,fname="table5.tex"){
-  #add not-incumbent column
-  milk$ninc = (1-milk$inc)
-  #fit model
-  fit <- lmer(lbid ~ inc + 
-                type_dum*inc + lfmo*inc + lqstop*inc + lback*inc + esc*inc +  lnum*inc + 
-                type_dum*(1-inc) + lfmo*(1-inc) + lqstop*(1-inc) + lback*(1-inc) + esc*(1-inc) + lnum*(1-inc) +
-                (1 | system/year) ,
-              control=lmerControl(optimizer="nloptwrap"), data=milk)
-  
-  #write to latex
-  fname<-paste(dir,fname,sep="")
-  output <- capture.output(stargazer(fit, title=label, align=TRUE, type = "latex", out=fname, no.space=TRUE))
-  return(fit)
-}
-
-
-table6<-function(milk,dir,label,fname="table6.tex"){
-  #fit model
-  fit <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum
-              + (1 | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
-  #write to latex
-  fname<-paste(dir,fname,sep="")
-  output <- capture.output(stargazer(fit, title=label, align=TRUE, type = "latex", out=fname,no.space=TRUE))
-  return(fit) 
-}
-
-
-table10<-function(milk,dir,label,fname="table10.tex"){
-  #create a lagged wins, to reproduce table 10 from the original working paper
-  milk_m<-lag_wins(milk)
-  fit <- lmer(lbid ~ win.prev  + type_dum + lfmo + lqstop
-              + (1 | system/year) , control=lmerControl(optimizer="nloptwrap"), data=milk_m)
-  
-  #write to latex
-  fname<-paste(dir,fname,sep="")
-  output <- capture.output(stargazer(fit, title=label, align=TRUE, type = "latex", out=fname, no.space=TRUE))
-  return(fit)
-}
-
+source("~/Documents/tx_milk/models.R")
 
 #import data and set up correct ---------------------------
 input_dir <- "~/Documents/tx_milk/input/clean_milk.csv"
 milk <- load_milk(input_dir)
 milk <- milk[which(milk$year <=1991), ]
+
 
 #Run functions on all data ---------------------------
 out_dir<-"~/Documents/tx_milk/output/rep/tables/"
