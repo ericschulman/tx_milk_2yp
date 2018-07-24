@@ -6,7 +6,9 @@ source("~/Documents/tx_milk/models.R")
 input_dir <- "~/Documents/tx_milk/input/clean_milk.csv"
 milk <- load_milk(input_dir)
 milklag<-lag_wins(milk)
+milklee<- milklag[which(milklag$year>=1981 & milklag$year <=1992), ]
 milklag<- milklag[which(milklag$year>=1981 & milklag$year <=1991), ]
+
 
 input_dirm <- "~/Documents/tx_milk/input/clean_milkm.csv"
 milkm <- load_milk(input_dirm)
@@ -19,7 +21,7 @@ out_dir<-"~/Documents/tx_milk/output/ext/tables/"
 dir.create(out_dir, showWarnings = FALSE)
 
 #fit lee's models
-fits_lee<-lee(milklag , out_dir , "Table II (Lee 1999)")
+fits_lee<-lee(milklee , out_dir , "Table II (Lee 1999)")
 
 #fit table 6 with season control
 fitseason<-table6season(milk , out_dir , "Table 6 Modified with Season")

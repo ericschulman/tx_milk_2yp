@@ -3,6 +3,7 @@ rm(list=ls())
 
 
 #Import statements ---------------------------
+
 library(stargazer)
 library(IDPmisc)
 library(lme4)
@@ -11,11 +12,13 @@ library(car)
 
 
 #Refresh Working Environment  ---------------------------
+
 rm(list=ls())
 
 
 #Functions for loading milk info ---------------------------
-load_milk<-function(dir){
+
+load_milk<-function(dir,clean=TRUE){
   milk <- data.frame(read.csv(dir))
   #only include correct processors
   milk <- milk[which(milk$vendor=="BORDEN" | milk$vendor=="CABELL" 
@@ -29,7 +32,9 @@ load_milk<-function(dir){
   #focus on correct bid dates
   milk <- milk[which(milk$year>=1980 & milk$year <=1992),]
   #Drop inf, na, and nan
-  milk<-NaRV.omit(milk)
+  if(clean){
+    milk<-NaRV.omit(milk)
+  }
   if("type" %in% colnames(milk)){
     #setting up type dummies correctly
     milk$type_dum <- factor(milk$type)
@@ -54,7 +59,7 @@ lag_wins<-function(milk){
                     by.x=c("system","vendor","county","esc","fmozone","year","cooler"),
                     by.y=c("system","vendor","county","esc","fmozone","year","cooler"),
                     suffixes=c("",".prev"), all.x =TRUE)
-                    milk_m<- milk_m[order(milk_m[,'X'],-milk_m[,'llevel']),]
+                    milk_m<- milk_m[order(milk_m$X,-milk_m$llevel),]
   }
   #remove 'duplicate' bids
   milk_m <-milk_m[!duplicated(milk_m$X),]
@@ -77,23 +82,26 @@ filter_data<-function(milk){
 setup_level<-function(milk){
   #removing NAs so I can add
   milk$WW[is.na(milk$WW)] <- 0
-  milk$QWW[is.na(milk$QWW)] <- 0
   milk$WC[is.na(milk$WC)] <- 0
-  milk$QWC[is.na(milk$QWC)] <- 0
   milk$LFW[is.na(milk$LFW)] <- 0
-  milk$QLFW[is.na(milk$QLFW)] <- 0
   milk$LFC[is.na(milk$LFC)] <- 0
+
+  
+  milk$QWW[is.na(milk$QWW)] <- 0
+  milk$QWC[is.na(milk$QWC)] <- 0
+  milk$QLFW[is.na(milk$QLFW)] <- 0
   milk$QLFC[is.na(milk$QLFC)] <- 0
   
-  milk$LEVEL<- (milk$WW*milk$QWW + milk$WC*milk$QWC+ milk$LFW*milk$QLFW + milk$LFC*milk$QLFC)/(
-    1.0*milk$QWW + milk$QWC + milk$LFW + milk$LFC)
+  milk$LEVEL<- (milk$WW*milk$QWW + milk$WC*milk$QWC+ milk$LFW*milk$QLFW + milk$LFC*milk$QLFC)/(milk$QWW + milk$QWC + milk$LFW + milk$LFC)
   
+  milk$LEVEL[(milk$LEVEL>2.0)] <- NA
   milk$LEVEL[(milk$LEVEL==0.0)] <- NA
   return(milk$LEVEL)
 }
 
 
 #Tables from Sibley McClave Hewitt 1995 ---------------------------
+
 table5<-function(milk,dir,label,fname="table5.tex"){
   #add not-incumbent column
   milk$ninc = (1-milk$inc)
@@ -260,6 +268,7 @@ table6c<-function(milk,dir,label,fname="table6c.tex"){
 
 
 #Function to set up alternative version of SEASON ---------------------------
+
 #use at own risk
 time_variables<-function(milk){
   #set up seasonal information by finding out information on the first and last let dates

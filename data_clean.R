@@ -1,10 +1,12 @@
 #NOTE: X contains the new rowID
 
 #Dependencies ---------------------------
+
 rm(list=ls())
 source("~/Documents/tx_milk/models.R")
 
 #Read data and set up necessary tables for regression  ---------------------------
+
 milk <- data.frame(read.csv("~/Documents/tx_milk/input/milk_out.csv"))
 
 #add strategic variables
@@ -16,6 +18,11 @@ milk$BEGIN <- as.integer( ( 1.0*milk$PASSED)/milk$CONTRACTS <= .5 )
 milk$END <- as.integer( ( 1.0*milk$PASSED)/milk$CONTRACTS >= .95 )
 milk$ENTRY <- as.integer( milk$YEAR==1985 & milk$VENDOR == 'PRESTON' )
 
+#fix bid level
+milk$WW[is.na(milk$WW)] <- 0
+milk$WC[is.na(milk$WC)] <- 0
+milk$LFW[is.na(milk$LFW)] <- 0
+milk$LFC[is.na(milk$LFC)] <- 0
 
 new_lfc <- data.frame("rowid" = milk$rowid,
                       "lbid" = log(milk$LFC),
@@ -124,16 +131,19 @@ new_ww <- data.frame("rowid" = milk$rowid,
 
 
 #bind each 'type' of bid together  ---------------------------
+
 clean_milk <- rbind(new_lfc, new_lfw, new_wc, new_ww)
 
 
 #cleanmilk set up  ---------------------------
 #write to CSV file
+
 write.csv(clean_milk, file = "~/Documents/tx_milk/input/clean_milk.csv")
 
 
 #clean milk2 set up ---------------------------
 #Bonus, setting up logs and stuff variables for stata
+
 milk$LEVEL <- setup_level(milk)
 
 clean_milkm <- data.frame("rowid" = milk$rowid,
@@ -147,6 +157,9 @@ clean_milkm <- data.frame("rowid" = milk$rowid,
                           "llevel" = log( milk$LEVEL),
                           "level" =  milk$LEVEL,
                           "ww" = milk$WW,
+                          "wc" = milk$WC,
+                          "lfw" = milk$LFW,
+                          "lfc" = milk$LFC,
                           "lestqty" = log(milk$ESTQTY),
                           "lseason" = log(milk$SEASONQ),
                           "season" = milk$SEASONQ,
