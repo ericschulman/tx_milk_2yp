@@ -48,14 +48,19 @@ lag_wins<-function(milk){
                     by.x=c("system","vendor","county","type","esc","fmozone","year"),
                     by.y=c("system","vendor","county","type","esc","fmozone","year"),
                     suffixes=c("",".prev"), all.x =TRUE)
+                    milk_m<- milk_m[order(milk_m[,'X'],-milk_m[,'lbid']),]
   } else{
     milk_m <- merge(milk, milk_m,
-                    by.x=c("system","vendor","county","esc","fmozone","year"),
-                    by.y=c("system","vendor","county","esc","fmozone","year"),
+                    by.x=c("system","vendor","county","esc","fmozone","year","cooler"),
+                    by.y=c("system","vendor","county","esc","fmozone","year","cooler"),
                     suffixes=c("",".prev"), all.x =TRUE)
+                    milk_m<- milk_m[order(milk_m[,'X'],-milk_m[,'llevel']),]
   }
+  #remove 'duplicate' bids
+  milk_m <-milk_m[!duplicated(milk_m$X),]
   milk_m$win.prev[is.null(milk_m$win.prev)] <- 0
   milk_m$win.prev[is.na(milk_m$win.prev)] <- 0
+  
   return(milk_m)
 }
 
@@ -294,3 +299,8 @@ time_variables<-function(milk){
   milk$SEASONT <-  ( 1.0*milk$PASSEDT)/milk$DIFF
   return(milk)
 }
+
+
+#Test code ----------------
+input_dir <- "~/Documents/tx_milk/input/clean_milk.csv"
+milk <- load_milk(input_dir)

@@ -40,8 +40,8 @@ from tx_milk;
 CREATE VIEW backlog AS
 
 WITH passed as (SELECT A.*, SUM(B.ESTQTY*B.WIN) as PASSED
-FROM milk as A, milk as B
-WHERE A.YEAR = B.YEAR
+FROM milk as A
+LEFT JOIN milk as B ON A.YEAR = B.YEAR
 AND ( (A.MONTH > B.MONTH) OR (A.MONTH = B.MONTH AND A.DAY > B.DAY) )
 GROUP BY A.rowid),
 
@@ -65,10 +65,10 @@ GROUP BY VENDOR, YEAR)
 GROUP BY VENDOR)
 
 SELECT passed.*, CONTRACTS, COMMITMENTS, CAPACITY, (COMMITMENTS/CAPACITY - PASSED/CONTRACTS) AS BACKLOG
-FROM passed, contracts, commitments, capacity
-WHERE passed.rowid = contracts.rowid
-AND passed.rowid = commitments.rowid
-AND passed.vendor = capacity.vendor;
+FROM passed
+LEFT JOIN contracts on passed.rowid = contracts.rowid
+LEFT JOIN commitments on passed.rowid = commitments.rowid
+LEFT JOIN capacity on passed.vendor = capacity.vendor;
 
 
 /*create view with number of competitors*/
