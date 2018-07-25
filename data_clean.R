@@ -129,7 +129,6 @@ new_ww <- data.frame("rowid" = milk$rowid,
                      "season" = milk$SEASONQ,
                      "back" = milk$BACKLOG)
 
-
 #bind each 'type' of bid together  ---------------------------
 
 clean_milk <- rbind(new_lfc, new_lfw, new_wc, new_ww)
@@ -161,14 +160,20 @@ clean_milkm <- data.frame("rowid" = milk$rowid,
                           "lfw" = milk$LFW,
                           "lfc" = milk$LFC,
                           "lestqty" = log(milk$ESTQTY),
+                          "estqty" = log(milk$ESTQTY),
                           "lseason" = log(milk$SEASONQ),
                           "season" = milk$SEASONQ,
                           "lnum" =  log(milk$N),
+                          "num" =  milk$N,
                           "inc" = milk$I,
                           "ldist" = log(milk$MILES),
+                          "dist" = milk$MILES,
                           "lnostop" = log(milk$NOSTOP),
+                          "nostop" = milk$NOSTOP,
                           "lback" = log(1+milk$BACKLOG),
+                          "back" = milk$BACKLOG,
                           "lfmo" =  log(milk$FMO),
+                          "fmo" =  milk$FMO,
                           "esc" =  milk$ESC,
                           "cooler" = milk$COOLER,
                           "lqstop" =  log(milk$QSTOP),
@@ -176,3 +181,6 @@ clean_milkm <- data.frame("rowid" = milk$rowid,
 
 #write to file
 write.csv(clean_milkm, file = "~/Documents/tx_milk/input/clean_milkm.csv")
+
+
+#test functions ---------------------------
