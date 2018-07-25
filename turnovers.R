@@ -29,11 +29,14 @@ resp <-merge(both,both,
       suffixes=c(".init",".resp"), 
       all.x =TRUE)
 
-result<-resp[,c('vendor.loose','vendor.win','biddate.init','biddate.resp','system.init','level.win.init','level.loose.init','system.resp','level.win.resp','level.loose.resp')]
+result<-resp[,c('vendor.loose','vendor.win','biddate.init','biddate.resp','system.init','level.win.init','level.loose.init',
+                'system.resp','level.win.resp','level.loose.resp')]
 #find first possible retaliation
 result<-result[which(result$biddate.init<result$biddate.resp),]
 result<-result[order(result$biddate.init,result$biddate.resp,result$system.init),]
 result <-result[ !duplicated(result[,c('vendor.loose','vendor.win','biddate.init')]), ]
+colnames(result)<- c('incumbent','winner', 'biddate','response_date','district','winning_bid','incumbent_bid',
+                 'response_district','incumbent_response','winner_response')
 
 print(result)
 dir<-"~/Documents/tx_milk/output/"

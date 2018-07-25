@@ -25,19 +25,19 @@ out_dir<-"~/Documents/tx_milk/output/writeup/"
 dir.create(out_dir, showWarnings = FALSE)
 
 #table 5 and 6 - dfw area (i.e. sibley, hewitt, mcclave)
-#milk_dfw<-milk[which(milk$fmozone==1 & milk$year <=1991), ]
-#fit_dfw<-table5(milk_dfw,out_dir,"Reproduced Table 5 Results (Dallas Ft. Worth 1980-1991)")
-#fit_dfw2<-table6(milk_dfw,out_dir,"Reproduced Table 6 Results (Dallas Ft. Worth 1980-1991)")
+milk_dfw<-milk[which(milk$fmozone==1 & milk$year <=1991), ]
+fit_dfw<-table5(milk_dfw,out_dir,"Reproduced Table 5 Results (Dallas Ft. Worth 1980-1991)")
+fit_dfw2<-table6(milk_dfw,out_dir,"Reproduced Table 6 Results (Dallas Ft. Worth 1980-1991)")
 
 #fit Fu's models
-#fits_fu<-fu(milkmlag , out_dir , "Fu's Table 3.4 (All ISDs 1986-1991)")
+fits_fu<-fu(milkmlag , out_dir , "Fu's Table 3.4 (All ISDs 1986-1991)")
 
 #fit lee's models
-#fits_lee<-lee(milklag , out_dir , "Lee's Table II (DFW and SA 1980-1991)")
+fits_lee<-lee(milklag , out_dir , "Lee's Table II (DFW and SA 1980-1991)")
 
 #extensions
-#fitall<-table6all(milk,out_dir,"Table 6 Results by City (1980-1991)")
-#fitseason<-table6season(milk,out_dir,"Table 6 Results with Percentage of Season Passed (1980-1991)")
+fitall<-table6all(milk,out_dir,"Table 6 Results by City (1980-1991)")
+fitseason<-table6season(milk,out_dir,"Table 6 Results with Percentage of Season Passed (1980-1991)")
 
 #work in progress SA entry interaction
 milk_sa <-milk[which(milk$fmozone==9 & milk$year <=1991), ]
