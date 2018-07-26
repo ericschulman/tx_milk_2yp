@@ -47,7 +47,7 @@ load_milk<-function(dir,clean=TRUE){
 lag_wins<-function(milk){
   #create lag
   milk_m <- milk
-  milk_m$year <- milk_m$year +1
+  milk_m$year <- milk_m$year + 1
   if("type" %in% colnames(milk)){
     milk_m <- merge(milk, milk_m,
                     by.x=c("system","vendor","county","type","esc","fmozone","year"),
