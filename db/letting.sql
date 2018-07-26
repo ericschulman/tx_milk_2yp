@@ -105,3 +105,11 @@ AND MONTH <> 0 AND DAY <> 0
 AND WW<>'' and WW<>0
 GROUP BY YEAR, FMOZONE
 ORDER BY FMOZONE, YEAR
+
+
+/*Find strategic interaction described by Lee as sanity check*/
+SELECT VENDOR, SYSTEM, YEAR, WIN, MONTH, DAY
+FROM milk
+WHERE (YEAR = 1985 or YEAR=1984)
+AND (SYSTEM = 'FERRIS' or SYSTEM = 'CEDAR HILL')
+ORDER BY  SYSTEM, YEAR, WIN
