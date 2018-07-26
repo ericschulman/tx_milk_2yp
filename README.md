@@ -40,3 +40,8 @@ contains the database and a `.sql` file used for constructing the required views
 * `input` destination for cleaned data files for use in R and STATA
 
 * `stata` This folder contains the relevant stata commands to the project, development is mainly in R. The data undergoes further filtering in the `replication.R`
+
+## Further Reading (For generalized linear models)
+
+* https://stats.stackexchange.com/questions/122009/extracting-slopes-for-cases-from-a-mixed-effects-model-lme4
+* http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#model-definition
