@@ -45,3 +45,4 @@ contains the database and a `.sql` file used for constructing the required views
 
 * https://stats.stackexchange.com/questions/122009/extracting-slopes-for-cases-from-a-mixed-effects-model-lme4
 * http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#model-definition
+* R^2 in lmer: https://stackoverflow.com/questions/45327217/r-squared-of-lmer-model-fit
