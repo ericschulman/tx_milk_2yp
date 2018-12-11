@@ -28,35 +28,6 @@ plot_bid<-function(milk,dir,years,types){
 }
 
 
-plot_avg<-function(milk,dir,years,types){
-  #create dir
-  dir.create(dir, showWarnings = FALSE)
-  week = 7
-  for (year in years) {
-    for (type in types){
-      #filter data by year and type
-      milkf <-  milk[ which(milk$type==type & milk$year==year & milk$win==1 ), ]
-      start <- head( (milkf[order(milkf$biddate),]$biddate), 1)
-      end <-tail( (milkf[order(milkf$biddate),]$biddate), 1)
-      weeks <- c()
-      avg_bids <- c()
-      while (start <= end){
-        milkw <- milkf[ which(milkf$biddate >= start & milkf$biddate < (start+week) ), ]
-        weeks<- c(start,weeks)
-        avg_bids<- c(mean(milkw$bid),avg_bids)
-        start <- start + week
-      }
-      
-      file_path <- paste(dir, "avgs_",year, "_", type, ".png", sep="")
-      
-      #create PNG image
-      png(filename=file_path)
-      plot(weeks, avg_bids, main=paste("Weekly Average Winning Milk Bids in",  year, "on", type),
-          xlab="Week ", ylab="Bids", pch=19) 
-      dev.off()
-    }
-  }
-}
 
 
 last_bids<-function(milk,dir,years,types){
@@ -92,6 +63,44 @@ filter_data<-function(milk){
 }
 
 
+plot_avg<-function(milk,dir,years,types){
+  #create dir
+  dir.create(dir, showWarnings = FALSE)
+  week = 7
+  for (year in years) {
+    for (type in types){
+      #filter data by year and type
+      milkf <-  milk[ which(milk$type==type & milk$year==year & milk$win==1 ), ]
+      start <- head( (milkf[order(milkf$biddate),]$biddate), 1)
+      end <-tail( (milkf[order(milkf$biddate),]$biddate), 1)
+      weeks <- c()
+      avg_bids <- c()
+      avg_fmo <- c()
+      while (start <= end){
+        milkw <- milkf[ which(milkf$biddate >= start & milkf$biddate < (start+week) ), ]
+        weeks<- c(start,weeks)
+        avg_bids<- c(mean(milkw$bid),avg_bids)
+        avg_fmo <- c(mean( exp(milkw$lfmo)*.01 ),avg_fmo) 
+        start <- start + week
+      }
+      
+      file_path <- paste(dir, "avgs_",year, "_", type, ".png", sep="")
+      #create PNG image
+      png(filename=file_path)
+      plot.new()
+      plot(weeks, avg_bids, main=paste("Weekly Average Winning Milk Bids in",  year, "on", type),
+           xlab="Week ", ylab="Bids", ylim= c( min(avg_fmo[is.finite(avg_fmo)]), max(avg_bids[is.finite(avg_bids)]) ),  pch=19)
+      points(weeks,avg_fmo, col="green", pch=19)
+      #lines(weeks, avg_bids, pch=19)
+      
+      #lines(weeks, avg_fmo, pch=19)
+      dev.off()
+    }
+  }
+}
+
+
+
 #Load data into memory ---------------------------
 milk <- data.frame(read.csv("~/Documents/tx_milk/input/clean_milk.csv"))
 
@@ -120,21 +129,22 @@ dir1<-'~/Documents/tx_milk/output/plots/'
 dir2<-'~/Documents/tx_milk/output/plots_avg/'
 dir3<-'~/Documents/tx_milk/output/'
 
-plot_bid(milk,dir1,years,types)
+#plot_bid(milk,dir1,years,types)
 plot_avg(milk,dir2,years,types)
-last_bids(milk,dir3,years,types)
+#last_bids(milk,dir3,years,types)
+
 
 
 #Make plots for Dallas data ---------------------------
-milk_dfw<-milk[which(milk$fmozone==1 & milk$year <=1991 & milk$county!='WISE'), ]
-milk_dfw2 <- filter_data(milk_dfw)
+#milk_dfw<-milk[which(milk$fmozone==1 & milk$year <=1991 & milk$county!='WISE'), ]
+#milk_dfw2 <- filter_data(milk_dfw)
 
-dir_dfw<-"~/Documents/tx_milk/output/plots_dfw/"
-dir_dfw2<-"~/Documents/tx_milk/output/plots_dfw_filtered/"
-dir.create(dir_dfw, showWarnings = FALSE)
-dir.create(dir_dfw2, showWarnings = FALSE)
+#dir_dfw<-"~/Documents/tx_milk/output/plots_dfw/"
+#dir_dfw2<-"~/Documents/tx_milk/output/plots_dfw_filtered/"
+#dir.create(dir_dfw, showWarnings = FALSE)
+#dir.create(dir_dfw2, showWarnings = FALSE)
 
 #create directory
-plot_avg(milk_dfw,dir_dfw,years,types)
-plot_avg(milk_dfw2,dir_dfw2,years,types)
+#plot_avg(milk_dfw,dir_dfw,years,types)
+#plot_avg(milk_dfw2,dir_dfw2,years,types)
 

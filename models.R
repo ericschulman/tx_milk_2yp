@@ -265,7 +265,7 @@ table6w<-function(milk,dir,label,fname="table6w.tex"){
   #include a dummy for any ISD in Wise County
   milk$wise <- as.integer(milk$county=="WISE")
   #fit model
-  fit <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum + wise + aug_10
+  fit <- lmer(lbid ~ inc + type_dum + lfmo + lestqty + lnostop + lback + esc + lnum + wise
               + (1 + lfmo | system/year) , data=milk, control=lmerControl(optimizer="nloptwrap"))
   #write to latex
   fname<-paste(dir,fname,sep="")
