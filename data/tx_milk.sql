@@ -1,25 +1,10 @@
-/*Query for calculating which school districts have incumbent vendors*/
-CREATE VIEW incumbents AS
-WITH
-outcomes as (select COUNTY, SYSTEM, VENDOR, YEAR, NUMWIN, WIN is not '' as WIN from tx_milk),
-sum_wins as (select COUNTY, SYSTEM, sum(WIN) as SUM_WINS, count(YEAR) as NUMYEAR from outcomes group by COUNTY, SYSTEM),
-ind_wins as (select COUNTY, SYSTEM, VENDOR, sum(WIN) as IND_WINS from outcomes group by SYSTEM, COUNTY, VENDOR)
-
-SELECT A.COUNTY AS COUNTY, A.SYSTEM AS SYSTEM, VENDOR, SUM_WINS, 
-IND_WINS, ind_wins/((sum_wins*1.0)) AS WIN_PERCENT, 
-((ind_wins/(sum_wins*1.0))>=.8) AS I
-FROM ind_wins as A, sum_wins as B
-WHERE A.SYSTEM = B.SYSTEM
-AND NUMYEAR>=5;
-
-
 /*Simplified table with all the important data and CORRECT let dates*/
-create view milk as 
+create view clean_milk as 
 select rowid as ROW, SYSTEM, COUNTY, MRKTCODE, VENDOR, 
 cast (substr(LETDATE,0,instr(LETDATE,'/')) as integer) AS MONTH,
 cast(substr(LETDATE, instr(LETDATE,'/')+1 , instr(substr(LETDATE,instr(LETDATE,'/')+1),'/')-1) as integer) AS DAY,
 1900 + YEAR as YEAR,
-LFC, LFW, WW, WC, QLFC, QLFW, QWW, QWC, ESTQTY, QUANTITY, FMOZONE, DEL,
+LFC, LFW, WW, WC, QLFC, QLFW, QWW, QWC, ESTQTY, QUANTITY, FMOZONE, DEL, POPUL, ADJPOP,
 CASE ESC
  WHEN 'E' THEN 1
  WHEN 'F' THEN 0
@@ -36,26 +21,51 @@ NUMSCHL, NUMWIN
 from tx_milk;
 
 
-/*create view with number of competitors*/
-create view num as 
-select A.ROW, count(*) as NUM from milk as A, milk as B 
-WHERE A.SYSTEM = B.SYSTEM
-AND A.COUNTY = B.COUNTY
-AND A.DAY = B.DAY
-AND A.MONTH = B.MONTH
-AND A.YEAR = B.YEAR
-GROUP BY A.ROW;
+/*list all possible auctions*/
+create view clean_auctions as
+select SYSTEM, YEAR, 
+(CASE WHEN MONTH IS NULL THEN 0
+	ELSE MONTH END) AS MONTH, 
+DAY,
+(CASE WHEN FMOZONE IS NULL THEN '6' 
+	ELSE FMOZONE END) AS FMOZONE,
+(CASE WHEN ESC IS NULL THEN 0 ELSE ESC
+END) AS ESC,
+(CASE WHEN COOLER IS NULL THEN 0 ELSE COOLER
+END) AS COOLER,
+MAX(QLFC) AS QLFC, MAX(QLFW) AS QLFW,
+MAX(QWW) AS QWW, MAX(QWC) AS QWC, 
+MAX(ESTQTY) AS ESTQTY, MAX(DEL) AS DEL,
+MAX(MILES) AS MILES, MAX(NUMSCHL) AS NUMSCHL,
+MAX(NUMWIN) AS NUMWIN, 
+MAX(POPUL) AS POPUL , MAX(ADJPOP) AS ADJPOP,
+COUNT(*) as NUM
+from clean_milk
+GROUP BY SYSTEM, MONTH, DAY, YEAR, FMOZONE
+ORDER BY YEAR, MONTH, DAY, FMOZONE,  SYSTEM;
+
+/*Join auctions with crude oil and fmo*/
+create view auctions as
+select A.*, B.crude as GAS, C.price as FMO
+from clean_auctions as A
+LEFT JOIN gasoline AS B on A.YEAR = B.YEAR and A.MONTH = B.MONTH
+LEFT JOIN fmo_prices AS C on A.YEAR = C.YEAR and A.MONTH = C.MONTH;
 
 
-/*helpful for debugging milk out
-also previous 'differential' adjusted fmo is included*/
-create view milk_join as
-select A.*, B.I as I, C.crude as GAS, D.price as FMO, E.num as N, F.BACKLOG
-from milk as A
-LEFT JOIN incumbents as B ON A.SYSTEM = B.SYSTEM
-AND A.COUNTY = B.COUNTY
-AND A.VENDOR = B.VENDOR
-LEFT JOIN gasoline AS C on A.YEAR = C.YEAR and A.MONTH = C.MONTH
-LEFT JOIN fmo_prices AS D on A.YEAR = D.YEAR and A.MONTH = D.MONTH
-LEFT JOIN num AS E on A.ROW = E.ROW
-LEFT JOIN backlog as F on A.ROW = F.ROW;
+/* create a view with the bids*/
+create view bids as
+select VENDOR, LFC, LFW, WW, WC, SYSTEM,
+(CASE WHEN MONTH IS NULL THEN 0
+	ELSE MONTH END) AS MONTH, 
+DAY, YEAR, FMOZONE, WIN is not '' as WIN
+FROM clean_milk;
+
+
+/*complete view*/
+create view milk as
+select * from bids as b
+left join auctions as a
+on a.SYSTEM = b.SYSTEM 
+AND A.DAY = b.DAY 
+and a.YEAR = b.YEAR 
+and a.FMOZONE = b.FMOZONE;
