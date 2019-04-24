@@ -26,12 +26,17 @@ create view clean_auctions as
 select SYSTEM, YEAR, 
 (CASE WHEN MONTH IS NULL THEN 0
 	ELSE MONTH END) AS MONTH, 
-DAY,
+(CASE WHEN DAY IS NULL THEN 0
+	ELSE DAY END) AS DAY, 
 (CASE WHEN FMOZONE IS NULL THEN '6' 
 	ELSE FMOZONE END) AS FMOZONE,
-(CASE WHEN ESC IS NULL THEN 0 ELSE ESC
+(CASE WHEN ESC IS NULL THEN 0
+	WHEN ESC = '' THEN 0	 
+	ELSE ESC
 END) AS ESC,
-(CASE WHEN COOLER IS NULL THEN 0 ELSE COOLER
+(CASE WHEN COOLER IS NULL THEN 0
+	WHEN COOLER = '' THEN 0	
+	ELSE COOLER
 END) AS COOLER,
 MAX(QLFC) AS QLFC, MAX(QLFW) AS QLFW,
 MAX(QWW) AS QWW, MAX(QWC) AS QWC, 
@@ -44,6 +49,7 @@ from clean_milk
 GROUP BY SYSTEM, MONTH, DAY, YEAR, FMOZONE
 ORDER BY YEAR, MONTH, DAY, FMOZONE,  SYSTEM;
 
+
 /*Join auctions with crude oil and fmo*/
 create view auctions as
 select A.*, B.crude as GAS, C.price as FMO
@@ -55,17 +61,23 @@ LEFT JOIN fmo_prices AS C on A.YEAR = C.YEAR and A.MONTH = C.MONTH;
 /* create a view with the bids*/
 create view bids as
 select VENDOR, LFC, LFW, WW, WC, SYSTEM,
+(CASE WHEN FMOZONE IS NULL THEN '6' 
+	ELSE FMOZONE END) AS FMOZONE,
 (CASE WHEN MONTH IS NULL THEN 0
 	ELSE MONTH END) AS MONTH, 
-DAY, YEAR, FMOZONE, WIN is not '' as WIN
+(CASE WHEN DAY IS NULL THEN 0
+	ELSE DAY END) AS DAY,
+YEAR,
+WIN is not '' as WIN
 FROM clean_milk;
 
 
 /*complete view*/
 create view milk as
-select * from bids as b
+select VENDOR, WW, WC, LFW, LFC, a.* from bids as b
 left join auctions as a
 on a.SYSTEM = b.SYSTEM 
 AND A.DAY = b.DAY 
 and a.YEAR = b.YEAR 
+and a.MONTH = b.MONTH
 and a.FMOZONE = b.FMOZONE;
