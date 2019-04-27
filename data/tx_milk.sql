@@ -1,3 +1,18 @@
+/*Query for calculating which school districts have incumbent vendors*/
+CREATE VIEW incumbents AS
+WITH
+outcomes as (select COUNTY, SYSTEM, VENDOR, YEAR, NUMWIN, WIN is not '' as WIN from tx_milk),
+sum_wins as (select COUNTY, SYSTEM, sum(WIN) as SUM_WINS, count(YEAR) as NUMYEAR from outcomes group by COUNTY, SYSTEM),
+ind_wins as (select COUNTY, SYSTEM, VENDOR, sum(WIN) as IND_WINS from outcomes group by SYSTEM, COUNTY, VENDOR)
+
+SELECT A.COUNTY AS COUNTY, A.SYSTEM AS SYSTEM, VENDOR, SUM_WINS, 
+IND_WINS, ind_wins/((sum_wins*1.0)) AS WIN_PERCENT, 
+((ind_wins/(sum_wins*1.0))>=.8) AS I
+FROM ind_wins as A, sum_wins as B
+WHERE A.SYSTEM = B.SYSTEM
+AND NUMYEAR>=5;
+
+
 /*Simplified table with all the important data and CORRECT let dates*/
 create view clean_milk as 
 select rowid as ROW, SYSTEM, COUNTY, MRKTCODE, VENDOR, 
@@ -74,7 +89,7 @@ FROM clean_milk;
 
 /*complete view*/
 create view milk as
-select VENDOR, WW, WC, LFW, LFC, a.* from bids as b
+select VENDOR, WW, WC, LFW, LFC, WIN, a.* from bids as b
 left join auctions as a
 on a.SYSTEM = b.SYSTEM 
 AND A.DAY = b.DAY 
