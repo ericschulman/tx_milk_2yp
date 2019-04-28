@@ -1,18 +1,3 @@
-/*Query for calculating which school districts have incumbent vendors*/
-CREATE VIEW incumbents AS
-WITH
-outcomes as (select COUNTY, SYSTEM, VENDOR, YEAR, NUMWIN, WIN is not '' as WIN from tx_milk),
-sum_wins as (select COUNTY, SYSTEM, sum(WIN) as SUM_WINS, count(YEAR) as NUMYEAR from outcomes group by COUNTY, SYSTEM),
-ind_wins as (select COUNTY, SYSTEM, VENDOR, sum(WIN) as IND_WINS from outcomes group by SYSTEM, COUNTY, VENDOR)
-
-SELECT A.COUNTY AS COUNTY, A.SYSTEM AS SYSTEM, VENDOR, SUM_WINS, 
-IND_WINS, ind_wins/((sum_wins*1.0)) AS WIN_PERCENT, 
-((ind_wins/(sum_wins*1.0))>=.8) AS I
-FROM ind_wins as A, sum_wins as B
-WHERE A.SYSTEM = B.SYSTEM
-AND NUMYEAR>=5;
-
-
 /*Simplified table with all the important data and CORRECT let dates*/
 create view clean_milk as 
 select rowid as ROW, SYSTEM, COUNTY, MRKTCODE, VENDOR, 
@@ -34,6 +19,26 @@ CASE COOLER
 WIN is not '' as WIN,
 NUMSCHL, NUMWIN
 from tx_milk;
+
+
+/* list incumbencies */
+create view incumbents as 
+WITH wins as (select SYSTEM, 
+(CASE WHEN FMOZONE IS NULL THEN '6' 
+	ELSE FMOZONE END) AS FMOZONE,
+VENDOR, SUM(WIN is not '') as WINS
+from tx_milk
+GROUP BY SYSTEM, FMOZONE, VENDOR),
+
+max_wins as (select SYSTEM, FMOZONE, MAX(WINS) as MAX_WINS, SUM(WINS) as TOT_WINS from wins group by  SYSTEM, FMOZONE),
+potential_incs as (select *, (1.*MAX_WINS)/(1.*TOT_WINS) from max_wins
+where (1.*MAX_WINS)/(1.*TOT_WINS) > .7 and TOT_WINS > 2)
+
+select a.*, b.VENDOR from max_wins as a
+left join potential_incs as c on 
+a.SYSTEM = c.SYSTEM AND a.FMOZONE = c.FMOZONE AND a.MAX_WINS = c.MAX_WINS
+left join wins as b on 
+c.MAX_WINS = b.WINS AND c.SYSTEM = b.SYSTEM AND c.FMOZONE = b.FMOZONE
 
 
 /*list all possible auctions*/
@@ -89,10 +94,16 @@ FROM clean_milk;
 
 /*complete view*/
 create view milk as
-select VENDOR, WW, WC, LFW, LFC, WIN, a.* from bids as b
+select b.VENDOR as VENDOR, WW, WC, LFW, LFC, WIN, a.*, 
+(CASE WHEN b.VENDOR = c.VENDOR  THEN 1
+ELSE 0 END) as INC
+from bids as b
 left join auctions as a
 on a.SYSTEM = b.SYSTEM 
 AND A.DAY = b.DAY 
 and a.YEAR = b.YEAR 
 and a.MONTH = b.MONTH
-and a.FMOZONE = b.FMOZONE;
+and a.FMOZONE = b.FMOZONE
+left join incumbents as c on 
+c.SYSTEM = a.SYSTEM
+and c.FMOZONE = a.FMOZONE;
