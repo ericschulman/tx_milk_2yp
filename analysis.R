@@ -1,0 +1,42 @@
+rm(list=ls())
+
+#install.packages("nonnest2")
+#install.packages('flexmix')
+#install.packages('mixtools')
+
+library(nonnest2)
+library(flexmix)
+library(mixtools)
+
+
+
+dir <-"~/Documents/creamers"
+dir<- paste(dir,'/data/clean_milk.csv', sep = "")
+milk <- data.frame(read.csv(dir))
+
+covariates<-"LWW ~ COOLER + ESC + LFMO + LGAS + LPOPUL + LQWW + X1A + X3 + X6 + X7 + X9"
+hist <- " + LWW_min1 + LWW_min2 + LWW_min3 + + LWW_min4 + LWW_min5+ LWW_max1 + LWW_max2 + LWW_max3 + LWW_max4 + LWW_max5"
+covariates_hist<- paste(covariates,hist)
+print(covariates_hist)
+
+#ols<-lm(covariates,milk)
+#summary(ols)
+
+ols_hist<-glm(covariates_hist,milk,family=gaussian())
+summary(ols_hist)
+
+
+ex1 <- flexmix(LWW ~ 1 + COOLER + ESC + LFMO + LGAS + LPOPUL + LQWW + X1A + X3 + X6 + X7 + X9,
+               data = milk, k = 2, control = list(verb = 0, iter = 100))
+
+summary(ex1)
+
+
+#ex1re <-refit(ex1)
+#summary(ex1re)
+ex1re <- regmixEM(milk$LWW,milk$LFMO)
+
+
+#vuongtest(ex1re,ols_hist)
+
+#flexmix
