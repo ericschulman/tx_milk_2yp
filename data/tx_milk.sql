@@ -28,7 +28,7 @@ from tx_milk;
 /* list incumbencies */
 create view incumbents as 
 WITH wins as (select SYSTEM, 
-(CASE WHEN FMOZONE IS NULL THEN '6' 
+(CASE WHEN FMOZONE IS NULL THEN 9 
 	ELSE FMOZONE END) AS FMOZONE,
 VENDOR, SUM(WIN is not '') as WINS
 from tx_milk
@@ -36,13 +36,13 @@ GROUP BY SYSTEM, FMOZONE, VENDOR),
 
 max_wins as (select SYSTEM, FMOZONE, MAX(WINS) as MAX_WINS, SUM(WINS) as TOT_WINS from wins group by  SYSTEM, FMOZONE),
 potential_incs as (select *, (1.*MAX_WINS)/(1.*TOT_WINS) from max_wins
-where (1.*MAX_WINS)/(1.*TOT_WINS) > .7 and TOT_WINS > 2)
+where (1.*MAX_WINS)/(1.*TOT_WINS) > .5 and TOT_WINS > 5)
 
 select a.*, b.VENDOR from max_wins as a
 left join potential_incs as c on 
 a.SYSTEM = c.SYSTEM AND a.FMOZONE = c.FMOZONE AND a.MAX_WINS = c.MAX_WINS
 left join wins as b on 
-c.MAX_WINS = b.WINS AND c.SYSTEM = b.SYSTEM AND c.FMOZONE = b.FMOZONE
+c.MAX_WINS = b.WINS AND c.SYSTEM = b.SYSTEM AND c.FMOZONE = b.FMOZONE;
 
 
 /*list all possible auctions*/
@@ -52,7 +52,7 @@ select SYSTEM, YEAR, COUNTY,
 	ELSE MONTH END) AS MONTH, 
 (CASE WHEN DAY IS NULL THEN 0
 	ELSE DAY END) AS DAY, 
-(CASE WHEN FMOZONE IS NULL THEN '6' 
+(CASE WHEN FMOZONE IS NULL THEN 9
 	ELSE FMOZONE END) AS FMOZONE, 
 MAX(COOLER) as COOLER, 
 MAX(QLFC) AS QLFC, MAX(QLFW) AS QLFW,
@@ -78,7 +78,7 @@ LEFT JOIN fmo_prices AS C on A.YEAR = C.YEAR and A.MONTH = C.MONTH;
 /* create a view with the bids*/
 create view bids as
 select VENDOR, ESC, LFC, LFW, WW, WC, SYSTEM,
-(CASE WHEN FMOZONE IS NULL THEN '6' 
+(CASE WHEN FMOZONE IS NULL THEN 9 
 	ELSE FMOZONE END) AS FMOZONE,
 (CASE WHEN MONTH IS NULL THEN 0
 	ELSE MONTH END) AS MONTH, 
