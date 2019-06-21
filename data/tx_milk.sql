@@ -91,6 +91,9 @@ FROM clean_milk;
 /*complete view*/
 create view milk as
 select b.VENDOR as VENDOR, WW, WC, LFW, LFC, WIN, ESC, a.*, 
+((ifnull(QWW,0)*ifnull(WW,0)+ ifnull(QLFW,0)*ifnull(LFW,0)+ ifnull(QWC,0)*ifnull(WC,0)+ ifnull(QLFC,0)*ifnull(LFC,0))/
+(ifnull(QWW,0)+ ifnull(QLFW,0)+ ifnull(QWC,0)+ ifnull(QLFC,0))) as SCORE,
+(ifnull(QWW,0)+ ifnull(QLFW,0)+ ifnull(QWC,0)+ ifnull(QLFC,0)) as QSCORE,
 (CASE WHEN b.VENDOR = c.VENDOR  THEN 1
 ELSE 0 END) as INC
 from bids as b
