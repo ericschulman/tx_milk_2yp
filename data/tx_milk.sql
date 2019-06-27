@@ -61,10 +61,12 @@ MAX(ESTQTY) AS ESTQTY, MAX(DEL) AS DEL,
 MAX(MILES) AS MILES, MAX(NUMSCHL) AS NUMSCHL,
 MAX(NUMWIN) AS NUMWIN, 
 MAX(POPUL) AS POPUL , MAX(ADJPOP) AS ADJPOP, MAX(MEALS) AS MEALS,
-COUNT(*) as NUM
+COUNT(*) as NUMBID,
+COUNT(DISTINCT VENDOR) as NUM
 from clean_milk
 GROUP BY SYSTEM, COUNTY, MONTH, DAY, YEAR, FMOZONE
 ORDER BY YEAR, MONTH, DAY, FMOZONE,  SYSTEM;
+
 
 
 /*Join auctions with crude oil and fmo*/
@@ -91,9 +93,9 @@ FROM clean_milk;
 /*complete view*/
 create view milk as
 select b.VENDOR as VENDOR, WW, WC, LFW, LFC, WIN, ESC, a.*, 
-((ifnull(QWW,0)*ifnull(WW,0)+ ifnull(QLFW,0)*ifnull(LFW,0)+ ifnull(QWC,0)*ifnull(WC,0)+ ifnull(QLFC,0)*ifnull(LFC,0))/
-(ifnull(QWW,0)+ ifnull(QLFW,0)+ ifnull(QWC,0)+ ifnull(QLFC,0))) as SCORE,
-(ifnull(QWW,0)+ ifnull(QLFW,0)+ ifnull(QWC,0)+ ifnull(QLFC,0)) as QSCORE,
+((ifnull(QWW*WW,0)+ ifnull(QLFW*LFW,0)+ ifnull(QWC*WC,0) + ifnull(QLFC*LFC,0))/
+(ifnull(QWW,0)*(WW is not null)+ ifnull(QLFW,0)*(LFW is not null)+ ifnull(QWC,0)*(WC is not null)+ ifnull(QLFC,0)*(LFC is not null) )) as SCORE,
+(ifnull(QWW,0)*(WW is not null)+ ifnull(QLFW,0)*(LFW is not null)+ ifnull(QWC,0)*(WC is not null)+ ifnull(QLFC,0)*(LFC is not null) ) as QSCORE,
 (CASE WHEN b.VENDOR = c.VENDOR  THEN 1
 ELSE 0 END) as INC
 from bids as b
