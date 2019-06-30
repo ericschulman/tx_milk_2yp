@@ -7,6 +7,14 @@ group by year, month, day, SYSTEM, FMOZONE
 order by  year, month, day;
 
 
+/* looking for punishment over time**/
+select  system,  month, day, year, score, num
+ from milk where num >1 and score < .155 and win =1
+and QSCORE is not NULL and day <>0 and year >1979 and month >=4 and month <=9
+order by  year, month, day;
+
+
+
 /*avg characteristics per year*/
 select year,  round(100*sum(score*win)/sum(win*(score<>0)),2) as winner, round(100*avg(SCORE),2) as score, 
 round(sum(QSCORE*win)/sum(win)/1000.,2) as quant,
@@ -66,3 +74,34 @@ from milk
 where year > 1979 and month >= 4 and month <=9 and day<>0
 and score <> 0 and QSCORE is not NULL and vendor is not NULL and win = 1 
 group by num;
+
+/** scores by num **/
+select NUM, avg(mins), avg(maxs), avg(avgs)
+from
+(select year, month, day, SYSTEM, FMOZONE, NUM, min(SCORE) as mins, max(SCORE) as maxs, avg(score) as avgs from milk
+ where QSCORE is not NULL and day <>0 and year >1979 and month >=4 and month <=9 and num >0
+group by year, month, day, SYSTEM, FMOZONE, NUM)
+group by NUM
+
+
+
+
+/**looking for punishments **/
+select system, year, month, day, num, potential, score
+from (
+select system, avg(year) as year, count(*) as counts,
+avg(day) as day, 
+avg(month) as month, 
+avg(num) as num, count(*) as potential, avg(score) as score
+from(select system, year, 
+avg(day) as day, 
+avg(month) as month, 
+avg(num) as num, avg(score) as score 
+from milk where score < .16 and win =1
+and QSCORE is not NULL and day <>0 and year >1979 and month >=4 and month <=9
+group by system, year
+order by system 
+)
+group by system)
+where potential  <3
+order by year, month, day
