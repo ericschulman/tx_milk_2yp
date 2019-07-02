@@ -68,21 +68,24 @@ group by FMOZONE
 
 
 /*min bid vs num of bidders*/
-select num, round(avg(NUMBID),2) as bids, round(100*avg(SCORE),2) as bid,
-  round(avg(QSCORE)/1000.,2) as quant,  count(win) as auctions
+select num,
+round(100*avg(SCORE),2) as bid,
+round(100*sum(SCORE*win*(score<>0))/sum(win*(score<>0)),2) as winningbid,
+round(sum(QSCORE*win*(score<>0))/sum(win*(score<>0))/1000.,2) as quant,   round(100*avg(ESC),2) as esc,  
+ count(*) as obs, sum(win) as auctions,   round(sum(NUMBID*win*(score<>0))*1./sum(win*(score<>0)),2) as bids
 from milk 
 where year > 1979 and month >= 4 and month <=9 and day<>0
-and score <> 0 and QSCORE is not NULL and vendor is not NULL and win = 1 
+and score <> 0 and QSCORE is not NULL and vendor is not NULL
 group by num;
 
-/** scores by num **/
+
+/** scores by num (with a group to see maxes and stuff)**/
 select NUM, avg(mins), avg(maxs), avg(avgs)
 from
 (select year, month, day, SYSTEM, FMOZONE, NUM, min(SCORE) as mins, max(SCORE) as maxs, avg(score) as avgs from milk
  where QSCORE is not NULL and day <>0 and year >1979 and month >=4 and month <=9 and num >0
 group by year, month, day, SYSTEM, FMOZONE, NUM)
 group by NUM
-
 
 
 
