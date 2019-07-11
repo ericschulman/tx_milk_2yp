@@ -88,6 +88,15 @@ group by year, month, day, SYSTEM, FMOZONE, NUM)
 group by NUM
 
 
+/*variance in number of days*/
+select SYSTEM,FMOZONE, avg(score), avg(qscore),
+ AVG((DAY + 30*MONTH)*(DAY + 30*MONTH)) - AVG(DAY + 30*MONTH)*AVG(DAY + 30*MONTH), count(*)
+ from milk
+where SCORE is not NULL and QSCORE is not NULL and day <>0 and year >1979 and month >=4 and month <=9 and num >0 and win=1
+
+group by  SYSTEM, FMOZONE
+order by count(*), avg(score)
+
 
 /**looking for punishments **/
 select system, year, month, day, num, potential, score
