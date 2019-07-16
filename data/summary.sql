@@ -1,18 +1,25 @@
-
 /**bids over time**/
-select day, month, year, min(WW), min(num) 
+select system, day, month, year, min(score), min(num) 
 from milk
-WHERE WW is not NULL and day <>0 and QWW is not null and year >1979
-group by year, month, day, SYSTEM, FMOZONE
+WHERE QSCORE is not NULL and day <>0 and SCORE is not null and year >1979 and FMOZONE=1
+group by year, month, day, SYSTEM
 order by  year, month, day;
 
 
+
 /* looking for punishment over time**/
-select  system,  month, day, year, score, num
+select  system,  month, day, year, score, qscore, num
  from milk where num >1 and score < .155 and win =1
 and QSCORE is not NULL and day <>0 and year >1979 and month >=4 and month <=9
 order by  year, month, day;
 
+/*price war examples*/
+select vendor, system, score, win, qscore, fmo, gas, day, month, year, inc
+ from milk where day >=7 and day <= 8 and month =7 and year =1985  
+ order by day, SYSTEM, VENDOR;
+
+select * from milk where day >=28 and day <= 29 and month =7 and year =1986  order by SYSTEM, VENDOR;
+select * from milk where day >=12 and day <= 13 and month =7 and year =1987 order by SYSTEM, VENDOR;
 
 
 /*avg characteristics per year*/
@@ -31,14 +38,36 @@ select year, count(*) as no_auctions, round(121./count(*),2) as auctions from au
 where year > 1979 and month >= 5 and month <=8 and day<>0
 group by year;
 
+/*price distribution each month*/
+select MONTH,  
+round(100*avg(SCORE),2) as score, 
+round(100*100*avg(SCORE*SCORE),2) as scorevar, 
+round(100*sum(score*win)/sum(win*(score<>0)),2) as winbid, 
+round(100*100*sum(score*score*win)/sum(win*(score<>0)),2) as varwin, 
+round(sum(score<.155)/(max(year)-min(year)),2) as wars,
+round(count(*)/(max(year)-min(year)),2) as obs
+ from milk
+ where QSCORE is not NULL and day <>0 and year >1979 and month >=4 and month <=9
+group by month
+
+
 /*avg characteristics per month*/
-select MONTH,  round(100*sum(score*win)/sum(win*(score<>0)),2) as winner, round(100*avg(SCORE),2) as score, 
+select MONTH, 
 round(sum(QSCORE*win)/sum(win*(score<>0))/1000.,2) as quant,
+ round(sum(QSCORE*QSCORE*win)/sum(win*(score<>0))/1000/1000.,2) as varquant,
 round(avg(gas),2) as gas, round(avg(POPUL)/1000.,2) as pop, round(avg(FMO),2) as fmo, 
 round(avg(num),2) as num, round(avg(100*ifnull(COOLER,0)),2) as cooler, round(avg(100*ifnull(ESC,0)),2) as esc, 
 round(count(*)/(max(year)-min(year)),2) as obs
  from milk
  where QSCORE is not NULL and day <>0 and year >1979 and month >=4 and month <=9
+group by month
+
+/*double check quantity*/
+select avg(qscore)/1000, avg(qscore*qscore)/1000/1000 from milk
+where QSCORE is not NULL 
+and day <>0 and year >1979 
+and month >=4 and month <=9
+and win=1
 group by month
 
 
@@ -98,6 +127,28 @@ group by  SYSTEM, FMOZONE
 order by count(*), avg(score)
 
 
+/*bids by vendor*/
+select REALVENDOR, 
+round(avg(SCORE)*100,2) as bid,
+round(sum(SCORE*WIN)/SUM(WIN*(SCORE<>0))*100,2) as bidwin,
+round(sum(QSCORE*WIN)/SUM(WIN*(QSCORE<>0))/1000,2) as quant,
+sum(FMOZONE=1), sum(FMOZONE=3), sum(FMOZONE=7), sum(FMOZONE=9), SUM(WIN), count(*)
+from (select *,
+(CASE WHEN (VENDOR = "BORDEN"
+OR VENDOR = "CABELL"
+OR VENDOR = "FOREMOST"
+OR VENDOR = "OAK FARMS"
+OR VENDOR = "PRESTON"
+OR VENDOR = "SCHEPPS"
+OR VENDOR = "VANDERVOORT"
+or VENDOR = "PURE") THEN VENDOR
+ELSE 'OTHER' END) as REALVENDOR
+ from milk)
+where QSCORE is not NULL and day <>0 and year >1979 and month >=4 and month <=9
+GROUP BY REALVENDOR;
+
+
+
 /**looking for punishments **/
 select system, year, month, day, num, potential, score
 from (
@@ -117,3 +168,4 @@ order by system
 group by system)
 where potential  <3
 order by year, month, day
+
