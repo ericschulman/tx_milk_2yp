@@ -132,7 +132,7 @@ select REALVENDOR,
 round(avg(SCORE)*100,2) as bid,
 round(sum(SCORE*WIN)/SUM(WIN*(SCORE<>0))*100,2) as bidwin,
 round(sum(QSCORE*WIN)/SUM(WIN*(QSCORE<>0))/1000,2) as quant,
-sum(FMOZONE=1), sum(FMOZONE=3), sum(FMOZONE=7), sum(FMOZONE=9), SUM(WIN), count(*)
+sum(FMOZONE=1), sum(FMOZONE=3),  sum(FMOZONE=6), sum(FMOZONE=7), sum(FMOZONE=9), SUM(WIN), count(*)
 from (select *,
 (CASE WHEN (VENDOR = "BORDEN"
 OR VENDOR = "CABELL"
@@ -141,7 +141,8 @@ OR VENDOR = "OAK FARMS"
 OR VENDOR = "PRESTON"
 OR VENDOR = "SCHEPPS"
 OR VENDOR = "VANDERVOORT"
-or VENDOR = "PURE") THEN VENDOR
+or VENDOR = "PURE"
+or VENDOR = "SUPERIOR") THEN VENDOR
 ELSE 'OTHER' END) as REALVENDOR
  from milk)
 where QSCORE is not NULL and day <>0 and year >1979 and month >=4 and month <=9
