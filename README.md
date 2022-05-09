@@ -1,48 +1,26 @@
-# tx_milk
+# Overview
 
-The code attempts to replicate and extend the working paper "Incumbency and Bidding Behavior in the Dallas Ft. Worth School Milk Market" using R and SQLite.
+Code and data analyzing the [U.S. justice department investigation](https://www.nytimes.com/1991/08/05/us/us-investigating-school-milk-bidding-in-16-states.html
+) involving school milk cartons that took place during the early 1990s. In most states, schools hold a procurement auction where the firm who offers the lowest price wins the right to sell milk to that school. In Florida and Ohio, firms admitted to rigging prices in these auctions by providing each other with side payments to ensure their incentives were aligned. In total, the U.S. justice department investigated collusion over prices for school milk cartons in 16 states.  In Texas, nine milk processors settled for about 15.4 million dollars. Borden Dairy, a milk processors involved with the cartel in Florida, settled for about eight million dollars alone. The lack of official communication between firms and the well documented bids makes the Texas markets a case study in tacit collusion. For academic literature see:
+* [Porter and Zona](https://www.jstor.org/stable/2556080?seq=1)
+* [Pesendorfer](https://academic.oup.com/restud/article/67/3/381/1547415?login=true)
 
-## Folder Structure
 
-Below is an explanaton of the project's file structure
+# Analysis
 
-* `dependencies.R` This file installs the necessary R dependencies and libraries for R
+The code provides evidence of price wars. It uses an empirical strategy involving a switching regression similar to [Baldwin, Marshall and Richards](https://www.journals.uchicago.edu/doi/abs/10.1086/262089) who studied collusion in timber auctions. The switching regression identifies auctions where prices fall drastically for inexplicable reasons. 
 
-* `models.R` code for loading in the data and running linear models is defined in this file and called in other scripts
+* The `replication` folder involves replicating the regression results in a working paper involving this data set in `R`.
+* The `structural` folder involves exploratory code using the approach in [Guerre, Perrigne and Vuong](https://www.jstor.org/stable/2999600?seq=1) to find the valuations of the bidders.
+* `data_clean` creates a cleaned panel for the data called `clean_milk0.csv`.
+* `lags_robust.ipynb` involves estimating the model with lags to look at response patterns and punishment strategies.
+* `analytic_solution.ipynb` invovles estimating the switching regression and comparing results with a regression that controls for `incumbency` (i.e. providing milk to the district in the previous school year). 
 
-* `ext.R` This file tries to replicate the main tables from Fu 2011 and Lee 1999 from the paper with some extensions.
+In terms of $R^2$, likelihood, and AIC, the switching regression does a much better job of explaining the variation in the data. Incumbency consistently accounts for why bids fall from 18 cents to 17 cents. However, most districts have one or two years when firms who are not the incumbent bids about 14 cents. The switching regression more accurately predicts when bids will fall from 17 to 14 cents within a school district with an incumbent. As a result, incumbency does not adequately explain the volatile prices compared to a hidden variable.
 
-* `rep.R` This file tries to replicate the main tables from the paper with some extensions.
+ 
+# Testing framework
 
-* `data_clean.R` This is more post processing after the data is taken from the database
+I formally test this hypothesis using the [Vuong](https://www.jstor.org/stable/1912557) test. This test lets us choose between two alternative data generating processes under the assumption only one of them is true. It works a lot like a likelihood ratio test, but adjusts for the fact that the models have nonnested likelihood functions. According to our results, both test statistics verify that the switching regression is closer to the true data generating process.
 
-* `plots.R` This file containing relevant R code to make plots
 
-* `db`
-contains the database and a `.sql` file used for constructing the required views in for the data
-
-	* `replication.SQL` Useful SQL queries used for generating BACKLOG and the Incumbencies within the paper
-
-	* `tx_milk.db` SQLite database containing relevant tables to the project
-
-* `data` The data on historic milk prices is courtesy of the Dallas Federal Marketing Order's office. It can be found using the link below
-
-	* `fmo_diff.csv` price differentials for adjusting the Dallas price to different regions
-
-	* `fmo_prices.csv` table with historical FMO prices in Dallas, I formatted these using the original file. The file is found under 1975 - 1995 statistical summary from http://www.dallasma.com/order_stats/stats_sum.jsp
-
-	*  `milk_out.csv` is a table with all the relevant information to table 5
-
-	* `tx_milk.csv` is the original data on milk bids
-
-* `output`This folder contains the relevant output to the project
-
-* `input` destination for cleaned data files for use in R and STATA
-
-* `stata` This folder contains the relevant stata commands to the project, development is mainly in R. The data undergoes further filtering in the `replication.R`
-
-## Further Reading (For generalized linear models)
-
-* https://stats.stackexchange.com/questions/122009/extracting-slopes-for-cases-from-a-mixed-effects-model-lme4
-* http://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#model-definition
-* R^2 in lmer: https://stackoverflow.com/questions/45327217/r-squared-of-lmer-model-fit
